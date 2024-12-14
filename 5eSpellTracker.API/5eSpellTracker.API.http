@@ -1,0 +1,6 @@
+@_5eSpellTracker.API_HostAddress = http://localhost:5160
+
+GET {{_5eSpellTracker.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
