@@ -2,13 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
-    <RootNamespace>_5eSpellTracker.DAL</RootNamespace>
+    <RootNamespace>FantasySpellTracker.Shared</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\5eSpellTracker.Shared\5eSpellTracker.Shared.csproj" />
-  </ItemGroup>
 
 </Project>
