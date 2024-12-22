@@ -28,6 +28,15 @@ public class Spell : Entity
     public bool IsConcentration { get; set; }
     public bool IsRitual { get; set; }
 
-    public int SourcebookId { get; set; }
-    public required Source Sourcebook { get; set; }
+    public string? Description { get; set; }
+    public string? HigherLevelDescription { get; set; }
+    public string? CastingTimeDescription { get; set; }
+    public string? ComponentsDescription { get; set; }
+
+    #region Relationships
+
+    public int SourceId { get; set; }
+    public required Source Source { get; set; }
+
+    #endregion
 }

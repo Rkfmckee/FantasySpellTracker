@@ -65,8 +65,14 @@ namespace FantasySpellTracker.DAL.Migrations
                     b.Property<int>("CastingTime")
                         .HasColumnType("int");
 
+                    b.Property<string>("CastingTimeDescription")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("Components")
                         .HasColumnType("int");
+
+                    b.Property<string>("ComponentsDescription")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("Conditions")
                         .HasColumnType("int");
@@ -77,8 +83,14 @@ namespace FantasySpellTracker.DAL.Migrations
                     b.Property<int?>("DamageTypes")
                         .HasColumnType("int");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Duration")
                         .HasColumnType("int");
+
+                    b.Property<string>("HigherLevelDescription")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsConcentration")
                         .HasColumnType("bit");
@@ -108,25 +120,25 @@ namespace FantasySpellTracker.DAL.Migrations
                     b.Property<int>("School")
                         .HasColumnType("int");
 
-                    b.Property<int>("SourcebookId")
+                    b.Property<int>("SourceId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SourcebookId");
+                    b.HasIndex("SourceId");
 
                     b.ToTable("Spells");
                 });
 
             modelBuilder.Entity("FantasySpellTracker.DAL.Entities.Spell", b =>
                 {
-                    b.HasOne("FantasySpellTracker.DAL.Entities.Source", "Sourcebook")
+                    b.HasOne("FantasySpellTracker.DAL.Entities.Source", "Source")
                         .WithMany("Spells")
-                        .HasForeignKey("SourcebookId")
+                        .HasForeignKey("SourceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Sourcebook");
+                    b.Navigation("Source");
                 });
 
             modelBuilder.Entity("FantasySpellTracker.DAL.Entities.Source", b =>

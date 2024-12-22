@@ -14,13 +14,13 @@ var config = Configuration.Default.WithDefaultLoader();
 var context = BrowsingContext.New(config);
 var document = await context.OpenAsync(r => r.Content(htmlContent));
 
-var sourceBooks = document.GetSources("Sourcebooks", SourceType.Sourcebook);
-var adventures = document.GetSources("Adventures", SourceType.Adventure);
-var partnered = document.GetSources("PartneredContent", SourceType.Partnered);
+var sourceBooks = document.GetSources("Sourcebooks", SourceType.Sourcebook)?.ToArray();
+var adventures = document.GetSources("Adventures", SourceType.Adventure)?.ToArray();
+var partnered = document.GetSources("PartneredContent", SourceType.Partnered)?.ToArray();
 
-if (sourceBooks?.Count() > 0) await dbContext.AddAsync(sourceBooks.ToArray());
-if (adventures?.Count() > 0) await dbContext.AddAsync(adventures.ToArray());
-if (partnered?.Count() > 0) await dbContext.AddAsync(partnered.ToArray());
+if (sourceBooks?.Length > 0) await dbContext.AddAsync(sourceBooks);
+if (adventures?.Length > 0) await dbContext.AddAsync(adventures);
+if (partnered?.Length > 0) await dbContext.AddAsync(partnered);
 await dbContext.SaveChangesAsync();
 
 Console.ReadLine();
