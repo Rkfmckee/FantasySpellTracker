@@ -18,6 +18,9 @@ switch (optionInt)
     case 1:
         await new SourceScraper(dbContext).ScrapeAsync();
         break;
+    case 2:
+        await new SpellScraper(dbContext).ScrapeAsync();
+        break;
 }
 
 Console.ReadLine();

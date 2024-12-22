@@ -1,4 +1,5 @@
 ﻿using AngleSharp.Dom;
+using AngleSharp.Html.Dom;
 using FantasySpellTracker.DAL.Entities;
 using FantasySpellTracker.Shared.Enums;
 
@@ -35,5 +36,24 @@ public static class IDocumentExtensions
 
         Console.WriteLine($"Total: {sources.Count}");
         return sources;
+    }
+
+    public static int GetNumberOfSpellPages(this IDocument document)
+    {
+        var pagingListElement = document.QuerySelector(".listing-footer")?.QuerySelector(".paging-list");
+        var pagingElements = pagingListElement?.QuerySelectorAll(".b-pagination-item:not(.b-pagination-item-next)");
+
+        var isValid = int.TryParse(pagingElements?.LastOrDefault()?.TextContent.Trim(), out var numberOfPages);
+        return isValid ? numberOfPages : 0;
+    }
+
+    public static IEnumerable<Spell> GetSpells(this IDocument document)
+    {
+        var spellElement = (IHtmlElement?)document.QuerySelector(".info");
+        var openBefore = spellElement?.GetAttribute("data-isopen");
+        spellElement?.DoClick();
+        var openAfter = spellElement?.GetAttribute("data-isopen");
+
+        return [];
     }
 }
