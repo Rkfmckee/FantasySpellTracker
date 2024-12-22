@@ -12,7 +12,7 @@ builder.Services.AddDbContext<FstDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
-builder.Services.AddScoped<IFstDbContext>(provider => provider.GetService<FstDbContext>() ?? throw new Exception("No dbContext configured"));
+builder.Services.AddScoped<IFstDbContext>(provider => provider.GetService<FstDbContext>() ?? throw new Exception("No DbContext configured"));
 
 var app = builder.Build();
 

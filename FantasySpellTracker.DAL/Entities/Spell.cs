@@ -29,5 +29,5 @@ public class Spell : Entity
     public bool IsRitual { get; set; }
 
     public int SourcebookId { get; set; }
-    public required Sourcebook Sourcebook { get; set; }
+    public required Source Sourcebook { get; set; }
 }

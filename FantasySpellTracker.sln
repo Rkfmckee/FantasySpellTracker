@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FantasySpellTracker.Service
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FantasySpellTracker.Shared", "FantasySpellTracker.Shared\FantasySpellTracker.Shared.csproj", "{00AE3589-4036-4E3D-A5DB-BCD519197812}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Jobs", "Jobs", "{4F6CF7FD-EAB9-414D-8AC8-6CE25087280D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FantasySpellTracker.Jobs.Scraper", "FantasySpellTracker.Jobs.Scraper\FantasySpellTracker.Jobs.Scraper.csproj", "{AC26759B-794E-4628-99B7-BADD2B7CC65F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,8 +37,15 @@ Global
 		{00AE3589-4036-4E3D-A5DB-BCD519197812}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00AE3589-4036-4E3D-A5DB-BCD519197812}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00AE3589-4036-4E3D-A5DB-BCD519197812}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC26759B-794E-4628-99B7-BADD2B7CC65F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC26759B-794E-4628-99B7-BADD2B7CC65F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC26759B-794E-4628-99B7-BADD2B7CC65F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC26759B-794E-4628-99B7-BADD2B7CC65F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{AC26759B-794E-4628-99B7-BADD2B7CC65F} = {4F6CF7FD-EAB9-414D-8AC8-6CE25087280D}
 	EndGlobalSection
 EndGlobal

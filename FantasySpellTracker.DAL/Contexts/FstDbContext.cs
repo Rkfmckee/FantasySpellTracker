@@ -21,9 +21,9 @@ public class FstDbContext(DbContextOptions options) : DbContext(options), IFstDb
         Set<T>().AddRange(items);
     }
 
-    public void AddAsync<T>(params T[] items) where T : class
+    public Task AddAsync<T>(params T[] items) where T : class
     {
-        Set<T>().AddRangeAsync(items);
+        return Set<T>().AddRangeAsync(items);
     }
 
     public void Delete<T>(params T[] items) where T : class
@@ -31,6 +31,6 @@ public class FstDbContext(DbContextOptions options) : DbContext(options), IFstDb
         Set<T>().RemoveRange(items);
     }
 
-    public DbSet<Sourcebook> Sourcebooks { get; set; }
+    public DbSet<Source> Sources { get; set; }
     public DbSet<Spell> Spells { get; set; }
 }

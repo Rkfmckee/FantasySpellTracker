@@ -22,7 +22,7 @@ namespace FantasySpellTracker.DAL.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("FantasySpellTracker.DAL.Entities.Sourcebook", b =>
+            modelBuilder.Entity("FantasySpellTracker.DAL.Entities.Source", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -33,13 +33,16 @@ namespace FantasySpellTracker.DAL.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Sourcebooks");
+                    b.ToTable("Sources");
                 });
 
             modelBuilder.Entity("FantasySpellTracker.DAL.Entities.Spell", b =>
@@ -117,7 +120,7 @@ namespace FantasySpellTracker.DAL.Migrations
 
             modelBuilder.Entity("FantasySpellTracker.DAL.Entities.Spell", b =>
                 {
-                    b.HasOne("FantasySpellTracker.DAL.Entities.Sourcebook", "Sourcebook")
+                    b.HasOne("FantasySpellTracker.DAL.Entities.Source", "Sourcebook")
                         .WithMany("Spells")
                         .HasForeignKey("SourcebookId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -126,7 +129,7 @@ namespace FantasySpellTracker.DAL.Migrations
                     b.Navigation("Sourcebook");
                 });
 
-            modelBuilder.Entity("FantasySpellTracker.DAL.Entities.Sourcebook", b =>
+            modelBuilder.Entity("FantasySpellTracker.DAL.Entities.Source", b =>
                 {
                     b.Navigation("Spells");
                 });
