@@ -35,8 +35,8 @@ public class Spell : Entity
 
     #region Relationships
 
-    public int SourceId { get; set; }
-    public required Source Source { get; set; }
+    public int? SourceId { get; set; }
+    public Source? Source { get; set; }
 
     #endregion
 }

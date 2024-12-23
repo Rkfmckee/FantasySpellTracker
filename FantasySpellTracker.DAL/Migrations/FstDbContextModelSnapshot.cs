@@ -120,7 +120,7 @@ namespace FantasySpellTracker.DAL.Migrations
                     b.Property<int>("School")
                         .HasColumnType("int");
 
-                    b.Property<int>("SourceId")
+                    b.Property<int?>("SourceId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -134,9 +134,7 @@ namespace FantasySpellTracker.DAL.Migrations
                 {
                     b.HasOne("FantasySpellTracker.DAL.Entities.Source", "Source")
                         .WithMany("Spells")
-                        .HasForeignKey("SourceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SourceId");
 
                     b.Navigation("Source");
                 });
