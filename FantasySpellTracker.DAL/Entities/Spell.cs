@@ -23,7 +23,6 @@ public class Spell : Entity
     public DamageType? DamageTypes { get; set; }
     public Condition? Conditions { get; set; }
     public SpellComponent? Components { get; set; }
-    public string? MaterialComponent { get; set; }
 
     public bool IsConcentration { get; set; }
     public bool IsRitual { get; set; }
