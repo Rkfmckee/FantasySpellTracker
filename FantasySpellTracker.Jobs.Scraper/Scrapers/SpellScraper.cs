@@ -15,7 +15,19 @@ public class SpellScraper(IFstDataDbContext dataDbContext) : Scraper
     private const string atHigherLevels = "At Higher Levels.";
     private const string spellLists = "Spell Lists.";
 
-    private string[] spellsToSkip = ["Spray of Cards (UA)"];
+    private string[] replaceInName = ["(UA)"];
+    private string[] spellsToSkip =
+    [
+        "Spray of Cards (UA)",
+        "Nathair's Mischief (UA)",
+        "Antagonize",
+        "Protection from Ballistics (UA",
+        "Raulothim's Psychic Lance (UA)",
+        "Spirit of Death (UA)",
+        "Summon Draconic Spirit (UA)",
+        "Fizban's Platinum Shield (UA)",
+        "Draconic Transformation (UA)"
+    ];
 
     public override async Task ScrapeAsync()
     {
@@ -50,7 +62,7 @@ public class SpellScraper(IFstDataDbContext dataDbContext) : Scraper
         var name = document.QuerySelector(".page-title")?.QuerySelector("span")?.TextContent ?? "";
         if (spellsToSkip.Contains(name)) return null;
 
-        var spell = new Spell { Name = name };
+        var spell = new Spell { Name = RemoveUnwantedTagsFromName(name) };
 
         var detailsSections = document.QuerySelector("#page-content")?.QuerySelectorAll("p");
         if (detailsSections == null || detailsSections.Length < 5) return spell;
@@ -65,6 +77,16 @@ public class SpellScraper(IFstDataDbContext dataDbContext) : Scraper
         return spell;
     }
 
+    private string RemoveUnwantedTagsFromName(string name)
+    {
+        foreach (var tag in replaceInName)
+        {
+            name = name.Replace(tag, "");
+        }
+
+        return name.Trim();
+    }
+
     private async Task GetSourceAsync(IHtmlCollection<IElement> detailsSections, Spell spell)
     {
         var sourceDescriptionSection = GetSection(detailsSections, source);
@@ -72,7 +94,7 @@ public class SpellScraper(IFstDataDbContext dataDbContext) : Scraper
 
         var unearthedArcana = "Unearthed Arcana";
         var sourceText = sourceDescriptionSection.TextContent.Replace(source, "").Replace("'", "’").Trim();
-        var sources = await dataDbContext.Get<Source>().Select(s => Tuple.Create(s.Id, s.Title)).ToArrayAsync();
+        var sources = await dataDbContext.Get<Source>().Select(s => Tuple.Create<int?, string>(s.Id, s.Title)).ToArrayAsync();
 
         var sourceName = sourceText.Contains(unearthedArcana) ? unearthedArcana : sourceText;
         spell.SourceId = sources.Where(s => s.Item2.Contains(sourceName)).Select(s => s.Item1).FirstOrDefault();
@@ -111,7 +133,7 @@ public class SpellScraper(IFstDataDbContext dataDbContext) : Scraper
         var rangeAndDescription = sections[1].WithoutBoldHtml().Split(" (");
         var rangeValueAndType = rangeAndDescription[0].WithoutBoldHtml().Split(' ');
         var hasValue = rangeValueAndType.Length > 1;
-        spell.RangeValue = hasValue ? int.Parse(rangeValueAndType[0]) : 0;
+        spell.RangeValue = hasValue ? int.Parse(rangeValueAndType[0].Replace(",", "")) : 0;
         spell.RangeType = EnumHelpers.GetEnumByDisplayName<SpellRangeType>(rangeValueAndType[hasValue ? 1 : 0]);
         spell.RangeDescription = rangeAndDescription.Length > 1 ? rangeAndDescription[1].Trim(')').Replace('-', ' ') : null;
 
