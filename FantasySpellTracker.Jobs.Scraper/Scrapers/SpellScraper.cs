@@ -24,15 +24,17 @@ public class SpellScraper(IFstDbContext dbContext) : Scraper
         {
             if (string.IsNullOrWhiteSpace(spellLink)) continue;
 
-            //var spellDocument = await GetDocumentAsync("spell:absorb-elements");
-            //var spellDocument = await GetDocumentAsync("spell:revivify");
-            var spellDocument = await GetDocumentAsync("spell:flaming-sphere");
-            //var spellDocument = await GetDocumentAsync("spell:feign-death");
-            //var spellDocument = await GetDocumentAsync(spellLink);
+            var spellDocument = await GetDocumentAsync(spellLink);
             if (spellDocument == null) continue;
 
             var spell = GetSpellDetails(spellDocument);
+            if (spell == null) continue;
+
+            Console.WriteLine($"Found spell: {spell.Name}");
+            await dbContext.AddAsync(spell);
         }
+
+        await dbContext.SaveChangesAsync();
     }
 
     protected override Task<IDocument> GetDocumentAsync(string url)
@@ -86,10 +88,12 @@ public class SpellScraper(IFstDbContext dbContext) : Scraper
         spell.CastingTime = EnumHelpers.GetEnumByDisplayName<CastingTime>(castingTimeSections[0]);
         spell.CastingTimeDescription = hasDescription ? castingTimeSections[1] : null;
 
-        var rangeValueAndType = sections[1].WithoutBoldHtml().Split(' ');
+        var rangeAndDescription = sections[1].WithoutBoldHtml().Split(" (");
+        var rangeValueAndType = rangeAndDescription[0].WithoutBoldHtml().Split(' ');
         var hasValue = rangeValueAndType.Length > 1;
         spell.RangeValue = hasValue ? int.Parse(rangeValueAndType[0]) : 0;
         spell.RangeType = EnumHelpers.GetEnumByDisplayName<SpellRangeType>(rangeValueAndType[hasValue ? 1 : 0]);
+        spell.RangeDescription = rangeAndDescription.Length > 1 ? rangeAndDescription[1].Trim(')').Replace('-', ' ') : null;
 
         var componentsAndDescription = sections[2].WithoutBoldHtml().Split(" (");
         var componentsParts = componentsAndDescription[0].Split(", ");

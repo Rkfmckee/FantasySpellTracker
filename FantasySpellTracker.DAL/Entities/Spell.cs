@@ -9,10 +9,12 @@ public class Spell : Entity
     public SpellLevel Level { get; set; }
     public SpellSchool School { get; set; }
     public CastingTime CastingTime { get; set; }
+    public string? CastingTimeDescription { get; set; }
     public SpellDuration Duration { get; set; }
 
     public int RangeValue { get; set; }
     public SpellRangeType RangeType { get; set; }
+    public string? RangeDescription { get; set; }
 
     public int? AreaValue { get; set; }
     public SpellAreaType? AreaType { get; set; }
@@ -23,14 +25,13 @@ public class Spell : Entity
     public DamageType? DamageTypes { get; set; }
     public Condition? Conditions { get; set; }
     public SpellComponent? Components { get; set; }
+    public string? ComponentsDescription { get; set; }
 
     public bool IsConcentration { get; set; }
     public bool IsRitual { get; set; }
 
     public string? Description { get; set; }
     public string? HigherLevelDescription { get; set; }
-    public string? CastingTimeDescription { get; set; }
-    public string? ComponentsDescription { get; set; }
 
     #region Relationships
 

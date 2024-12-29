@@ -101,11 +101,11 @@ namespace FantasySpellTracker.DAL.Migrations
                     b.Property<int>("Level")
                         .HasColumnType("int");
 
-                    b.Property<string>("MaterialComponent")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RangeDescription")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("RangeType")
