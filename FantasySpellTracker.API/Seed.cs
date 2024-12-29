@@ -7,6 +7,7 @@ public static class Seed
 {
     private static IServiceScope? serviceScope;
     private static IFstDataDbContext? dataDbContext;
+    private static IFstAppDbContext? appDbContext;
 
     private const string defaultPassword = "Pa$$w0rd";
 
@@ -14,11 +15,14 @@ public static class Seed
     {
         using (serviceScope = app.Services.CreateScope())
         {
-            var dbContext = serviceScope.ServiceProvider.GetRequiredService<IFstDataDbContext>();
+            var dataDbContext = serviceScope.ServiceProvider.GetRequiredService<IFstDataDbContext>();
+            var appDbContext = serviceScope.ServiceProvider.GetRequiredService<IFstAppDbContext>();
 
-            dbContext.Database.EnsureCreated();
+            dataDbContext.Database.EnsureCreated();
+            appDbContext.Database.EnsureCreated();
 
-            dbContext.SaveChanges();
+            dataDbContext.SaveChanges();
+            appDbContext.SaveChanges();
         }
 
         return app;

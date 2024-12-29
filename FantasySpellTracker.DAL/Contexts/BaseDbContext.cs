@@ -3,7 +3,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FantasySpellTracker.DAL.Contexts;
 
-public class BaseDbContext(DbContextOptions options) : DbContext(options), IFstDbContext
+public class BaseDbContext<TContext>(DbContextOptions<TContext> options) : DbContext(options), IFstDbContext
+    where TContext : DbContext
 {
     public IQueryable<T> Get<T>() where T : class
     {
