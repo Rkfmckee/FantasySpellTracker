@@ -1,7 +1,7 @@
 ﻿using FantasySpellTracker.Jobs.Scraper.Helpers;
 using FantasySpellTracker.Jobs.Scraper.Scrapers;
 
-var dbContext = DatabaseHelper.DbContext;
+var dbContext = DatabaseHelper.DataDbContext;
 
 Console.WriteLine("What data do you want to scrape?");
 Console.WriteLine("---------------------------------");

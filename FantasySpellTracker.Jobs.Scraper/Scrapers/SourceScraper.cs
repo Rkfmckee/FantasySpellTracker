@@ -5,7 +5,7 @@ using FantasySpellTracker.Shared.Enums;
 
 namespace FantasySpellTracker.Jobs.Scraper.Scrapers;
 
-public class SourceScraper(IFstDbContext dbContext) : Scraper
+public class SourceScraper(IFstDataDbContext dataDbContext) : Scraper
 {
     public override async Task ScrapeAsync()
     {
@@ -15,11 +15,11 @@ public class SourceScraper(IFstDbContext dbContext) : Scraper
         var adventures = GetSources(document, "Adventures", SourceType.Adventure)?.ToArray();
         var partnered = GetSources(document, "PartneredContent", SourceType.Partnered)?.ToArray();
 
-        if (sourceBooks?.Length > 0) await dbContext.AddAsync(sourceBooks);
-        if (adventures?.Length > 0) await dbContext.AddAsync(adventures);
-        if (partnered?.Length > 0) await dbContext.AddAsync(partnered);
+        if (sourceBooks?.Length > 0) await dataDbContext.AddAsync(sourceBooks);
+        if (adventures?.Length > 0) await dataDbContext.AddAsync(adventures);
+        if (partnered?.Length > 0) await dataDbContext.AddAsync(partnered);
 
-        await dbContext.SaveChangesAsync();
+        await dataDbContext.SaveChangesAsync();
     }
 
     private IEnumerable<Source>? GetSources(IDocument document, string groupElementId, SourceType type)
@@ -39,13 +39,17 @@ public class SourceScraper(IFstDbContext dbContext) : Scraper
                 extraSpan.Remove();
             }
 
+            var title = sourceElement.TextContent.Trim();
+            if (title.Contains("(2024)")) continue;
+            if (title.Contains("(2014)")) title = title.Replace(" (2014)", "");
+
             var source = new Source
             {
-                Title = sourceElement.TextContent.Trim(),
+                Title = title,
                 Type = type
             };
-            sources.Add(source);
 
+            sources.Add(source);
             Console.WriteLine(source.Title);
         }
 

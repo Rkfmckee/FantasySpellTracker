@@ -9,17 +9,17 @@ namespace FantasySpellTracker.Jobs.Scraper.Helpers;
 
 public static class DatabaseHelper
 {
-    public static IFstDbContext DbContext => SetupDbContext();
+    public static IFstDataDbContext DataDbContext => SetupDbContext();
 
-    private static IFstDbContext SetupDbContext()
+    private static IFstDataDbContext SetupDbContext()
     {
         var apiDirectory = $"{DirectoryHelpers.GetSolutionDirectory()}/FantasySpellTracker.API";
         var config = new ConfigurationBuilder().SetBasePath(apiDirectory).AddJsonFile("appsettings.json", optional: false).Build();
         var services = new ServiceCollection();
 
-        services.AddDbContext<FstDbContext>(options => { options.UseSqlServer(config.GetConnectionString("DefaultConnection")); });
-        services.AddScoped<IFstDbContext>(provider => provider.GetService<FstDbContext>() ?? throw new Exception("No DbContext configured"));
+        services.AddDbContext<FstDataDbContext>(options => { options.UseSqlServer(config.GetConnectionString("DataConnection")); });
+        services.AddScoped<IFstDataDbContext>(provider => provider.GetService<FstDataDbContext>() ?? throw new Exception("No Data DbContext configured"));
 
-        return services.BuildServiceProvider().GetService<IFstDbContext>() ?? throw new Exception("Couldn't create DbContext");
+        return services.BuildServiceProvider().GetService<IFstDataDbContext>() ?? throw new Exception("Couldn't create Data DbContext");
     }
 }

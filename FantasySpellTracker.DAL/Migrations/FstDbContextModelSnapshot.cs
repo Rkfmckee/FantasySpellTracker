@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FantasySpellTracker.DAL.Migrations
 {
-    [DbContext(typeof(FstDbContext))]
+    [DbContext(typeof(FstDataDbContext))]
     partial class FstDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

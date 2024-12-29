@@ -4,15 +4,18 @@ using FantasySpellTracker.DAL.Interfaces;
 using FantasySpellTracker.Shared.Enums.Spell;
 using FantasySpellTracker.Shared.Extensions;
 using FantasySpellTracker.Shared.Helpers;
+using Microsoft.EntityFrameworkCore;
 
 namespace FantasySpellTracker.Jobs.Scraper.Scrapers;
 
-public class SpellScraper(IFstDbContext dbContext) : Scraper
+public class SpellScraper(IFstDataDbContext dataDbContext) : Scraper
 {
     private const string source = "Source:";
     private const string castingTime = "Casting Time:";
     private const string atHigherLevels = "At Higher Levels.";
     private const string spellLists = "Spell Lists.";
+
+    private string[] spellsToSkip = ["Spray of Cards (UA)"];
 
     public override async Task ScrapeAsync()
     {
@@ -27,14 +30,14 @@ public class SpellScraper(IFstDbContext dbContext) : Scraper
             var spellDocument = await GetDocumentAsync(spellLink);
             if (spellDocument == null) continue;
 
-            var spell = GetSpellDetails(spellDocument);
+            var spell = await GetSpellDetailsAsync(spellDocument);
             if (spell == null) continue;
 
             Console.WriteLine($"Found spell: {spell.Name}");
-            await dbContext.AddAsync(spell);
+            await dataDbContext.AddAsync(spell);
         }
 
-        await dbContext.SaveChangesAsync();
+        await dataDbContext.SaveChangesAsync();
     }
 
     protected override Task<IDocument> GetDocumentAsync(string url)
@@ -42,13 +45,17 @@ public class SpellScraper(IFstDbContext dbContext) : Scraper
         return base.GetDocumentAsync($"https://dnd5e.wikidot.com/{url}");
     }
 
-    private Spell? GetSpellDetails(IDocument document)
+    private async Task<Spell?> GetSpellDetailsAsync(IDocument document)
     {
         var name = document.QuerySelector(".page-title")?.QuerySelector("span")?.TextContent ?? "";
+        if (spellsToSkip.Contains(name)) return null;
+
         var spell = new Spell { Name = name };
 
         var detailsSections = document.QuerySelector("#page-content")?.QuerySelectorAll("p");
         if (detailsSections == null || detailsSections.Length < 5) return spell;
+
+        await GetSourceAsync(detailsSections, spell);
 
         GetSpellLevelAndSchool(detailsSections, spell);
         GetSpellLimits(detailsSections, spell);
@@ -56,6 +63,19 @@ public class SpellScraper(IFstDbContext dbContext) : Scraper
         GetHigherLevelDescription(detailsSections, spell);
 
         return spell;
+    }
+
+    private async Task GetSourceAsync(IHtmlCollection<IElement> detailsSections, Spell spell)
+    {
+        var sourceDescriptionSection = GetSection(detailsSections, source);
+        if (sourceDescriptionSection == null) return;
+
+        var unearthedArcana = "Unearthed Arcana";
+        var sourceText = sourceDescriptionSection.TextContent.Replace(source, "").Replace("'", "’").Trim();
+        var sources = await dataDbContext.Get<Source>().Select(s => Tuple.Create(s.Id, s.Title)).ToArrayAsync();
+
+        var sourceName = sourceText.Contains(unearthedArcana) ? unearthedArcana : sourceText;
+        spell.SourceId = sources.Where(s => s.Item2.Contains(sourceName)).Select(s => s.Item1).FirstOrDefault();
     }
 
     private void GetSpellLevelAndSchool(IHtmlCollection<IElement> detailsSections, Spell spell)

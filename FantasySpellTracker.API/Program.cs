@@ -8,12 +8,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
-builder.Services.AddDbContext<FstDbContext>(options =>
+builder.Services.AddDbContext<FstDataDbContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DataConnection"));
 });
 
-builder.Services.AddScoped<IFstDbContext>(provider => provider.GetService<FstDbContext>() ?? throw new Exception("No DbContext configured"));
+builder.Services.AddScoped<IFstDataDbContext>(provider => provider.GetService<FstDataDbContext>() ?? throw new Exception("No Data DbContext configured"));
 
 var app = builder.Build();
 
