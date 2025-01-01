@@ -1,6 +1,9 @@
 using FantasySpellTracker.API;
 using FantasySpellTracker.DAL.Contexts;
 using FantasySpellTracker.DAL.Interfaces;
+using FantasySpellTracker.Services.Interfaces;
+using FantasySpellTracker.Services.MappingProfiles;
+using FantasySpellTracker.Services.Services;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
@@ -14,6 +17,10 @@ builder.Services.AddScoped<IFstDataDbContext>(provider => provider.GetService<Fs
 
 builder.Services.AddDbContext<FstAppDbContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("AppConnection")));
 builder.Services.AddScoped<IFstAppDbContext>(provider => provider.GetService<FstAppDbContext>() ?? throw new Exception("No App DbContext configured"));
+
+builder.Services.AddAutoMapper(typeof(Program), typeof(SpellProfile));
+
+builder.Services.AddScoped<ISpellService, SpellService>();
 
 var app = builder.Build();
 
