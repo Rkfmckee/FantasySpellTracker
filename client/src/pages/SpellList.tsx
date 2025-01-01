@@ -4,13 +4,8 @@ import { SpellsSchema } from "../helpers/Schemas";
 import SpellCard from "../components/SpellCard";
 
 export default function SpellList() {
-    const spellsJson = [
-        {
-            name: "spell 1",
-        },
-    ];
-
-    const spells = SpellsSchema.parse(spellsJson);
+    const spells = fetch("http://localhost:5160/api/Spell/Read​");
+    //const spells = SpellsSchema.parse(spellsJson);
 
     return (
         <>
