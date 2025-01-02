@@ -2,7 +2,7 @@
 
 namespace FantasySpellTracker.Shared.Enums.Spell;
 
-public enum CastingTime
+public enum SpellCastingTime
 {
     [Display(Name = "1 action")]
     Action,

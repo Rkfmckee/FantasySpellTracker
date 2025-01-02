@@ -8,7 +8,7 @@ public class Spell : Entity
     public required string Name { get; set; }
     public SpellLevel Level { get; set; }
     public SpellSchool School { get; set; }
-    public CastingTime CastingTime { get; set; }
+    public SpellCastingTime CastingTime { get; set; }
     public string? CastingTimeDescription { get; set; }
     public SpellDuration Duration { get; set; }
 

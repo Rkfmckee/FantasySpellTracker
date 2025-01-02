@@ -10,7 +10,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import TablePaginationFooter from "../../components/table/TablePaginationFooter";
 import { ReadResponse } from "../../schemas/ReadResponseSchema";
-import { Spell } from "../../schemas/SpellSchema";
+import { Spell } from "../../schemas/spell/SpellSchema";
 import SpellRow from "./SpellRow";
 
 export default function SpellList() {
@@ -21,7 +21,7 @@ export default function SpellList() {
 
     useEffect(() => {
         axios
-            .post<ReadResponse>("Spell/Read", {
+            .post<ReadResponse<Spell>>("Spell/Read", {
                 // TS uses 0 for first page, backend uses 1
                 // So increment to match the backend before posting
                 pageNumber: page + 1,
@@ -42,8 +42,12 @@ export default function SpellList() {
                 <Table>
                     <TableHead>
                         <TableRow>
+                            <TableCell width="12%">School/Level</TableCell>
                             <TableCell>Name</TableCell>
-                            <TableCell width="20%">Id</TableCell>
+                            <TableCell width="10%">Casting time</TableCell>
+                            <TableCell width="10%">Duration</TableCell>
+                            <TableCell width="10%">Range</TableCell>
+                            <TableCell width="10%">Components</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>

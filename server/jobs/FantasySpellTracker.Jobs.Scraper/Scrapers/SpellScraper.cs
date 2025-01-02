@@ -127,7 +127,7 @@ public class SpellScraper(IFstDataDbContext dataDbContext) : Scraper
 
         var castingTimeSections = sections[0].WithoutBoldHtml().Split(", ", 2);
         var hasDescription = castingTimeSections.Length > 1;
-        spell.CastingTime = EnumHelpers.GetEnumByDisplayName<CastingTime>(castingTimeSections[0]);
+        spell.CastingTime = EnumHelpers.GetEnumByDisplayName<SpellCastingTime>(castingTimeSections[0]);
         spell.CastingTimeDescription = hasDescription ? castingTimeSections[1] : null;
 
         var rangeAndDescription = sections[1].WithoutBoldHtml().Split(" (");
