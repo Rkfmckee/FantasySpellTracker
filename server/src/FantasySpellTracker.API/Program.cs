@@ -1,9 +1,12 @@
 using FantasySpellTracker.API;
+using FantasySpellTracker.API.ViewModels.Read;
 using FantasySpellTracker.DAL.Contexts;
 using FantasySpellTracker.DAL.Interfaces;
 using FantasySpellTracker.Services.Interfaces;
 using FantasySpellTracker.Services.MappingProfiles;
 using FantasySpellTracker.Services.Services;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
@@ -21,6 +24,9 @@ builder.Services.AddScoped<IFstAppDbContext>(provider => provider.GetService<Fst
 
 builder.Services.AddAutoMapper(typeof(Program), typeof(SpellProfile));
 
+builder.Services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
+builder.Services.AddValidatorsFromAssemblyContaining<ReadRequestValidator>();
+
 builder.Services.AddScoped<ISpellService, SpellService>();
 
 var app = builder.Build();
@@ -35,8 +41,8 @@ if (app.Environment.IsDevelopment())
 app.UseCors(options =>
 {
     options.AllowAnyHeader()
-           .AllowAnyMethod()
-           .AllowAnyOrigin();
+        .AllowAnyMethod()
+        .AllowAnyOrigin();
 });
 
 app.UseHttpsRedirection();

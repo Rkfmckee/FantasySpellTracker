@@ -16,8 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FantasySpellTracker.DAL\FantasySpellTracker.DAL.csproj" />
-    <ProjectReference Include="..\FantasySpellTracker.Shared\FantasySpellTracker.Shared.csproj" />
+    <ProjectReference Include="..\..\src\FantasySpellTracker.DAL\FantasySpellTracker.DAL.csproj" />
+    <ProjectReference Include="..\..\src\FantasySpellTracker.Shared\FantasySpellTracker.Shared.csproj" />
   </ItemGroup>
 
 </Project>

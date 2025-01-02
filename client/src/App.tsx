@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Layout from "./layout/Layout";
 import NotFound from "./pages/status/NotFound";
-import SpellList from "./pages/SpellList";
+import SpellList from "./pages/spellList/SpellList";
 import "./App.css";
 
 export default function App() {
