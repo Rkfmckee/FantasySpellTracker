@@ -14,6 +14,7 @@ import {
 import { SpellRangeType } from "../../schemas/spell/SpellRangeTypeSchema";
 import { Spell } from "../../schemas/spell/SpellSchema";
 import { SpellSchool } from "../../schemas/spell/SpellSchoolSchema";
+import { ToLinebreak } from "../../helpers/StringHelpers";
 
 interface RowProps {
     spell: Spell;
@@ -48,7 +49,7 @@ export default function ItemRow({ spell }: RowProps) {
                 >
                     <Collapse in={open} timeout="auto" unmountOnExit>
                         <Box sx={{ margin: 1 }}>
-                            <p>Spell desc</p>
+                            {ToLinebreak(spell.description)}
                         </Box>
                     </Collapse>
                 </TableCell>

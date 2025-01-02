@@ -16,6 +16,11 @@ export const SpellSchema = z.object({
     rangeValue: z.number(),
     rangeType: SpellRangeTypeSchema,
     components: SpellComponentsSchema,
+    description: z.string(),
+    higherLevelDescription: z.optional(z.string()),
+    castingTimeDescription: z.optional(z.string()),
+    rangeDescription: z.optional(z.string()),
+    componentsDescription: z.optional(z.string()),
 });
 export const SpellsSchema = z.array(SpellSchema);
 export type Spell = z.infer<typeof SpellSchema>;
