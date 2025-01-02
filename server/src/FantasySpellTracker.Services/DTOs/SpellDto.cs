@@ -4,6 +4,7 @@ namespace FantasySpellTracker.Services.DTOs;
 
 public class SpellDto
 {
+    public int Id { get; set;}
     public string? Name { get; set; }
     public SpellLevel Level { get; set; }
     public SpellSchool School { get; set; }

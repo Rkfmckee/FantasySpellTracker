@@ -4,6 +4,7 @@ namespace FantasySpellTracker.API.ViewModels;
 
 public class SpellViewModel
 {
+    public int Id { get; set;}
     public string? Name { get; set; }
     public SpellLevel Level { get; set; }
     public SpellSchool School { get; set; }
