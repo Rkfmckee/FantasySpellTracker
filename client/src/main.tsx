@@ -7,6 +7,9 @@ import "@fontsource/roboto/700.css";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
+import InitializeAxios from "./config/AxiosConfig.tsx";
+
+InitializeAxios();
 
 createRoot(document.getElementById("root")!).render(
     <StrictMode>

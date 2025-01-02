@@ -3,13 +3,14 @@ import Typography from "@mui/material/Typography";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import SpellCard from "../components/SpellCard";
-import { ReadResponseSchema, Spell } from "../helpers/Schemas";
+import { Spell } from "../schemas/SpellSchema";
+import { ReadResponseSchema } from "../schemas/ReadResponseSchema";
 
 export default function SpellList() {
     const [spells, setSpells] = useState<Spell[]>();
 
     useEffect(() => {
-        const url = "http://localhost:5160/api/Spell/Read";
+        const url = "Spell/Read";
 
         axios
             .post(url, {
@@ -19,7 +20,6 @@ export default function SpellList() {
             .then((response) => {
                 const readResponse = ReadResponseSchema.parse(response.data);
                 setSpells(readResponse.currentPageData);
-                console.log(response.data);
             });
     }, []);
 

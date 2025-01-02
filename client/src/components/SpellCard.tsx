@@ -1,7 +1,7 @@
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import { Spell } from "../helpers/Schemas";
+import { Spell } from "../schemas/SpellSchema";
 
 interface SpellCardProps {
     spell: Spell;
