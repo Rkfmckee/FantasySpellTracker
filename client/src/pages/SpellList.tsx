@@ -14,11 +14,11 @@ export default function SpellList() {
             </Typography>
 
             <Grid container spacing={2}>
-                {spells.map((spell) => (
+                {/* {spells.map((spell) => (
                     <Grid key={`spell-${spell.name}`} size={4}>
                         <SpellCard spell={spell} />
                     </Grid>
-                ))}
+                ))} */}
             </Grid>
         </>
     );

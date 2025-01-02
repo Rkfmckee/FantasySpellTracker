@@ -5,8 +5,9 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Navlink from "./Navlink";
 import { Link } from "react-router-dom";
+import ThemeSelector, { ThemeProps } from "../ThemeSelector";
 
-export default function Navbar() {
+export default function Navbar({ mode, setMode }: ThemeProps) {
     return (
         <AppBar position="static" className="mb-4">
             <Container maxWidth="xl">
@@ -28,9 +29,10 @@ export default function Navbar() {
                             marginTop: "0.25em",
                         }}
                     >
-                        <Navlink to="items" />
                         <Navlink to="about" />
                     </Box>
+
+                    <ThemeSelector mode={mode} setMode={setMode} />
                 </Toolbar>
             </Container>
         </AppBar>
