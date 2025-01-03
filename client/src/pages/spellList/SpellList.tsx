@@ -22,7 +22,7 @@ export default function SpellList() {
     useEffect(() => {
         axios
             .post<ReadResponse<Spell>>("Spell/Read", {
-                // TS uses 0 for first page, backend uses 1
+                // Frontend uses 0 for first page, backend uses 1
                 // So increment to match the backend before posting
                 pageNumber: page + 1,
                 pageSize: rowsPerPage,

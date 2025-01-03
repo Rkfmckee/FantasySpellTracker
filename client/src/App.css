@@ -2,3 +2,56 @@
 .MuiTablePagination-displayedRows {
     margin: 0;
 }
+
+/* Spell list styles */
+.has-description:after {
+    content: " *";
+    color: var(--mui-palette-text-primary);
+}
+
+.has-description__casting-time:after {
+    color: blueviolet;
+}
+
+.has-description__range:after {
+    color: green;
+}
+
+.has-description__component:after {
+    color: darkorange;
+}
+
+.description-box {
+    padding-top: 0.75rem;
+    margin-top: 1rem;
+    position: relative;
+}
+
+.description-box label {
+    color: var(--mui-palette-text-primary);
+    font-style: italic;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    position: absolute;
+    pointer-events: none;
+    top: -0.5rem;
+    padding: 0.1rem 0;
+}
+
+.description-box__casting-time label:before,
+.description-box__range label:before,
+.description-box__components label:before {
+    content: "* ";
+}
+
+.description-box__casting-time label {
+    color: blueviolet;
+}
+
+.description-box__range label {
+    color: green;
+}
+
+.description-box__components label {
+    color: darkorange;
+}

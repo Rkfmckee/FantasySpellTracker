@@ -26,6 +26,7 @@ export default function Layout() {
                 main: "#FFFFFF",
             },
         },
+        cssVariables: true,
     });
 
     return (

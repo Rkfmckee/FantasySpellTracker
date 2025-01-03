@@ -9,7 +9,7 @@ import ThemeSelector, { ThemeProps } from "../ThemeSelector";
 
 export default function Navbar({ mode, setMode }: ThemeProps) {
     return (
-        <AppBar position="static" className="mb-4">
+        <AppBar position="static" className="navbar mb-4">
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                     <Link to="/" className="nav-link">
