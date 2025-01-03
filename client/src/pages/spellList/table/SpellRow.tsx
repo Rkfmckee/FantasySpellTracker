@@ -3,19 +3,18 @@ import Button from "@mui/material/Button";
 import Collapse from "@mui/material/Collapse";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
-import parse from "html-react-parser";
 import { useState } from "react";
 import { ToLinebreak } from "../../../helpers/StringHelpers";
 import { GetSpellCastingTimeName } from "../../../schemas/spell/SpellCastingTimeSchema";
 import { GetSpellComponentsName } from "../../../schemas/spell/SpellComponentSchema";
 import { GetSpellDurationName } from "../../../schemas/spell/SpellDurationSchema";
-import {
-    GetSpellLevelName,
-    SpellLevel,
-} from "../../../schemas/spell/SpellLevelSchema";
-import { SpellRangeType } from "../../../schemas/spell/SpellRangeTypeSchema";
 import { Spell } from "../../../schemas/spell/SpellSchema";
-import { SpellSchool } from "../../../schemas/spell/SpellSchoolSchema";
+import {
+    GetDescriptionBox,
+    GetLevelAndSchoolDescription,
+    GetRangeDescription,
+    HasDescriptionClass,
+} from "../../../helpers/SpellHelpers";
 
 interface RowProps {
     spell: Spell;
@@ -53,7 +52,7 @@ export default function ItemRow({ spell }: RowProps) {
                 </TableCell>
                 <TableCell
                     className={HasDescriptionClass(
-                        "component",
+                        "components",
                         spell.componentsDescription
                     )}
                 >
@@ -93,49 +92,4 @@ export default function ItemRow({ spell }: RowProps) {
             </TableRow>
         </>
     );
-}
-
-function GetLevelAndSchoolDescription(spell: Spell) {
-    var school = SpellSchool[spell.school];
-    var level = GetSpellLevelName(spell.level);
-
-    if (spell.level == SpellLevel.Cantrip) {
-        return `${school} ${level}`;
-    } else {
-        return `${level} level ${school}`;
-    }
-}
-
-function GetRangeDescription(spell: Spell) {
-    var rangeType = SpellRangeType[spell.rangeType];
-
-    if (spell.rangeValue == 0) {
-        return rangeType;
-    } else {
-        return `${spell.rangeValue} ${rangeType}`;
-    }
-}
-
-function HasDescriptionClass(
-    descriptionType: string,
-    description: string | undefined
-) {
-    if (description)
-        return `has-description has-description__${descriptionType}`;
-}
-
-function GetDescriptionBox(text: string | undefined, name: string = "") {
-    if (text) {
-        return (
-            <div
-                className={`description-box ${
-                    name &&
-                    `description-box__${name.toLowerCase().replace(" ", "-")}`
-                } col-md-auto`}
-            >
-                <label>{name ? name : "At higher levels"}</label>
-                {parse(text)}
-            </div>
-        );
-    }
 }

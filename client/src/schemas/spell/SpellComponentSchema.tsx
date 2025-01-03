@@ -20,12 +20,12 @@ export function GetSpellComponentsName(components: SpellComponents) {
         case SpellComponents.Material:
             return "M";
         case SpellComponents.Verbal | SpellComponents.Somatic:
-            return "VS";
+            return "V S";
         case SpellComponents.Verbal | SpellComponents.Material:
-            return "VM";
+            return "V M";
         case SpellComponents.Somatic | SpellComponents.Material:
-            return "SM";
+            return "S M";
         case SpellComponents.All:
-            return "VSM";
+            return "V S M";
     }
 }

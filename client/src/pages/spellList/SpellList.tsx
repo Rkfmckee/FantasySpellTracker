@@ -10,7 +10,7 @@ import { Laptop, PhoneAndroid } from "@mui/icons-material";
 import SpellCards from "./cards/SpellCards";
 
 export default function SpellList() {
-    const [page, setPage] = useState<number>(0);
+    const [page, setPage] = useState<number>(5);
     const [rowsPerPage, setRowsPerPage] = useState<number>(10);
     const [totalRecords, setTotalRecords] = useState(0);
     const [spells, setSpells] = useState<Spell[]>();

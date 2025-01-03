@@ -3,6 +3,7 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { Spell } from "../../../schemas/spell/SpellSchema";
 import SpellCard from "./SpellCard";
+import Masonry from "@mui/lab/Masonry";
 
 interface SpellCardsProps {
     spells: Spell[] | undefined;
@@ -10,13 +11,11 @@ interface SpellCardsProps {
 
 export default function SpellCards(props: SpellCardsProps) {
     return props.spells && props.spells.length > 0 ? (
-        <div className="row">
+        <Masonry columns={3} spacing={2}>
             {props.spells.map((spell) => (
-                <div className="col-md-4 mb-4">
-                    <SpellCard spell={spell} />
-                </div>
+                <SpellCard spell={spell} />
             ))}
-        </div>
+        </Masonry>
     ) : (
         <Card>
             <CardContent>
