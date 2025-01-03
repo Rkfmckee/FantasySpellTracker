@@ -5,17 +5,17 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import parse from "html-react-parser";
 import { useState } from "react";
-import { ToLinebreak } from "../../helpers/StringHelpers";
-import { GetSpellCastingTimeName } from "../../schemas/spell/SpellCastingTimeSchema";
-import { GetSpellComponentsName } from "../../schemas/spell/SpellComponentSchema";
-import { GetSpellDurationName } from "../../schemas/spell/SpellDurationSchema";
+import { ToLinebreak } from "../../../helpers/StringHelpers";
+import { GetSpellCastingTimeName } from "../../../schemas/spell/SpellCastingTimeSchema";
+import { GetSpellComponentsName } from "../../../schemas/spell/SpellComponentSchema";
+import { GetSpellDurationName } from "../../../schemas/spell/SpellDurationSchema";
 import {
     GetSpellLevelName,
     SpellLevel,
-} from "../../schemas/spell/SpellLevelSchema";
-import { SpellRangeType } from "../../schemas/spell/SpellRangeTypeSchema";
-import { Spell } from "../../schemas/spell/SpellSchema";
-import { SpellSchool } from "../../schemas/spell/SpellSchoolSchema";
+} from "../../../schemas/spell/SpellLevelSchema";
+import { SpellRangeType } from "../../../schemas/spell/SpellRangeTypeSchema";
+import { Spell } from "../../../schemas/spell/SpellSchema";
+import { SpellSchool } from "../../../schemas/spell/SpellSchoolSchema";
 
 interface RowProps {
     spell: Spell;

@@ -4,6 +4,10 @@
 }
 
 /* Spell list styles */
+.spell-view-icon {
+    margin-right: 1rem;
+}
+
 .has-description:after {
     content: " *";
     color: var(--mui-palette-text-primary);

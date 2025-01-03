@@ -1,23 +1,22 @@
-import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import axios from "axios";
-import { useEffect, useState } from "react";
-import TablePaginationFooter from "../../components/table/TablePaginationFooter";
+import { MouseEvent, useEffect, useState } from "react";
 import { ReadResponse } from "../../schemas/ReadResponseSchema";
 import { Spell } from "../../schemas/spell/SpellSchema";
-import SpellRow from "./SpellRow";
+import SpellTable from "./table/SpellTable";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import ToggleButton from "@mui/material/ToggleButton";
+import { Laptop, PhoneAndroid } from "@mui/icons-material";
+import SpellCards from "./cards/SpellCards";
 
 export default function SpellList() {
     const [page, setPage] = useState<number>(0);
     const [rowsPerPage, setRowsPerPage] = useState<number>(10);
     const [totalRecords, setTotalRecords] = useState(0);
     const [spells, setSpells] = useState<Spell[]>();
+    const [viewMode, setViewMode] = useState("table");
+
+    type ViewMode = "table" | "card";
 
     useEffect(() => {
         axios
@@ -33,50 +32,56 @@ export default function SpellList() {
             });
     }, [page, rowsPerPage]);
 
+    function handleViewModeChange(
+        _event: MouseEvent<HTMLElement>,
+        value: string
+    ) {
+        if (value !== null) {
+            setViewMode(value as ViewMode);
+        }
+    }
+
+    function showTableOrCardView() {
+        if (viewMode == "card") {
+            return <SpellCards spells={spells} />;
+        }
+
+        return (
+            <SpellTable
+                spells={spells}
+                totalRecords={totalRecords}
+                page={page}
+                setPage={setPage}
+                rowsPerPage={rowsPerPage}
+                setRowsPerPage={setRowsPerPage}
+            />
+        );
+    }
+
     return (
         <>
             <Typography variant="h1" gutterBottom>
                 Spells
             </Typography>
-            <TableContainer component={Paper}>
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell width="12%">School/Level</TableCell>
-                            <TableCell>Name</TableCell>
-                            <TableCell width="10%">Casting time</TableCell>
-                            <TableCell width="10%">Duration</TableCell>
-                            <TableCell width="10%">Range</TableCell>
-                            <TableCell width="10%">Components</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {spells && spells.length > 0 ? (
-                            spells.map((spell) => (
-                                <SpellRow
-                                    key={`item-${spell.id}`}
-                                    spell={spell}
-                                />
-                            ))
-                        ) : (
-                            <TableRow>
-                                <TableCell colSpan={4} className="text-center">
-                                    No spells available
-                                </TableCell>
-                            </TableRow>
-                        )}
-                    </TableBody>
-                    <TablePaginationFooter
-                        totalCount={totalRecords}
-                        currentPage={page}
-                        onPageChange={(pageNum) => setPage(pageNum)}
-                        rowsPerPage={rowsPerPage}
-                        onRowsPerPageChange={(rowsPerPageNum) =>
-                            setRowsPerPage(rowsPerPageNum)
-                        }
-                    />
-                </Table>
-            </TableContainer>
+
+            <ToggleButtonGroup
+                className="mb-4"
+                value={viewMode}
+                onChange={handleViewModeChange}
+                exclusive
+                aria-label="View mode"
+            >
+                <ToggleButton value="table" aria-label="left aligned">
+                    <Laptop className="spell-view-icon" />
+                    Table view
+                </ToggleButton>
+                <ToggleButton value="card" aria-label="centered">
+                    <PhoneAndroid className="spell-view-icon" />
+                    Card view
+                </ToggleButton>
+            </ToggleButtonGroup>
+
+            {showTableOrCardView()}
         </>
     );
 }
