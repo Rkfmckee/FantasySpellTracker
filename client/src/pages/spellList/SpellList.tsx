@@ -1,4 +1,5 @@
 import { Laptop, PhoneAndroid } from "@mui/icons-material";
+import Pagination from "@mui/material/Pagination";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Typography from "@mui/material/Typography";
@@ -11,27 +12,25 @@ import SpellCards from "./cards/SpellCards";
 import SpellTable from "./table/SpellTable";
 
 export default function SpellList() {
-    const [page, setPage] = useState<number>(0);
-    const [rowsPerPage, setRowsPerPage] = useState<number>(10);
+    const [page, setPage] = useState<number>(1);
     const [totalRecords, setTotalRecords] = useState(0);
     const [spells, setSpells] = useState<Spell[]>();
     const [viewMode, setViewMode] = useState<ViewMode>("table");
+    const pageSize = 12;
 
     type ViewMode = "table" | "card";
 
     useEffect(() => {
         axios
             .post<ReadResponse<Spell>>("Spell/Read", {
-                // Frontend uses 0 for first page, backend uses 1
-                // So increment to match the backend before posting
-                pageNumber: page + 1,
-                pageSize: rowsPerPage,
+                pageNumber: page,
+                pageSize: pageSize,
             })
             .then((response) => {
                 setSpells(response.data.currentPageData);
                 setTotalRecords(response.data.totalRecords);
             });
-    }, [page, rowsPerPage]);
+    }, [page]);
 
     function handleViewModeChange(
         _event: MouseEvent<HTMLElement>,
@@ -40,23 +39,6 @@ export default function SpellList() {
         if (value !== null) {
             setViewMode(value as ViewMode);
         }
-    }
-
-    function showTableOrCardView(isMobile: boolean) {
-        if (viewMode == "card" || isMobile) {
-            return <SpellCards spells={spells} />;
-        }
-
-        return (
-            <SpellTable
-                spells={spells}
-                totalRecords={totalRecords}
-                page={page}
-                setPage={setPage}
-                rowsPerPage={rowsPerPage}
-                setRowsPerPage={setRowsPerPage}
-            />
-        );
     }
 
     const isMobile = IsMobile();
@@ -86,7 +68,18 @@ export default function SpellList() {
                 </ToggleButtonGroup>
             )}
 
-            {showTableOrCardView(isMobile)}
+            {viewMode == "card" || isMobile ? (
+                <SpellCards spells={spells} />
+            ) : (
+                <SpellTable spells={spells} />
+            )}
+
+            <Pagination
+                count={Math.ceil(totalRecords / pageSize)}
+                page={page}
+                onChange={(_event, value) => setPage(value)}
+                className="mt-4"
+            />
         </>
     );
 }
