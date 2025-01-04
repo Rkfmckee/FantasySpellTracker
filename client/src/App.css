@@ -1,11 +1,25 @@
+:root {
+    --clr-spell-description__casting-time: blueviolet;
+    --clr-spell-description__range: green;
+    --clr-spell-description__components: darkorange;
+}
+
 .MuiTablePagination-selectLabel,
 .MuiTablePagination-displayedRows {
     margin: 0;
 }
 
+.MuiCardContent-root {
+    padding: 1rem !important;
+}
+
 /* Spell list styles */
 .spell-view-icon {
     margin-right: 1rem;
+}
+
+.spell-tag {
+    margin-left: 0.5rem;
 }
 
 .has-description:after {
@@ -14,21 +28,19 @@
 }
 
 .has-description__casting-time:after {
-    color: blueviolet;
+    color: var(--clr-spell-description__casting-time);
 }
 
 .has-description__range:after {
-    color: green;
+    color: var(--clr-spell-description__range);
 }
 
 .has-description__components:after {
-    color: darkorange;
+    color: var(--clr-spell-description__components);
 }
 
 .description-box {
-    padding-top: 0.75rem;
-    margin-top: 1rem;
-    position: relative;
+    padding-top: 1rem;
 }
 
 .description-box label {
@@ -36,9 +48,7 @@
     font-style: italic;
     font-size: 0.8rem;
     text-transform: uppercase;
-    position: absolute;
     pointer-events: none;
-    top: -0.5rem;
     padding: 0.1rem 0;
 }
 
@@ -49,13 +59,13 @@
 }
 
 .description-box__casting-time label {
-    color: blueviolet;
+    color: var(--clr-spell-description__casting-time);
 }
 
 .description-box__range label {
-    color: green;
+    color: var(--clr-spell-description__range);
 }
 
 .description-box__components label {
-    color: darkorange;
+    color: var(--clr-spell-description__components);
 }

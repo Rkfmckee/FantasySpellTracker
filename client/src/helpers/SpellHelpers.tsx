@@ -1,3 +1,4 @@
+import parse from "html-react-parser";
 import {
     GetSpellLevelName,
     SpellLevel,
@@ -5,7 +6,11 @@ import {
 import { SpellRangeType } from "../schemas/spell/SpellRangeTypeSchema";
 import { Spell } from "../schemas/spell/SpellSchema";
 import { SpellSchool } from "../schemas/spell/SpellSchoolSchema";
-import parse from "html-react-parser";
+import { NewlineToLinebreak } from "./StringHelpers";
+
+export function GetDescription(spell: Spell) {
+    return parse(NewlineToLinebreak(spell.description));
+}
 
 export function GetLevelAndSchoolDescription(spell: Spell) {
     var school = SpellSchool[spell.school];
@@ -48,8 +53,28 @@ export function GetDescriptionBox(text: string | undefined, name: string = "") {
                 <label>
                     <strong>{name ? name : "At higher levels"}</strong>
                 </label>
-                {parse(text)}
+                <div>{parse(text)}</div>
             </div>
         );
     }
+}
+
+export function GetConcentrationTag(spell: Spell, showLabel: boolean = false) {
+    return (
+        spell.isConcentration &&
+        GetTagWithLabel(showLabel, "Concentration", "brain")
+    );
+}
+
+export function GetRitualTag(spell: Spell, showLabel: boolean = false) {
+    return spell.isRitual && GetTagWithLabel(showLabel, "Ritual", "registered");
+}
+
+function GetTagWithLabel(showLabel: boolean, label: string, icon: string) {
+    return (
+        <span className="spell-tag">
+            <i title={label} className={`fa-solid fa-${icon}`} />
+            {showLabel && <em className="px-1">{label}</em>}
+        </span>
+    );
 }

@@ -4,17 +4,19 @@ import Collapse from "@mui/material/Collapse";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import { useState } from "react";
-import { ToLinebreak } from "../../../helpers/StringHelpers";
+import {
+    GetConcentrationTag,
+    GetDescription,
+    GetDescriptionBox,
+    GetLevelAndSchoolDescription,
+    GetRangeDescription,
+    GetRitualTag,
+    HasDescriptionClass,
+} from "../../../helpers/SpellHelpers";
 import { GetSpellCastingTimeName } from "../../../schemas/spell/SpellCastingTimeSchema";
 import { GetSpellComponentsName } from "../../../schemas/spell/SpellComponentSchema";
 import { GetSpellDurationName } from "../../../schemas/spell/SpellDurationSchema";
 import { Spell } from "../../../schemas/spell/SpellSchema";
-import {
-    GetDescriptionBox,
-    GetLevelAndSchoolDescription,
-    GetRangeDescription,
-    HasDescriptionClass,
-} from "../../../helpers/SpellHelpers";
 
 interface RowProps {
     spell: Spell;
@@ -30,6 +32,8 @@ export default function ItemRow({ spell }: RowProps) {
 
                 <TableCell component="th" scope="row">
                     <Button onClick={() => setOpen(!open)}>{spell.name}</Button>
+                    {GetConcentrationTag(spell)}
+                    {GetRitualTag(spell)}
                 </TableCell>
 
                 <TableCell
@@ -66,7 +70,12 @@ export default function ItemRow({ spell }: RowProps) {
                 >
                     <Collapse in={open} timeout="auto" unmountOnExit>
                         <Box sx={{ margin: 1 }}>
-                            {ToLinebreak(spell.description)}
+                            <div className="mb-2">
+                                {GetConcentrationTag(spell, true)}
+                                {GetRitualTag(spell, true)}
+                            </div>
+
+                            {GetDescription(spell)}
 
                             {GetDescriptionBox(spell.higherLevelDescription)}
 

@@ -4,12 +4,14 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import {
+    GetConcentrationTag,
+    GetDescription,
     GetDescriptionBox,
     GetLevelAndSchoolDescription,
     GetRangeDescription,
+    GetRitualTag,
     HasDescriptionClass,
 } from "../../../helpers/SpellHelpers";
-import { ToLinebreak } from "../../../helpers/StringHelpers";
 import { GetSpellCastingTimeName } from "../../../schemas/spell/SpellCastingTimeSchema";
 import { GetSpellComponentsName } from "../../../schemas/spell/SpellComponentSchema";
 import { GetSpellDurationName } from "../../../schemas/spell/SpellDurationSchema";
@@ -27,6 +29,8 @@ export default function SpellCard({ spell }: SpellCardProps) {
             <CardContent>
                 <Typography variant="body1" component="div">
                     <strong>{spell.name}</strong>
+                    {GetConcentrationTag(spell)}
+                    {GetRitualTag(spell)}
                 </Typography>
 
                 <Typography variant="subtitle1" component="div">
@@ -74,7 +78,7 @@ export default function SpellCard({ spell }: SpellCardProps) {
                 </Typography>
 
                 <Button
-                    className="p-0 mt-3"
+                    className="mt-3"
                     onClick={() => setShowDescription(!showDescription)}
                 >
                     {showDescription ? "Hide" : "Show"} description
@@ -82,7 +86,11 @@ export default function SpellCard({ spell }: SpellCardProps) {
 
                 {showDescription && (
                     <Typography variant="body2" className="mt-3">
-                        {ToLinebreak(spell.description)}
+                        <div className="mb-2">
+                            {GetConcentrationTag(spell, true)}
+                            {GetRitualTag(spell, true)}
+                        </div>
+                        {GetDescription(spell)}
                         {GetDescriptionBox(spell.higherLevelDescription)}
                         {GetDescriptionBox(
                             spell.castingTimeDescription,

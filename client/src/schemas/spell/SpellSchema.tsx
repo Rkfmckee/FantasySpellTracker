@@ -21,6 +21,8 @@ export const SpellSchema = z.object({
     castingTimeDescription: z.optional(z.string()),
     rangeDescription: z.optional(z.string()),
     componentsDescription: z.optional(z.string()),
+    isConcentration: z.boolean(),
+    isRitual: z.boolean(),
 });
 export const SpellsSchema = z.array(SpellSchema);
 export type Spell = z.infer<typeof SpellSchema>;
