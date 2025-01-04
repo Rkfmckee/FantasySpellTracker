@@ -74,12 +74,14 @@ export default function SpellList() {
                 <SpellTable spells={spells} />
             )}
 
-            <Pagination
-                count={Math.ceil(totalRecords / pageSize)}
-                page={page}
-                onChange={(_event, value) => setPage(value)}
-                className="mt-4"
-            />
+            <div className="d-flex justify-content-center">
+                <Pagination
+                    count={Math.ceil(totalRecords / pageSize)}
+                    page={page}
+                    onChange={(_event, value) => setPage(value)}
+                    className="mt-4 justify-content-center"
+                />
+            </div>
         </>
     );
 }

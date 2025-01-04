@@ -6,6 +6,7 @@ import { createTheme } from "@mui/material/styles";
 import Container from "@mui/material/Container";
 import { CssBaseline, useMediaQuery } from "@mui/material";
 import Navbar from "./navbar/Navbar";
+import Footer from "./Footer";
 
 export default function Layout() {
     const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
@@ -39,6 +40,7 @@ export default function Layout() {
                         <Outlet />
                     </Container>
                 </main>
+                <Footer />
             </ThemeProvider>
         </>
     );

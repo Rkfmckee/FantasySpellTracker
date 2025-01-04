@@ -1,9 +1,4 @@
-:root {
-    --clr-spell-description__casting-time: blueviolet;
-    --clr-spell-description__range: green;
-    --clr-spell-description__components: darkorange;
-}
-
+/* Override Material UI */
 .MuiTablePagination-selectLabel,
 .MuiTablePagination-displayedRows {
     margin: 0;
@@ -11,6 +6,26 @@
 
 .MuiCardContent-root {
     padding: 1rem !important;
+}
+
+/* Base styles */
+:root {
+    --clr-spell-description__casting-time: blueviolet;
+    --clr-spell-description__range: green;
+    --clr-spell-description__components: darkorange;
+}
+
+.footer {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    margin-top: 3rem;
+}
+
+.footer p {
+    margin: 0;
 }
 
 /* Spell list styles */
