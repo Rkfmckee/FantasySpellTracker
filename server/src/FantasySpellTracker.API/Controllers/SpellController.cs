@@ -11,11 +11,11 @@ namespace FantasySpellTracker.API.Controllers;
 [ApiController]
 public class SpellController(IMapper mapper, ISpellService spellService) : ControllerBase
 {
-    [HttpPost("Read")]
+    [HttpGet]
     [ProducesResponseType(typeof(ReadResponseViewModel<SpellViewModel>), StatusCodes.Status200OK)]
-    public async Task<ActionResult<ReadResponseViewModel<SpellViewModel>>> ReadSpells(ReadRequestViewModel readRequest)
+    public async Task<ActionResult<ReadResponseViewModel<SpellViewModel>>> GetSpells(ReadRequestViewModel readRequest)
     {
         var readRequestData = mapper.Map<ReadRequestDto>(readRequest);
-        return Ok(mapper.Map<ReadResponseViewModel<SpellViewModel>>(await spellService.ReadSpellsAsync(readRequestData)));
+        return Ok(mapper.Map<ReadResponseViewModel<SpellViewModel>>(await spellService.GetSpellsAsync(readRequestData)));
     }
 }
