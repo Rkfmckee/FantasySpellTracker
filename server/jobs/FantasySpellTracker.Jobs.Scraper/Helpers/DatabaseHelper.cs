@@ -13,7 +13,7 @@ public static class DatabaseHelper
 
     private static IFstDataDbContext SetupDbContext()
     {
-        var apiDirectory = $"{DirectoryHelpers.GetSolutionDirectory()}/FantasySpellTracker.API";
+        var apiDirectory = $"{DirectoryHelpers.GetSolutionDirectory()}/src/FantasySpellTracker.API";
         var config = new ConfigurationBuilder().SetBasePath(apiDirectory).AddJsonFile("appsettings.json", optional: false).Build();
         var services = new ServiceCollection();
 

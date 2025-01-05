@@ -9,4 +9,14 @@ public static class StringExtensions
         if (string.IsNullOrWhiteSpace(value)) return "";
         return Regex.Replace(value, RegexConstants.HtmlBoldText, "").Trim();
     }
+
+    public static string NormalizeApostrophes(this string value)
+    {
+        return value.Replace("’", "'");
+    }
+
+    public static string NoApostrophes(this string value)
+    {
+        return value.Replace("’", "").Replace("'", "");
+    }
 }

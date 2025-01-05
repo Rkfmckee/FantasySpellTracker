@@ -15,13 +15,13 @@ public class SpellScraper(IFstDataDbContext dataDbContext) : Scraper
     private const string atHigherLevels = "At Higher Levels.";
     private const string spellLists = "Spell Lists.";
 
-    private string[] replaceInName = ["(UA)"];
+    private string[] replaceInName = ["(UA)", "(HB)"];
     private string[] spellsToSkip =
     [
         "Spray of Cards (UA)",
         "Nathair's Mischief (UA)",
         "Antagonize",
-        "Protection from Ballistics (UA",
+        "Protection from Ballistics (UA)",
         "Raulothim's Psychic Lance (UA)",
         "Spirit of Death (UA)",
         "Summon Draconic Spirit (UA)",
@@ -43,7 +43,7 @@ public class SpellScraper(IFstDataDbContext dataDbContext) : Scraper
             if (spellDocument == null) continue;
 
             var spell = await GetSpellDetailsAsync(spellDocument);
-            if (spell == null) continue;
+            if (spell == null || string.IsNullOrWhiteSpace(spell.Name)) continue;
 
             Console.WriteLine($"Found spell: {spell.Name}");
             await dataDbContext.AddAsync(spell);
@@ -59,8 +59,8 @@ public class SpellScraper(IFstDataDbContext dataDbContext) : Scraper
 
     private async Task<Spell?> GetSpellDetailsAsync(IDocument document)
     {
-        var name = document.QuerySelector(".page-title")?.QuerySelector("span")?.TextContent ?? "";
-        if (spellsToSkip.Contains(name)) return null;
+        var name = document.QuerySelector(".page-title")?.QuerySelector("span")?.TextContent;
+        if (string.IsNullOrWhiteSpace(name) || spellsToSkip.Contains(name)) return null;
 
         var spell = new Spell { Name = RemoveUnwantedTagsFromName(name) };
 
@@ -92,12 +92,37 @@ public class SpellScraper(IFstDataDbContext dataDbContext) : Scraper
         var sourceDescriptionSection = GetSection(detailsSections, source);
         if (sourceDescriptionSection == null) return;
 
-        var unearthedArcana = "Unearthed Arcana";
-        var sourceText = sourceDescriptionSection.TextContent.Replace(source, "").Replace("'", "’").Trim();
+        var sourceText = NormalizeSourceText(sourceDescriptionSection.TextContent);
         var sources = await dataDbContext.Get<Source>().Select(s => Tuple.Create<int?, string>(s.Id, s.Title)).ToArrayAsync();
 
-        var sourceName = sourceText.Contains(unearthedArcana) ? unearthedArcana : sourceText;
-        spell.SourceId = sources.Where(s => s.Item2.Contains(sourceName)).Select(s => s.Item1).FirstOrDefault();
+        var sourceName = CheckManualSources(sourceText) ?? sourceText;
+        spell.SourceId = sources.Where(s => s.Item2.NoApostrophes().Contains(sourceName.NoApostrophes())).Select(s => s.Item1).FirstOrDefault();
+    }
+
+    private string NormalizeSourceText(string sourceText)
+    {
+        return sourceText.Replace(source, "")
+            .Split('/')[0]
+            .Replace("Inc.", "Incorporated")
+            .Replace(" - Astral Adventurer's Guide", "")
+            .Replace(" -", ":")
+            .NormalizeApostrophes().Trim();
+    }
+
+    private string? CheckManualSources(string sourceText)
+    {
+        var manualSources = new string[]
+        {
+            "Unearthed Arcana",
+            "Critical Role"
+        };
+
+        foreach (var source in manualSources)
+        {
+            if (sourceText.Contains(source)) return source;
+        }
+
+        return null;
     }
 
     private void GetSpellLevelAndSchool(IHtmlCollection<IElement> detailsSections, Spell spell)
