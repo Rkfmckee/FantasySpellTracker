@@ -62,18 +62,69 @@ export function GetDescriptionBox(text: string | undefined, name: string = "") {
 export function GetConcentrationTag(spell: Spell, showLabel: boolean = false) {
     return (
         spell.isConcentration &&
-        GetTagWithLabel(showLabel, "Concentration", "brain")
+        GetTagWithLabel(showLabel, "Concentration", "fa-solid fa-brain")
     );
 }
 
 export function GetRitualTag(spell: Spell, showLabel: boolean = false) {
-    return spell.isRitual && GetTagWithLabel(showLabel, "Ritual", "registered");
+    return (
+        spell.isRitual &&
+        GetTagWithLabel(showLabel, "Ritual", "fa-solid fa-registered")
+    );
 }
 
-function GetTagWithLabel(showLabel: boolean, label: string, icon: string) {
+export function GetCriticalRoleTag(spell: Spell, showLabel: boolean = false) {
+    return (
+        IsCriticalRole(spell) &&
+        GetTagWithLabel(
+            showLabel,
+            "Source: Critical Role",
+            "fa-brands fa-critical-role"
+        )
+    );
+}
+
+export function GetUnearthedArcanaTag(
+    spell: Spell,
+    showLabel: boolean = false
+) {
+    return (
+        IsUnearthedArcana(spell) &&
+        GetTagWithLabel(
+            showLabel,
+            "Source: Unearthed Arcana",
+            "fa-solid fa-u",
+            "fa-solid fa-a"
+        )
+    );
+}
+
+export function IsCriticalRole(spell: Spell) {
+    const criticalRoleSourceIds = [81, 83, 85];
+
+    if (criticalRoleSourceIds.includes(spell.source.id)) return true;
+    return false;
+}
+
+export function IsUnearthedArcana(spell: Spell) {
+    const unearthedArcanaSourceIds = [1];
+
+    if (unearthedArcanaSourceIds.includes(spell.source.id)) return true;
+    return false;
+}
+
+function GetTagWithLabel(
+    showLabel: boolean,
+    label: string,
+    iconClass: string,
+    secondaryIconClass: string | undefined = undefined
+) {
     return (
         <span className="spell-tag">
-            <i title={label} className={`fa-solid fa-${icon}`} />
+            <i title={label} className={iconClass} />
+            {secondaryIconClass && (
+                <i title={label} className={secondaryIconClass} />
+            )}
             {showLabel && <em className="px-1">{label}</em>}
         </span>
     );

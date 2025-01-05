@@ -4,6 +4,7 @@ namespace FantasySpellTracker.Services.DTOs;
 
 public class SourceDto
 {
+    public int Id { get; set; }
     public string? Title { get; set; }
     public SourceType Type { get; set; }
 }

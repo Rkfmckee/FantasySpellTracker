@@ -6,11 +6,13 @@ import TableRow from "@mui/material/TableRow";
 import { useState } from "react";
 import {
     GetConcentrationTag,
+    GetCriticalRoleTag,
     GetDescription,
     GetDescriptionBox,
     GetLevelAndSchoolDescription,
     GetRangeDescription,
     GetRitualTag,
+    GetUnearthedArcanaTag,
     HasDescriptionClass,
 } from "../../../helpers/SpellHelpers";
 import { GetSpellCastingTimeName } from "../../../schemas/spell/SpellCastingTimeSchema";
@@ -34,6 +36,8 @@ export default function SpellRow({ spell }: RowProps) {
                     <Button onClick={() => setOpen(!open)}>{spell.name}</Button>
                     {GetConcentrationTag(spell)}
                     {GetRitualTag(spell)}
+                    {GetCriticalRoleTag(spell)}
+                    {GetUnearthedArcanaTag(spell)}
                 </TableCell>
 
                 <TableCell
@@ -73,6 +77,8 @@ export default function SpellRow({ spell }: RowProps) {
                             <div className="mb-2">
                                 {GetConcentrationTag(spell, true)}
                                 {GetRitualTag(spell, true)}
+                                {GetCriticalRoleTag(spell, true)}
+                                {GetUnearthedArcanaTag(spell, true)}
                             </div>
 
                             {GetDescription(spell)}

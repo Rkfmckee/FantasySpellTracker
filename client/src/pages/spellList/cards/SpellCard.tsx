@@ -5,11 +5,13 @@ import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import {
     GetConcentrationTag,
+    GetCriticalRoleTag,
     GetDescription,
     GetDescriptionBox,
     GetLevelAndSchoolDescription,
     GetRangeDescription,
     GetRitualTag,
+    GetUnearthedArcanaTag,
     HasDescriptionClass,
 } from "../../../helpers/SpellHelpers";
 import { GetSpellCastingTimeName } from "../../../schemas/spell/SpellCastingTimeSchema";
@@ -31,6 +33,8 @@ export default function SpellCard({ spell }: SpellCardProps) {
                     <strong>{spell.name}</strong>
                     {GetConcentrationTag(spell)}
                     {GetRitualTag(spell)}
+                    {GetCriticalRoleTag(spell)}
+                    {GetUnearthedArcanaTag(spell)}
                 </Typography>
 
                 <Typography variant="subtitle1" component="div">
@@ -89,6 +93,8 @@ export default function SpellCard({ spell }: SpellCardProps) {
                         <div className="mb-2">
                             {GetConcentrationTag(spell, true)}
                             {GetRitualTag(spell, true)}
+                            {GetCriticalRoleTag(spell, true)}
+                            {GetUnearthedArcanaTag(spell, true)}
                         </div>
                         {GetDescription(spell)}
                         {GetDescriptionBox(spell.higherLevelDescription)}

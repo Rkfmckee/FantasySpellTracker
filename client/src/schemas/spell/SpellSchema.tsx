@@ -5,6 +5,7 @@ import { SpellLevelSchema } from "./SpellLevelSchema";
 import { SpellRangeTypeSchema } from "./SpellRangeTypeSchema";
 import { SpellSchoolSchema } from "./SpellSchoolSchema";
 import { SpellComponentsSchema } from "./SpellComponentSchema";
+import { SourceSchema } from "../source/SourceSchema";
 
 export const SpellSchema = z.object({
     id: z.number(),
@@ -23,6 +24,7 @@ export const SpellSchema = z.object({
     componentsDescription: z.optional(z.string()),
     isConcentration: z.boolean(),
     isRitual: z.boolean(),
+    source: SourceSchema,
 });
 export const SpellsSchema = z.array(SpellSchema);
 export type Spell = z.infer<typeof SpellSchema>;

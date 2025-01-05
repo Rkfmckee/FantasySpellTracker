@@ -10,6 +10,7 @@ public static class SourceExpressions
     {
         return (source) => source != null ? new SourceDto
         {
+            Id = source.Id,
             Title = source.Title,
             Type = source.Type
         } : null;
