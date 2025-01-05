@@ -10,6 +10,7 @@ import { ReadResponse } from "../../schemas/ReadResponseSchema";
 import { Spell } from "../../schemas/spell/SpellSchema";
 import SpellCards from "./cards/SpellCards";
 import SpellTable from "./table/SpellTable";
+import { SortNameDescending } from "../../helpers/FilterHelpers";
 
 export default function SpellList() {
     // Filter properties
@@ -42,6 +43,14 @@ export default function SpellList() {
         }
     }
 
+    function handleSortBy(sortName: string) {
+        const sortNameDesc = SortNameDescending(sortName);
+
+        if (sortBy == sortName) setSortBy(sortNameDesc);
+        else if (sortBy == sortNameDesc) setSortBy(undefined);
+        else setSortBy(sortName);
+    }
+
     const isMobile = IsMobile();
 
     return (
@@ -70,12 +79,16 @@ export default function SpellList() {
             )}
 
             {viewMode == "card" || isMobile ? (
-                <SpellCards spells={spells} />
+                <SpellCards
+                    spells={spells}
+                    sortBy={sortBy}
+                    handleSortBy={handleSortBy}
+                />
             ) : (
                 <SpellTable
                     spells={spells}
                     sortBy={sortBy}
-                    setSortBy={setSortBy}
+                    handleSortBy={handleSortBy}
                 />
             )}
 

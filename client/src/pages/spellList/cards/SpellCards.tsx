@@ -5,18 +5,25 @@ import { Spell } from "../../../schemas/spell/SpellSchema";
 import SpellCard from "./SpellCard";
 import Masonry from "@mui/lab/Masonry";
 import { IsMobile } from "../../../helpers/MuiHelpers";
+import SortableLabel from "../../../components/filter/SortableLabel";
 
 interface SpellCardsProps {
     spells: Spell[] | undefined;
+    sortBy: string | undefined;
+    handleSortBy: (sortByName: string) => void;
 }
 
-export default function SpellCards(props: SpellCardsProps) {
+export default function SpellCards({
+    spells,
+    sortBy,
+    handleSortBy,
+}: SpellCardsProps) {
     function CardsLayout() {
         const isMobile = IsMobile();
 
-        if (props.spells && props.spells.length > 0) {
+        if (spells && spells.length > 0) {
             if (isMobile) {
-                return props.spells.map((spell) => (
+                return spells.map((spell) => (
                     <div key={spell.id} className="mb-4">
                         <SpellCard spell={spell} />
                     </div>
@@ -24,7 +31,7 @@ export default function SpellCards(props: SpellCardsProps) {
             } else {
                 return (
                     <Masonry columns={3} spacing={2}>
-                        {props.spells.map((spell) => (
+                        {spells.map((spell) => (
                             <SpellCard key={spell.id} spell={spell} />
                         ))}
                     </Masonry>
@@ -45,5 +52,47 @@ export default function SpellCards(props: SpellCardsProps) {
         }
     }
 
-    return CardsLayout();
+    return (
+        <>
+            <div className="mb-4">
+                Sort by:
+                <SortableLabel
+                    sortName="level"
+                    sortBy={sortBy}
+                    handleSortBy={handleSortBy}
+                >
+                    Level
+                </SortableLabel>
+                <SortableLabel
+                    sortName="name"
+                    sortBy={sortBy}
+                    handleSortBy={handleSortBy}
+                >
+                    Name
+                </SortableLabel>
+                <SortableLabel
+                    sortName="castingTime"
+                    sortBy={sortBy}
+                    handleSortBy={handleSortBy}
+                >
+                    Casting time
+                </SortableLabel>
+                <SortableLabel
+                    sortName="duration"
+                    sortBy={sortBy}
+                    handleSortBy={handleSortBy}
+                >
+                    Duration
+                </SortableLabel>
+                <SortableLabel
+                    sortName="rangeType,rangeValue"
+                    sortBy={sortBy}
+                    handleSortBy={handleSortBy}
+                >
+                    Range
+                </SortableLabel>
+            </div>
+            {CardsLayout()}
+        </>
+    );
 }

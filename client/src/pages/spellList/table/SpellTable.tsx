@@ -5,79 +5,65 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import SortableTableCell from "../../../components/filter/SortableTableCell";
 import { Spell } from "../../../schemas/spell/SpellSchema";
 import SpellRow from "./SpellRow";
-import { SortNameDescending } from "../../../helpers/FilterHelpers";
 
 interface SpellTableProps {
     spells: Spell[] | undefined;
     sortBy: string | undefined;
-    setSortBy: (sortByName: string | undefined) => void;
+    handleSortBy: (sortByName: string) => void;
 }
 
 export default function SpellTable({
     spells,
     sortBy,
-    setSortBy,
+    handleSortBy,
 }: SpellTableProps) {
-    function handleColumnClick(sortName: string) {
-        const sortNameDesc = SortNameDescending(sortName);
-
-        if (sortBy == sortName) setSortBy(sortNameDesc);
-        else if (sortBy == sortNameDesc) setSortBy(undefined);
-        else setSortBy(sortName);
-    }
-
-    function sortIcon(sortName: string) {
-        const sortNameDesc = SortNameDescending(sortName);
-
-        if (sortBy == sortName) return <i className="fa-solid fa-sort-up" />;
-
-        if (sortBy == sortNameDesc)
-            return <i className="fa-solid fa-sort-down" />;
-
-        return <i className="fa-solid fa-sort" />;
-    }
-
     return (
         <TableContainer component={Paper}>
             <Table>
                 <TableHead>
                     <TableRow>
-                        <TableCell
+                        <SortableTableCell
                             width="12%"
-                            onClick={() => handleColumnClick("level")}
+                            sortName="level"
+                            sortBy={sortBy}
+                            handleSortBy={handleSortBy}
                         >
                             School/Level
-                            {sortIcon("level")}
-                        </TableCell>
-                        <TableCell onClick={() => handleColumnClick("name")}>
+                        </SortableTableCell>
+                        <SortableTableCell
+                            sortName="name"
+                            sortBy={sortBy}
+                            handleSortBy={handleSortBy}
+                        >
                             Name
-                            {sortIcon("name")}
-                        </TableCell>
-                        <TableCell
+                        </SortableTableCell>
+                        <SortableTableCell
                             width="10%"
-                            onClick={() => handleColumnClick("castingTime")}
+                            sortName="castingTime"
+                            sortBy={sortBy}
+                            handleSortBy={handleSortBy}
                         >
                             Casting time
-                            {sortIcon("castingTime")}
-                        </TableCell>
-                        <TableCell
+                        </SortableTableCell>
+                        <SortableTableCell
                             width="10%"
-                            onClick={() => handleColumnClick("duration")}
+                            sortName="duration"
+                            sortBy={sortBy}
+                            handleSortBy={handleSortBy}
                         >
                             Duration
-                            {sortIcon("duration")}
-                        </TableCell>
-                        <TableCell
+                        </SortableTableCell>
+                        <SortableTableCell
                             width="10%"
-                            onClick={() =>
-                                handleColumnClick("rangeType,rangeValue")
-                            }
+                            sortName="rangeType,rangeValue"
+                            sortBy={sortBy}
+                            handleSortBy={handleSortBy}
                         >
                             Range
-                            {sortIcon("rangeType,rangeValue")}
-                        </TableCell>
+                        </SortableTableCell>
                         <TableCell width="10%">Components</TableCell>
                     </TableRow>
                 </TableHead>

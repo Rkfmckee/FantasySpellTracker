@@ -29,10 +29,16 @@
 }
 
 /* Table */
-th:has(> .fa-sort),
-th:has(> .fa-sort-up),
-th:has(> .fa-sort-down) {
+:has(> .fa-sort),
+:has(> .fa-sort-up),
+:has(> .fa-sort-down) {
     cursor: pointer;
+}
+
+span:has(> .fa-sort),
+span:has(> .fa-sort-up),
+span:has(> .fa-sort-down) {
+    margin-left: 1rem;
 }
 
 .fa-sort,
