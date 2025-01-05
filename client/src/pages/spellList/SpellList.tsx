@@ -12,25 +12,26 @@ import SpellCards from "./cards/SpellCards";
 import SpellTable from "./table/SpellTable";
 
 export default function SpellList() {
+    // Filter properties
+    const pageSize = 12;
+    const [sortBy, setSortBy] = useState<string>();
     const [page, setPage] = useState<number>(1);
+
     const [totalRecords, setTotalRecords] = useState(0);
     const [spells, setSpells] = useState<Spell[]>();
     const [viewMode, setViewMode] = useState<ViewMode>("table");
-    const pageSize = 12;
 
     type ViewMode = "table" | "card";
 
     useEffect(() => {
-        axios
-            .post<ReadResponse<Spell>>("Spell/Read", {
-                pageNumber: page,
-                pageSize: pageSize,
-            })
-            .then((response) => {
-                setSpells(response.data.currentPageData);
-                setTotalRecords(response.data.totalRecords);
-            });
-    }, [page]);
+        let url = `Spell?page=${page}&pageSize=${pageSize}`;
+        if (sortBy != undefined) url += `&sorts=${sortBy}`;
+
+        axios.get<ReadResponse<Spell>>(url).then((response) => {
+            setSpells(response.data.currentPageData);
+            setTotalRecords(response.data.totalRecords);
+        });
+    }, [page, sortBy]);
 
     function handleViewModeChange(
         _event: MouseEvent<HTMLElement>,
@@ -71,7 +72,11 @@ export default function SpellList() {
             {viewMode == "card" || isMobile ? (
                 <SpellCards spells={spells} />
             ) : (
-                <SpellTable spells={spells} />
+                <SpellTable
+                    spells={spells}
+                    sortBy={sortBy}
+                    setSortBy={setSortBy}
+                />
             )}
 
             <div className="d-flex justify-content-center">

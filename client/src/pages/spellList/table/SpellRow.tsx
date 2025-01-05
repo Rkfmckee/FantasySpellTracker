@@ -22,7 +22,7 @@ interface RowProps {
     spell: Spell;
 }
 
-export default function ItemRow({ spell }: RowProps) {
+export default function SpellRow({ spell }: RowProps) {
     const [open, setOpen] = useState(false);
 
     return (

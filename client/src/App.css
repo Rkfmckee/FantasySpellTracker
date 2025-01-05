@@ -28,6 +28,23 @@
     margin: 0;
 }
 
+/* Table */
+th:has(> .fa-sort),
+th:has(> .fa-sort-up),
+th:has(> .fa-sort-down) {
+    cursor: pointer;
+}
+
+.fa-sort,
+.fa-sort-up,
+.fa-sort-down {
+    margin-left: 0.5rem;
+}
+
+.fa-sort {
+    color: grey;
+}
+
 /* Spell list styles */
 .spell-view-icon {
     margin-right: 1rem;
