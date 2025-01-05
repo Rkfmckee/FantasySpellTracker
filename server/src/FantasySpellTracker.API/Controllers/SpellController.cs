@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
 using FantasySpellTracker.API.ViewModels;
-using FantasySpellTracker.API.ViewModels.Read;
-using FantasySpellTracker.Services.DTOs.Read;
 using FantasySpellTracker.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Sieve.Models;
 
 namespace FantasySpellTracker.API.Controllers;
 
@@ -13,9 +12,8 @@ public class SpellController(IMapper mapper, ISpellService spellService) : Contr
 {
     [HttpGet]
     [ProducesResponseType(typeof(ReadResponseViewModel<SpellViewModel>), StatusCodes.Status200OK)]
-    public async Task<ActionResult<ReadResponseViewModel<SpellViewModel>>> GetSpells(ReadRequestViewModel readRequest)
+    public async Task<ActionResult<ReadResponseViewModel<SpellViewModel>>> GetSpells([FromQuery] SieveModel sieveModel)
     {
-        var readRequestData = mapper.Map<ReadRequestDto>(readRequest);
-        return Ok(mapper.Map<ReadResponseViewModel<SpellViewModel>>(await spellService.GetSpellsAsync(readRequestData)));
+        return Ok(mapper.Map<ReadResponseViewModel<SpellViewModel>>(await spellService.GetSpellsAsync(sieveModel)));
     }
 }

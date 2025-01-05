@@ -1,5 +1,5 @@
 using FantasySpellTracker.API;
-using FantasySpellTracker.API.ViewModels.Read;
+using FantasySpellTracker.API.Configuration;
 using FantasySpellTracker.DAL.Contexts;
 using FantasySpellTracker.DAL.Interfaces;
 using FantasySpellTracker.Services.Interfaces;
@@ -9,6 +9,8 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
+using Sieve.Services;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +27,9 @@ builder.Services.AddScoped<IFstAppDbContext>(provider => provider.GetService<Fst
 builder.Services.AddAutoMapper(typeof(Program), typeof(SpellProfile));
 
 builder.Services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
-builder.Services.AddValidatorsFromAssemblyContaining<ReadRequestValidator>();
+builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+
+builder.Services.AddScoped<ISieveProcessor, FsmSieveProcessor>();
 
 builder.Services.AddScoped<ISpellService, SpellService>();
 

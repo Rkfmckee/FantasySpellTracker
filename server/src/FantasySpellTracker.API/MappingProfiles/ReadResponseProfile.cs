@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
 using FantasySpellTracker.API.ViewModels;
-using FantasySpellTracker.API.ViewModels.Read;
 using FantasySpellTracker.Services.DTOs;
-using FantasySpellTracker.Services.DTOs.Read;
 
-namespace FantasySpellTracker.API.MappingProfiles.Read;
+namespace FantasySpellTracker.API.MappingProfiles;
 
 public class ReadResponseProfile : Profile
 {

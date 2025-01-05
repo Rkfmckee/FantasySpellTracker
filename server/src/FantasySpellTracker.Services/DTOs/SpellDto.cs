@@ -1,4 +1,5 @@
 ﻿using FantasySpellTracker.Shared.Enums.Spell;
+using Sieve.Services;
 
 namespace FantasySpellTracker.Services.DTOs;
 
@@ -26,4 +27,23 @@ public class SpellDto
     public string? HigherLevelDescription { get; set; }
 
     public SourceDto? Source { get; set; }
+}
+
+public class SpellSieve : ISieveConfiguration
+{
+    public void Configure(SievePropertyMapper mapper)
+    {
+        mapper.Property<SpellDto>(s => s.Name).CanFilter().CanSort();
+        mapper.Property<SpellDto>(s => s.Level).CanFilter().CanSort();
+        mapper.Property<SpellDto>(s => s.CastingTime).CanFilter().CanSort();
+
+        mapper.Property<SpellDto>(s => s.School).CanFilter();
+        mapper.Property<SpellDto>(s => s.Components).CanFilter();
+        mapper.Property<SpellDto>(s => s.IsConcentration).CanFilter();
+        mapper.Property<SpellDto>(s => s.IsRitual).CanFilter();
+
+        mapper.Property<SpellDto>(s => s.Duration).CanSort();
+        mapper.Property<SpellDto>(s => s.RangeValue).CanSort();
+        mapper.Property<SpellDto>(s => s.RangeType).CanSort();
+    }
 }
