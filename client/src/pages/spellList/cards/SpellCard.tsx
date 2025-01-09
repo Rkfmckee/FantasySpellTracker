@@ -18,6 +18,7 @@ import { GetSpellCastingTimeName } from "../../../schemas/spell/SpellCastingTime
 import { GetSpellComponentsName } from "../../../schemas/spell/SpellComponentSchema";
 import { GetSpellDurationName } from "../../../schemas/spell/SpellDurationSchema";
 import { Spell } from "../../../schemas/spell/SpellSchema";
+import Collapse from "@mui/material/Collapse";
 
 interface SpellCardProps {
     spell: Spell;
@@ -88,7 +89,7 @@ export default function SpellCard({ spell }: SpellCardProps) {
                     {showDescription ? "Hide" : "Show"} description
                 </Button>
 
-                {showDescription && (
+                <Collapse in={showDescription} timeout="auto" unmountOnExit>
                     <Typography variant="body2" className="mt-3">
                         <div className="mb-2">
                             {GetConcentrationTag(spell, true)}
@@ -108,7 +109,7 @@ export default function SpellCard({ spell }: SpellCardProps) {
                             "Components"
                         )}
                     </Typography>
-                )}
+                </Collapse>
             </CardContent>
         </Card>
     );

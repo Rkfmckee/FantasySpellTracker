@@ -11,12 +11,15 @@ import { Spell } from "../../schemas/spell/SpellSchema";
 import SpellCards from "./cards/SpellCards";
 import SpellTable from "./table/SpellTable";
 import { SortNameDescending } from "../../helpers/FilterHelpers";
+import Collapse from "@mui/material/Collapse";
+import Button from "@mui/material/Button";
 
 export default function SpellList() {
     // Filter properties
     const pageSize = 12;
     const [sortBy, setSortBy] = useState<string>();
     const [page, setPage] = useState<number>(1);
+    const [showFilters, setShowFilters] = useState(false);
 
     const [totalRecords, setTotalRecords] = useState(0);
     const [spells, setSpells] = useState<Spell[]>();
@@ -59,24 +62,36 @@ export default function SpellList() {
                 Spells
             </Typography>
 
-            {!isMobile && (
-                <ToggleButtonGroup
-                    className="mb-4"
-                    value={viewMode}
-                    onChange={handleViewModeChange}
-                    exclusive
-                    aria-label="View mode"
+            <div className="mb-4 d-flex">
+                {!isMobile && (
+                    <ToggleButtonGroup
+                        value={viewMode}
+                        onChange={handleViewModeChange}
+                        aria-label="View mode"
+                        exclusive
+                    >
+                        <ToggleButton value="table" aria-label="left aligned">
+                            <Laptop className="spell-view-icon" />
+                            Table view
+                        </ToggleButton>
+                        <ToggleButton value="card" aria-label="centered">
+                            <PhoneAndroid className="spell-view-icon" />
+                            Card view
+                        </ToggleButton>
+                    </ToggleButtonGroup>
+                )}
+
+                <Button
+                    onClick={() => setShowFilters(!showFilters)}
+                    className="my-auto mx-2"
                 >
-                    <ToggleButton value="table" aria-label="left aligned">
-                        <Laptop className="spell-view-icon" />
-                        Table view
-                    </ToggleButton>
-                    <ToggleButton value="card" aria-label="centered">
-                        <PhoneAndroid className="spell-view-icon" />
-                        Card view
-                    </ToggleButton>
-                </ToggleButtonGroup>
-            )}
+                    {showFilters ? "Hide" : "Show"} filters
+                </Button>
+            </div>
+
+            <Collapse in={showFilters} timeout="auto" unmountOnExit>
+                Filters
+            </Collapse>
 
             {viewMode == "card" || isMobile ? (
                 <SpellCards
