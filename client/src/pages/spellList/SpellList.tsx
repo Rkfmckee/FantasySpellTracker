@@ -94,20 +94,12 @@ export default function SpellList() {
                 >
                     {showFilters ? "Hide" : "Show"} filters
                 </Button>
-
-                {/* {SpellFilterIsNotEmpty(spellFilter) && (
-                    <Button
-                        onClick={() => ClearSpellFilter(spellFilter)}
-                        className="my-auto mx-2"
-                    >
-                        Clear filter
-                    </Button>
-                )} */}
             </div>
 
             <SpellListFilter
                 showFilters={showFilters}
                 onSpellFilterChange={setSpellFilter}
+                filterCleared={() => setShowFilters(false)}
             />
 
             {viewMode == "card" || isMobile ? (
