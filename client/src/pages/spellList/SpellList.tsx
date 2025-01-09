@@ -1,18 +1,19 @@
 import { Laptop, PhoneAndroid } from "@mui/icons-material";
+import Button from "@mui/material/Button";
 import Pagination from "@mui/material/Pagination";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Typography from "@mui/material/Typography";
 import axios from "axios";
 import { MouseEvent, useEffect, useState } from "react";
+import { SortNameDescending } from "../../helpers/FilterHelpers";
 import { IsMobile } from "../../helpers/MuiHelpers";
+import { SpellFilter } from "../../schemas/filter/SpellFilterSchema";
 import { ReadResponse } from "../../schemas/ReadResponseSchema";
 import { Spell } from "../../schemas/spell/SpellSchema";
 import SpellCards from "./cards/SpellCards";
+import SpellListFilter, { SpellFilterIsNotEmpty } from "./SpellListFilter";
 import SpellTable from "./table/SpellTable";
-import { SortNameDescending } from "../../helpers/FilterHelpers";
-import Collapse from "@mui/material/Collapse";
-import Button from "@mui/material/Button";
 
 export default function SpellList() {
     // Filter properties
@@ -20,6 +21,7 @@ export default function SpellList() {
     const [sortBy, setSortBy] = useState<string>();
     const [page, setPage] = useState<number>(1);
     const [showFilters, setShowFilters] = useState(false);
+    const [spellFilter, setSpellFilter] = useState<SpellFilter>();
 
     const [totalRecords, setTotalRecords] = useState(0);
     const [spells, setSpells] = useState<Spell[]>();
@@ -31,11 +33,16 @@ export default function SpellList() {
         let url = `Spell?page=${page}&pageSize=${pageSize}`;
         if (sortBy != undefined) url += `&sorts=${sortBy}`;
 
+        if (SpellFilterIsNotEmpty(spellFilter)) {
+            url += "&filters=";
+            if (spellFilter?.name) url += `name@=${spellFilter.name}`;
+        }
+
         axios.get<ReadResponse<Spell>>(url).then((response) => {
             setSpells(response.data.currentPageData);
             setTotalRecords(response.data.totalRecords);
         });
-    }, [page, sortBy]);
+    }, [page, sortBy, spellFilter]);
 
     function handleViewModeChange(
         _event: MouseEvent<HTMLElement>,
@@ -87,11 +94,21 @@ export default function SpellList() {
                 >
                     {showFilters ? "Hide" : "Show"} filters
                 </Button>
+
+                {/* {SpellFilterIsNotEmpty(spellFilter) && (
+                    <Button
+                        onClick={() => ClearSpellFilter(spellFilter)}
+                        className="my-auto mx-2"
+                    >
+                        Clear filter
+                    </Button>
+                )} */}
             </div>
 
-            <Collapse in={showFilters} timeout="auto" unmountOnExit>
-                Filters
-            </Collapse>
+            <SpellListFilter
+                showFilters={showFilters}
+                onSpellFilterChange={setSpellFilter}
+            />
 
             {viewMode == "card" || isMobile ? (
                 <SpellCards

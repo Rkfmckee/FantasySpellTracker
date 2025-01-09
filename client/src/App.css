@@ -51,6 +51,15 @@ span:has(> .fa-sort-down) {
     color: grey;
 }
 
+/* Filters */
+.filter-section {
+    margin-bottom: 1.5em;
+}
+
+.filter-item {
+    margin: 1em !important;
+}
+
 /* Spell list styles */
 .spell-view-icon {
     margin-right: 1rem;
