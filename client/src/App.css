@@ -58,6 +58,7 @@ span:has(> .fa-sort-down) {
 
 .filter-item {
     margin: 1em !important;
+    min-width: 10em !important;
 }
 
 /* Spell list styles */

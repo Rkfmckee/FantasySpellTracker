@@ -7,6 +7,7 @@ import { SpellRangeType } from "../schemas/spell/SpellRangeTypeSchema";
 import { Spell } from "../schemas/spell/SpellSchema";
 import { SpellSchool } from "../schemas/spell/SpellSchoolSchema";
 import { NewlineToLinebreak } from "./StringHelpers";
+import { Tooltip } from "@mui/material";
 
 export function GetDescription(spell: Spell) {
     return parse(NewlineToLinebreak(spell.description));
@@ -90,12 +91,7 @@ export function GetUnearthedArcanaTag(
 ) {
     return (
         IsUnearthedArcana(spell) &&
-        GetTagWithLabel(
-            showLabel,
-            "Source: Unearthed Arcana",
-            "fa-solid fa-u",
-            "fa-solid fa-a"
-        )
+        GetTagWithLabel(showLabel, "Source: Unearthed Arcana", "fa-solid fa-u")
     );
 }
 
@@ -113,18 +109,12 @@ export function IsUnearthedArcana(spell: Spell) {
     return false;
 }
 
-function GetTagWithLabel(
-    showLabel: boolean,
-    label: string,
-    iconClass: string,
-    secondaryIconClass: string | undefined = undefined
-) {
+function GetTagWithLabel(showLabel: boolean, label: string, iconClass: string) {
     return (
         <span className="spell-tag">
-            <i title={label} className={iconClass} />
-            {secondaryIconClass && (
-                <i title={label} className={secondaryIconClass} />
-            )}
+            <Tooltip title={label} arrow>
+                <i className={iconClass} />
+            </Tooltip>
             {showLabel && <em className="px-1">{label}</em>}
         </span>
     );
