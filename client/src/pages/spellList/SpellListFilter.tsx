@@ -25,7 +25,7 @@ export default function SpellListFilter({
 }: SpellListFilterProps) {
     const [spellFilter, setSpellFilter] = useState<SpellFilter>({
         name: "",
-        levels: null,
+        levels: [],
     });
 
     const spellLevelKeys = Object.keys(SpellLevel)
@@ -40,7 +40,7 @@ export default function SpellListFilter({
     function clearFilter() {
         setSpellFilter({
             name: "",
-            levels: null,
+            levels: [],
         });
 
         if (filterCleared) filterCleared();
@@ -72,10 +72,11 @@ export default function SpellListFilter({
 
                 <FormControl className="filter-item">
                     <Autocomplete
+                        multiple
                         id="filter-level"
                         filterSelectedOptions
                         value={spellFilter.levels}
-                        onChange={(_event, values: SpellLevel | null) => {
+                        onChange={(_event, values) => {
                             setSpellFilter({
                                 ...spellFilter,
                                 levels: values,
@@ -101,11 +102,10 @@ export default function SpellListFilter({
                     </div>
                 )}
             </Paper>
-            <p>{spellFilter.levels}</p>
         </Collapse>
     );
 }
 
 export function SpellFilterIsNotEmpty(spellFilter: SpellFilter | undefined) {
-    return spellFilter && (spellFilter.name || spellFilter.levels);
+    return spellFilter && (spellFilter.name || spellFilter.levels.length > 0);
 }

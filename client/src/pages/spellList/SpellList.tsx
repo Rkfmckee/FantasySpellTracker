@@ -35,7 +35,10 @@ export default function SpellList() {
 
         if (SpellFilterIsNotEmpty(spellFilter)) {
             url += "&filters=";
-            if (spellFilter?.name) url += `name@=${spellFilter.name}`;
+            if (spellFilter?.name) url += `name@=${spellFilter.name},`;
+            if (spellFilter?.levels && spellFilter?.levels.length > 0) {
+                url += `level==${spellFilter.levels.join("|")}`;
+            }
         }
 
         axios.get<ReadResponse<Spell>>(url).then((response) => {
