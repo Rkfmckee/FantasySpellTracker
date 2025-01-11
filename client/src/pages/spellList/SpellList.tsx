@@ -102,8 +102,6 @@ export default function SpellList() {
                 filterCleared={() => setShowFilters(false)}
             />
 
-            <p>{spellFilter && spellFilter.name}</p>
-
             {viewMode == "card" || isMobile ? (
                 <SpellCards
                     spells={spells}
