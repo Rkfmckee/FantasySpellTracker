@@ -23,8 +23,8 @@ export default function SpellListFilter({
     onSpellFilterChange,
     filterCleared,
 }: SpellListFilterProps) {
-    const [name, setName] = useState<string>();
-    const [levels, setLevels] = useState<SpellLevel[]>();
+    const [name, setName] = useState<string>("");
+    const [levels, setLevels] = useState<SpellLevel | null>(null);
 
     const spellLevelKeys = Object.keys(SpellLevel)
         .filter(StringIsNumber)
@@ -32,16 +32,17 @@ export default function SpellListFilter({
 
     let spellFilter: SpellFilter = {
         name: name,
-        levels: levels,
+        levels: levels ? levels : undefined,
     };
 
-    useEffect(() => {
-        const delay = setTimeout(() => onSpellFilterChange(spellFilter), 500);
-        return () => clearTimeout(delay);
-    }, [spellFilter]);
+    // useEffect(() => {
+    //     const delay = setTimeout(() => onSpellFilterChange(spellFilter), 500);
+    //     return () => clearTimeout(delay);
+    // }, [spellFilter]);
 
     function clearFilter() {
         setName("");
+        setLevels(null);
         if (filterCleared) filterCleared();
     }
 
@@ -53,25 +54,29 @@ export default function SpellListFilter({
             className="filter-section"
         >
             <Paper elevation={3}>
-                <TextField
-                    id="filter-name"
-                    label="Name"
-                    variant="standard"
-                    className="filter-item"
-                    value={name}
-                    onChange={(event) => setName(event.target.value)}
-                />
+                <FormControl>
+                    <TextField
+                        id="filter-name"
+                        label="Name"
+                        variant="standard"
+                        className="filter-item"
+                        value={name}
+                        onChange={(event) => {
+                            setName(event.target.value);
+                            onSpellFilterChange(spellFilter);
+                        }}
+                    />
+                </FormControl>
 
-                <FormControl fullWidth>
+                <FormControl className="filter-item">
                     <Autocomplete
-                        multiple
-                        filterSelectedOptions
-                        onChange={(_event, value) =>
-                            setLevels((prevLevels) =>
-                                prevLevels ? [...prevLevels, ...value] : value
-                            )
-                        }
                         id="filter-level"
+                        filterSelectedOptions
+                        value={levels}
+                        onChange={(_event, values: SpellLevel | null) => {
+                            setLevels(values);
+                            onSpellFilterChange(spellFilter);
+                        }}
                         options={spellLevelKeys}
                         getOptionLabel={(option) => GetSpellLevelName(option)}
                         renderInput={(params) => (
@@ -92,6 +97,7 @@ export default function SpellListFilter({
                     </div>
                 )}
             </Paper>
+            <p>{spellFilter.levels}</p>
         </Collapse>
     );
 }
