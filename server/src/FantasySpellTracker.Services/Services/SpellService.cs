@@ -14,16 +14,17 @@ public class SpellService(IFstDataDbContext dataContext, ISieveProcessor sievePr
 {
     public async Task<ReadResponseDto<SpellDto>> GetSpellsAsync(SieveModel sieveModel)
     {
-        var allRecords = dataContext.Get<Spell>()
-            .Include(s => s.Source);
-
-        var spellDataQuery = allRecords
+        var spellDataQuery = dataContext.Get<Spell>()
+            .Include(s => s.Source)
             .AsExpandableEFCore()
             .Select(s => SpellExpressions.ToSpellDto().Invoke(s));
 
-        var currentRecords = await sieveProcessor.Apply(sieveModel, spellDataQuery)
-            .ToArrayAsync();
+        var filteredQuery = sieveProcessor.Apply(sieveModel, spellDataQuery);
 
-        return new ReadResponseDto<SpellDto>(currentRecords, await allRecords.CountAsync());
+        sieveModel.PageSize = null;
+        sieveModel.Page = null;
+        var unpagedQuery = sieveProcessor.Apply(sieveModel, spellDataQuery);
+
+        return new ReadResponseDto<SpellDto>(await filteredQuery.ToArrayAsync(), await unpagedQuery.CountAsync());
     }
 }
