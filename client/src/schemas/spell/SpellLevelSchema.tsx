@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { StringIsNumber } from "../../helpers/StringHelpers";
 
 export enum SpellLevel {
     Cantrip,
@@ -38,4 +39,10 @@ export function GetSpellLevelName(level: SpellLevel) {
         default:
             return SpellLevel[level];
     }
+}
+
+export function GetSpellLevelKeys() {
+    return Object.keys(SpellLevel)
+        .filter(StringIsNumber)
+        .map((key) => Number(key));
 }

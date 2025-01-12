@@ -1,16 +1,19 @@
-import Autocomplete from "@mui/material/Autocomplete";
 import Button from "@mui/material/Button";
 import Collapse from "@mui/material/Collapse";
 import FormControl from "@mui/material/FormControl";
 import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 import { useEffect, useState } from "react";
-import { StringIsNumber } from "../../helpers/StringHelpers";
+import EnumMultiselect from "../../components/form/EnumMultiselect";
 import { SpellFilter } from "../../schemas/filter/SpellFilterSchema";
 import {
+    GetSpellLevelKeys,
     GetSpellLevelName,
-    SpellLevel,
 } from "../../schemas/spell/SpellLevelSchema";
+import {
+    GetSpellSchoolKeys,
+    SpellSchool,
+} from "../../schemas/spell/SpellSchoolSchema";
 
 interface SpellListFilterProps {
     showFilters: boolean;
@@ -26,11 +29,8 @@ export default function SpellListFilter({
     const [spellFilter, setSpellFilter] = useState<SpellFilter>({
         name: "",
         levels: [],
+        schools: [],
     });
-
-    const spellLevelKeys = Object.keys(SpellLevel)
-        .filter(StringIsNumber)
-        .map((key) => Number(key));
 
     useEffect(() => {
         const delay = setTimeout(() => onSpellFilterChange(spellFilter), 500);
@@ -41,6 +41,7 @@ export default function SpellListFilter({
         setSpellFilter({
             name: "",
             levels: [],
+            schools: [],
         });
 
         if (filterCleared) filterCleared();
@@ -54,6 +55,7 @@ export default function SpellListFilter({
             className="filter-section"
         >
             <Paper elevation={3}>
+                {/* Name */}
                 <FormControl>
                     <TextField
                         id="filter-name"
@@ -70,29 +72,33 @@ export default function SpellListFilter({
                     />
                 </FormControl>
 
-                <FormControl className="filter-item">
-                    <Autocomplete
-                        multiple
-                        id="filter-level"
-                        filterSelectedOptions
-                        value={spellFilter.levels}
-                        onChange={(_event, values) => {
-                            setSpellFilter({
-                                ...spellFilter,
-                                levels: values,
-                            });
-                        }}
-                        options={spellLevelKeys}
-                        getOptionLabel={(option) => GetSpellLevelName(option)}
-                        renderInput={(params) => (
-                            <TextField
-                                {...params}
-                                variant="standard"
-                                label="Level"
-                            />
-                        )}
-                    />
-                </FormControl>
+                {/* Level */}
+                <EnumMultiselect
+                    label="Level"
+                    options={GetSpellLevelKeys()}
+                    values={spellFilter.levels}
+                    onValuesChanged={(values) =>
+                        setSpellFilter({
+                            ...spellFilter,
+                            levels: values,
+                        })
+                    }
+                    getOptionLabel={GetSpellLevelName}
+                />
+
+                {/* School */}
+                <EnumMultiselect
+                    label="School"
+                    options={GetSpellSchoolKeys()}
+                    values={spellFilter.schools}
+                    onValuesChanged={(values) =>
+                        setSpellFilter({
+                            ...spellFilter,
+                            schools: values,
+                        })
+                    }
+                    getOptionLabel={(value) => SpellSchool[value]}
+                />
 
                 {SpellFilterIsNotEmpty(spellFilter) && (
                     <div>
@@ -107,5 +113,10 @@ export default function SpellListFilter({
 }
 
 export function SpellFilterIsNotEmpty(spellFilter: SpellFilter | undefined) {
-    return spellFilter && (spellFilter.name || spellFilter.levels.length > 0);
+    return (
+        spellFilter &&
+        (spellFilter.name ||
+            spellFilter.levels.length > 0 ||
+            spellFilter.schools.length > 0)
+    );
 }

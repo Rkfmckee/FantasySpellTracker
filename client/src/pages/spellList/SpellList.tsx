@@ -30,22 +30,39 @@ export default function SpellList() {
     type ViewMode = "table" | "card";
 
     useEffect(() => {
+        if (page != 1) setPage(1);
+        else getSpellsFromApi();
+    }, [spellFilter, sortBy]);
+
+    useEffect(getSpellsFromApi, [page]);
+
+    function getSpellsFromApi() {
         let url = `Spell?page=${page}&pageSize=${pageSize}`;
-        if (sortBy != undefined) url += `&sorts=${sortBy}`;
+        if (sortBy) url += `&sorts=${sortBy}`;
 
         if (SpellFilterIsNotEmpty(spellFilter)) {
             url += "&filters=";
             if (spellFilter?.name) url += `name@=${spellFilter.name},`;
+
             if (spellFilter?.levels && spellFilter?.levels.length > 0) {
-                url += `level==${spellFilter.levels.join("|")}`;
+                url += `level==${spellFilter.levels.join("|")},`;
+            }
+
+            if (spellFilter?.schools && spellFilter?.schools.length > 0) {
+                url += `school==${spellFilter.schools.join("|")},`;
             }
         }
+
+        console.log(url);
+
+        let x;
+        axios.get(url).then((response) => (x = response.data));
 
         axios.get<ReadResponse<Spell>>(url).then((response) => {
             setSpells(response.data.currentPageData);
             setTotalRecords(response.data.totalRecords);
         });
-    }, [page, sortBy, spellFilter]);
+    }
 
     function handleViewModeChange(
         _event: MouseEvent<HTMLElement>,
