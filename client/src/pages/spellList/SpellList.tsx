@@ -34,9 +34,11 @@ export default function SpellList() {
         else getSpellsFromApi();
     }, [spellFilter, sortBy]);
 
-    useEffect(getSpellsFromApi, [page]);
+    useEffect(() => {
+        getSpellsFromApi;
+    }, [page]);
 
-    function getSpellsFromApi() {
+    async function getSpellsFromApi() {
         let url = `Spell?page=${page}&pageSize=${pageSize}`;
         if (sortBy) url += `&sorts=${sortBy}`;
 
@@ -53,12 +55,7 @@ export default function SpellList() {
             }
         }
 
-        console.log(url);
-
-        let x;
-        axios.get(url).then((response) => (x = response.data));
-
-        axios.get<ReadResponse<Spell>>(url).then((response) => {
+        await axios.get<ReadResponse<Spell>>(url).then((response) => {
             setSpells(response.data.currentPageData);
             setTotalRecords(response.data.totalRecords);
         });

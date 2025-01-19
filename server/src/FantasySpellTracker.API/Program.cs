@@ -1,5 +1,6 @@
 using FantasySpellTracker.API;
 using FantasySpellTracker.API.Configuration;
+using FantasySpellTracker.API.Handlers;
 using FantasySpellTracker.DAL.Contexts;
 using FantasySpellTracker.DAL.Interfaces;
 using FantasySpellTracker.Services.Interfaces;
@@ -17,6 +18,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddCors();
+
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
 
 builder.Services.AddDbContext<FstDataDbContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("DataConnection")));
 builder.Services.AddScoped<IFstDataDbContext>(provider => provider.GetService<FstDataDbContext>() ?? throw new Exception("No Data DbContext configured"));
@@ -41,6 +45,8 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
     app.SeedData();
 }
+
+app.UseExceptionHandler();
 
 app.UseCors(options =>
 {

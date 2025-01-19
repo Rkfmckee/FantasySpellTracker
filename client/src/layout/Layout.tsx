@@ -7,6 +7,8 @@ import Container from "@mui/material/Container";
 import { CssBaseline, useMediaQuery } from "@mui/material";
 import Navbar from "./navbar/Navbar";
 import Footer from "./Footer";
+import { ErrorBoundary } from "./ErrorBoundary";
+import Error from "../pages/status/Error";
 
 export default function Layout() {
     const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
@@ -32,16 +34,18 @@ export default function Layout() {
 
     return (
         <>
-            <ThemeProvider theme={theme}>
-                <CssBaseline />
-                <Navbar mode={mode} setMode={setMode} />
-                <main>
-                    <Container maxWidth="xl">
-                        <Outlet />
-                    </Container>
-                </main>
-                <Footer />
-            </ThemeProvider>
+            <ErrorBoundary fallback={<Error />}>
+                <ThemeProvider theme={theme}>
+                    <CssBaseline />
+                    <Navbar mode={mode} setMode={setMode} />
+                    <main>
+                        <Container maxWidth="xl">
+                            <Outlet />
+                        </Container>
+                    </main>
+                    <Footer />
+                </ThemeProvider>
+            </ErrorBoundary>
         </>
     );
 }
