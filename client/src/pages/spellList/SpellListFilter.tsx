@@ -29,6 +29,7 @@ import {
     GetSpellSchoolKeys,
     SpellSchool,
 } from "../../schemas/spell/SpellSchoolSchema";
+import { SpellConcentrationOrRitual } from "../../schemas/spell/SpellConcentrationOrRitualSchema";
 
 interface SpellListFilterProps {
     showFilters: boolean;
@@ -50,6 +51,7 @@ export default function SpellListFilter({
         rangeValue: "",
         rangeType: [],
         components: [],
+        concentrationOrRitual: [],
     });
 
     useEffect(() => {
@@ -67,6 +69,7 @@ export default function SpellListFilter({
             rangeValue: "",
             rangeType: [],
             components: [],
+            concentrationOrRitual: [],
         });
 
         if (filterCleared) filterCleared();
@@ -193,6 +196,7 @@ export default function SpellListFilter({
                         />
                     </FormControl>
 
+                    {/* Components */}
                     <FormControl>
                         <ToggleButtonGroup
                             value={spellFilter.components}
@@ -202,7 +206,6 @@ export default function SpellListFilter({
                                     components: values,
                                 })
                             }
-                            aria-label="text formatting"
                         >
                             <ToggleButton value={SpellComponents.Verbal}>
                                 V
@@ -212,6 +215,30 @@ export default function SpellListFilter({
                             </ToggleButton>
                             <ToggleButton value={SpellComponents.Material}>
                                 M
+                            </ToggleButton>
+                        </ToggleButtonGroup>
+                    </FormControl>
+
+                    {/* Concentration or Ritual */}
+                    <FormControl>
+                        <ToggleButtonGroup
+                            value={spellFilter.concentrationOrRitual}
+                            onChange={(_event, values) =>
+                                setSpellFilter({
+                                    ...spellFilter,
+                                    concentrationOrRitual: values,
+                                })
+                            }
+                        >
+                            <ToggleButton
+                                value={SpellConcentrationOrRitual.Concentration}
+                            >
+                                Is Concentration
+                            </ToggleButton>
+                            <ToggleButton
+                                value={SpellConcentrationOrRitual.Ritual}
+                            >
+                                Is Ritual
                             </ToggleButton>
                         </ToggleButtonGroup>
                     </FormControl>
@@ -239,6 +266,7 @@ export function SpellFilterIsNotEmpty(spellFilter: SpellFilter | undefined) {
             spellFilter.duration.length > 0 ||
             spellFilter.rangeValue ||
             spellFilter.rangeType.length > 0 ||
-            spellFilter.components)
+            spellFilter.components.length > 0 ||
+            spellFilter.concentrationOrRitual.length > 0)
     );
 }

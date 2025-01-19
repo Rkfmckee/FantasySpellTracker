@@ -1,3 +1,5 @@
+import { SpellConcentrationOrRitual } from "../schemas/spell/SpellConcentrationOrRitualSchema";
+
 export function SortNameDescending(sortName: string) {
     const commaRegex = /,/g;
     return `-${sortName.replace(commaRegex, ",-")}`;
@@ -32,4 +34,22 @@ export function EnumFlagsToFilter(
         return `${propName}==${flagValue},`;
     }
     return "";
+}
+
+export function SpellConcentrationOrRitualToFilter(
+    values: SpellConcentrationOrRitual[] | undefined
+) {
+    let url = "";
+
+    if (values && values.length > 0) {
+        if (values.includes(SpellConcentrationOrRitual.Concentration)) {
+            url += "isConcentration==true,";
+        }
+
+        if (values.includes(SpellConcentrationOrRitual.Ritual)) {
+            url += "isRitual==true,";
+        }
+    }
+
+    return url;
 }

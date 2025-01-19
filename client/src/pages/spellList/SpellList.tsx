@@ -10,6 +10,7 @@ import {
     EnumFlagsToFilter,
     EnumListToFilter,
     SortNameDescending,
+    SpellConcentrationOrRitualToFilter,
     TextToFilter,
 } from "../../helpers/FilterHelpers";
 import { IsMobile } from "../../helpers/MuiHelpers";
@@ -60,6 +61,9 @@ export default function SpellList() {
             url += EnumListToFilter(spellFilter?.rangeType, "rangeType");
 
             url += EnumFlagsToFilter(spellFilter?.components, "components");
+            url += SpellConcentrationOrRitualToFilter(
+                spellFilter?.concentrationOrRitual
+            );
         }
 
         console.log(url);
