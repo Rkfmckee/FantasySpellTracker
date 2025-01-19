@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { StringIsNumber } from "../../helpers/StringHelpers";
 
 export enum SpellDuration {
     Instantaneous,
@@ -57,4 +58,10 @@ export function GetSpellDurationName(duration: SpellDuration) {
         default:
             return SpellDuration[duration];
     }
+}
+
+export function GetSpellDurationKeys() {
+    return Object.keys(SpellDuration)
+        .filter(StringIsNumber)
+        .map((key) => Number(key));
 }

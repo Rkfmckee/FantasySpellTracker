@@ -36,14 +36,13 @@ public class SpellSieve : ISieveConfiguration
         mapper.Property<SpellDto>(s => s.Name).CanFilter().CanSort();
         mapper.Property<SpellDto>(s => s.Level).CanFilter().CanSort();
         mapper.Property<SpellDto>(s => s.CastingTime).CanFilter().CanSort();
+        mapper.Property<SpellDto>(s => s.Duration).CanFilter().CanSort();
+        mapper.Property<SpellDto>(s => s.RangeValue).CanFilter().CanSort();
+        mapper.Property<SpellDto>(s => s.RangeType).CanFilter().CanSort();
 
         mapper.Property<SpellDto>(s => s.School).CanFilter();
         mapper.Property<SpellDto>(s => s.Components).CanFilter();
         mapper.Property<SpellDto>(s => s.IsConcentration).CanFilter();
         mapper.Property<SpellDto>(s => s.IsRitual).CanFilter();
-
-        mapper.Property<SpellDto>(s => s.Duration).CanSort();
-        mapper.Property<SpellDto>(s => s.RangeValue).CanSort();
-        mapper.Property<SpellDto>(s => s.RangeType).CanSort();
     }
 }

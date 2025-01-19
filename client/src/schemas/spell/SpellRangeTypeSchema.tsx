@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { StringIsNumber } from "../../helpers/StringHelpers";
 
 export enum SpellRangeType {
     Self,
@@ -10,3 +11,9 @@ export enum SpellRangeType {
 }
 
 export const SpellRangeTypeSchema = z.nativeEnum(SpellRangeType);
+
+export function GetSpellRangeTypeKeys() {
+    return Object.keys(SpellRangeType)
+        .filter(StringIsNumber)
+        .map((key) => Number(key));
+}

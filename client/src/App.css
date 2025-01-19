@@ -56,9 +56,11 @@ span:has(> .fa-sort-down) {
     margin-bottom: 1.5em;
 }
 
-.filter-item {
-    margin: 1em !important;
-    min-width: 10em !important;
+.filter-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1em;
+    padding: 1em;
 }
 
 /* Spell list styles */

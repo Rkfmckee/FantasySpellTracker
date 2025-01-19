@@ -14,6 +14,18 @@ import {
     GetSpellSchoolKeys,
     SpellSchool,
 } from "../../schemas/spell/SpellSchoolSchema";
+import {
+    GetSpellCastingTimeKeys,
+    GetSpellCastingTimeName,
+} from "../../schemas/spell/SpellCastingTimeSchema";
+import {
+    GetSpellDurationKeys,
+    GetSpellDurationName,
+} from "../../schemas/spell/SpellDurationSchema";
+import {
+    GetSpellRangeTypeKeys,
+    SpellRangeType,
+} from "../../schemas/spell/SpellRangeTypeSchema";
 
 interface SpellListFilterProps {
     showFilters: boolean;
@@ -30,6 +42,10 @@ export default function SpellListFilter({
         name: "",
         levels: [],
         schools: [],
+        castingTime: [],
+        duration: [],
+        rangeValue: "",
+        rangeType: [],
     });
 
     useEffect(() => {
@@ -42,6 +58,10 @@ export default function SpellListFilter({
             name: "",
             levels: [],
             schools: [],
+            castingTime: [],
+            duration: [],
+            rangeValue: "",
+            rangeType: [],
         });
 
         if (filterCleared) filterCleared();
@@ -55,50 +75,119 @@ export default function SpellListFilter({
             className="filter-section"
         >
             <Paper elevation={3}>
-                {/* Name */}
-                <FormControl>
-                    <TextField
-                        id="filter-name"
-                        label="Name"
-                        variant="standard"
-                        className="filter-item"
-                        value={spellFilter.name}
-                        onChange={(event) => {
-                            setSpellFilter({
-                                ...spellFilter,
-                                name: event.target.value,
-                            });
-                        }}
-                    />
-                </FormControl>
+                <div className="filter-grid">
+                    {/* Name */}
+                    <FormControl className="filter-item">
+                        <TextField
+                            id="filter-name"
+                            label="Name"
+                            variant="standard"
+                            value={spellFilter.name}
+                            onChange={(event) => {
+                                setSpellFilter({
+                                    ...spellFilter,
+                                    name: event.target.value,
+                                });
+                            }}
+                        />
+                    </FormControl>
 
-                {/* Level */}
-                <EnumMultiselect
-                    label="Level"
-                    options={GetSpellLevelKeys()}
-                    values={spellFilter.levels}
-                    onValuesChanged={(values) =>
-                        setSpellFilter({
-                            ...spellFilter,
-                            levels: values,
-                        })
-                    }
-                    getOptionLabel={GetSpellLevelName}
-                />
+                    {/* Level */}
+                    <FormControl className="filter-item">
+                        <EnumMultiselect
+                            label="Level"
+                            options={GetSpellLevelKeys()}
+                            values={spellFilter.levels}
+                            onValuesChanged={(values) =>
+                                setSpellFilter({
+                                    ...spellFilter,
+                                    levels: values,
+                                })
+                            }
+                            getOptionLabel={GetSpellLevelName}
+                        />
+                    </FormControl>
 
-                {/* School */}
-                <EnumMultiselect
-                    label="School"
-                    options={GetSpellSchoolKeys()}
-                    values={spellFilter.schools}
-                    onValuesChanged={(values) =>
-                        setSpellFilter({
-                            ...spellFilter,
-                            schools: values,
-                        })
-                    }
-                    getOptionLabel={(value) => SpellSchool[value]}
-                />
+                    {/* School */}
+                    <FormControl className="filter-item">
+                        <EnumMultiselect
+                            label="School"
+                            options={GetSpellSchoolKeys()}
+                            values={spellFilter.schools}
+                            onValuesChanged={(values) =>
+                                setSpellFilter({
+                                    ...spellFilter,
+                                    schools: values,
+                                })
+                            }
+                            getOptionLabel={(value) => SpellSchool[value]}
+                        />
+                    </FormControl>
+
+                    {/* Casting time */}
+                    <FormControl className="filter-item">
+                        <EnumMultiselect
+                            label="Casting time"
+                            options={GetSpellCastingTimeKeys()}
+                            values={spellFilter.castingTime}
+                            onValuesChanged={(values) =>
+                                setSpellFilter({
+                                    ...spellFilter,
+                                    castingTime: values,
+                                })
+                            }
+                            getOptionLabel={GetSpellCastingTimeName}
+                        />
+                    </FormControl>
+
+                    {/* Duration */}
+                    <FormControl className="filter-item">
+                        <EnumMultiselect
+                            label="Duration"
+                            options={GetSpellDurationKeys()}
+                            values={spellFilter.duration}
+                            onValuesChanged={(values) =>
+                                setSpellFilter({
+                                    ...spellFilter,
+                                    duration: values,
+                                })
+                            }
+                            getOptionLabel={GetSpellDurationName}
+                        />
+                    </FormControl>
+
+                    {/* Range */}
+                    <FormControl className="filter-item">
+                        <TextField
+                            type="number"
+                            id="filter-range-value"
+                            label="Range value"
+                            variant="standard"
+                            value={spellFilter.rangeValue}
+                            onChange={(event) => {
+                                setSpellFilter({
+                                    ...spellFilter,
+                                    rangeValue: event.target.value,
+                                });
+                            }}
+                        />
+                    </FormControl>
+
+                    <FormControl className="filter-item">
+                        <EnumMultiselect
+                            label="Range type"
+                            options={GetSpellRangeTypeKeys()}
+                            values={spellFilter.rangeType}
+                            onValuesChanged={(values) =>
+                                setSpellFilter({
+                                    ...spellFilter,
+                                    rangeType: values,
+                                })
+                            }
+                            getOptionLabel={(value) => SpellRangeType[value]}
+                        />
+                    </FormControl>
+                </div>
 
                 {SpellFilterIsNotEmpty(spellFilter) && (
                     <div>
@@ -117,6 +206,10 @@ export function SpellFilterIsNotEmpty(spellFilter: SpellFilter | undefined) {
         spellFilter &&
         (spellFilter.name ||
             spellFilter.levels.length > 0 ||
-            spellFilter.schools.length > 0)
+            spellFilter.schools.length > 0 ||
+            spellFilter.castingTime.length > 0 ||
+            spellFilter.duration.length > 0 ||
+            spellFilter.rangeValue ||
+            spellFilter.rangeType.length > 0)
     );
 }

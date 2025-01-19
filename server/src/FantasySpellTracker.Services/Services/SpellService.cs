@@ -19,12 +19,9 @@ public class SpellService(IFstDataDbContext dataContext, ISieveProcessor sievePr
             .AsExpandableEFCore()
             .Select(s => SpellExpressions.ToSpellDto().Invoke(s));
 
-        var filteredQuery = sieveProcessor.Apply(sieveModel, spellDataQuery);
+        var records = await sieveProcessor.Apply(sieveModel, spellDataQuery).ToArrayAsync();
+        var totalCount = await sieveProcessor.Apply(sieveModel, spellDataQuery, applyPagination: false).CountAsync();
 
-        sieveModel.PageSize = null;
-        sieveModel.Page = null;
-        var unpagedQuery = sieveProcessor.Apply(sieveModel, spellDataQuery);
-
-        return new ReadResponseDto<SpellDto>(await filteredQuery.ToArrayAsync(), await unpagedQuery.CountAsync());
+        return new ReadResponseDto<SpellDto>(records, totalCount);
     }
 }

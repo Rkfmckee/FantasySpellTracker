@@ -6,7 +6,11 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Typography from "@mui/material/Typography";
 import axios from "axios";
 import { MouseEvent, useEffect, useState } from "react";
-import { SortNameDescending } from "../../helpers/FilterHelpers";
+import {
+    EnumListToFilter,
+    SortNameDescending,
+    TextToFilter,
+} from "../../helpers/FilterHelpers";
 import { IsMobile } from "../../helpers/MuiHelpers";
 import { SpellFilter } from "../../schemas/filter/SpellFilterSchema";
 import { ReadResponse } from "../../schemas/ReadResponseSchema";
@@ -35,7 +39,7 @@ export default function SpellList() {
     }, [spellFilter, sortBy]);
 
     useEffect(() => {
-        getSpellsFromApi;
+        getSpellsFromApi();
     }, [page]);
 
     async function getSpellsFromApi() {
@@ -44,16 +48,18 @@ export default function SpellList() {
 
         if (SpellFilterIsNotEmpty(spellFilter)) {
             url += "&filters=";
-            if (spellFilter?.name) url += `name@=${spellFilter.name},`;
 
-            if (spellFilter?.levels && spellFilter?.levels.length > 0) {
-                url += `level==${spellFilter.levels.join("|")},`;
-            }
+            url += TextToFilter(spellFilter?.name, "name");
+            url += EnumListToFilter(spellFilter?.levels, "level");
+            url += EnumListToFilter(spellFilter?.schools, "school");
+            url += EnumListToFilter(spellFilter?.castingTime, "castingTime");
+            url += EnumListToFilter(spellFilter?.duration, "duration");
 
-            if (spellFilter?.schools && spellFilter?.schools.length > 0) {
-                url += `school==${spellFilter.schools.join("|")},`;
-            }
+            url += TextToFilter(spellFilter?.rangeValue, "rangeValue", "==");
+            url += EnumListToFilter(spellFilter?.rangeType, "rangeType");
         }
+
+        console.log(url);
 
         await axios.get<ReadResponse<Spell>>(url).then((response) => {
             setSpells(response.data.currentPageData);

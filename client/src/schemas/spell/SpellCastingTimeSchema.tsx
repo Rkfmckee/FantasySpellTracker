@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { StringIsNumber } from "../../helpers/StringHelpers";
 
 export enum SpellCastingTime {
     Action,
@@ -37,4 +38,10 @@ export function GetSpellCastingTimeName(castingTime: SpellCastingTime) {
         default:
             return SpellCastingTime[castingTime];
     }
+}
+
+export function GetSpellCastingTimeKeys() {
+    return Object.keys(SpellCastingTime)
+        .filter(StringIsNumber)
+        .map((key) => Number(key));
 }
