@@ -7,6 +7,7 @@ import Typography from "@mui/material/Typography";
 import axios from "axios";
 import { MouseEvent, useEffect, useState } from "react";
 import {
+    EnumFlagsToFilter,
     EnumListToFilter,
     SortNameDescending,
     TextToFilter,
@@ -57,6 +58,8 @@ export default function SpellList() {
 
             url += TextToFilter(spellFilter?.rangeValue, "rangeValue", "==");
             url += EnumListToFilter(spellFilter?.rangeType, "rangeType");
+
+            url += EnumFlagsToFilter(spellFilter?.components, "components");
         }
 
         console.log(url);

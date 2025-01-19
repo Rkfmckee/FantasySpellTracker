@@ -21,3 +21,15 @@ export function EnumListToFilter(
     }
     return "";
 }
+
+export function EnumFlagsToFilter(
+    values: number[] | undefined,
+    propName: string
+) {
+    if (values && values.length > 0) {
+        let flagValue = 0;
+        values.forEach((value) => (flagValue = flagValue | value));
+        return `${propName}==${flagValue},`;
+    }
+    return "";
+}

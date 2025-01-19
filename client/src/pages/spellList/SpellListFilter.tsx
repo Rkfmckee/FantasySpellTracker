@@ -3,29 +3,32 @@ import Collapse from "@mui/material/Collapse";
 import FormControl from "@mui/material/FormControl";
 import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { useEffect, useState } from "react";
 import EnumMultiselect from "../../components/form/EnumMultiselect";
 import { SpellFilter } from "../../schemas/filter/SpellFilterSchema";
 import {
-    GetSpellLevelKeys,
-    GetSpellLevelName,
-} from "../../schemas/spell/SpellLevelSchema";
-import {
-    GetSpellSchoolKeys,
-    SpellSchool,
-} from "../../schemas/spell/SpellSchoolSchema";
-import {
     GetSpellCastingTimeKeys,
     GetSpellCastingTimeName,
 } from "../../schemas/spell/SpellCastingTimeSchema";
+import { SpellComponents } from "../../schemas/spell/SpellComponentSchema";
 import {
     GetSpellDurationKeys,
     GetSpellDurationName,
 } from "../../schemas/spell/SpellDurationSchema";
 import {
+    GetSpellLevelKeys,
+    GetSpellLevelName,
+} from "../../schemas/spell/SpellLevelSchema";
+import {
     GetSpellRangeTypeKeys,
     SpellRangeType,
 } from "../../schemas/spell/SpellRangeTypeSchema";
+import {
+    GetSpellSchoolKeys,
+    SpellSchool,
+} from "../../schemas/spell/SpellSchoolSchema";
 
 interface SpellListFilterProps {
     showFilters: boolean;
@@ -46,6 +49,7 @@ export default function SpellListFilter({
         duration: [],
         rangeValue: "",
         rangeType: [],
+        components: [],
     });
 
     useEffect(() => {
@@ -62,6 +66,7 @@ export default function SpellListFilter({
             duration: [],
             rangeValue: "",
             rangeType: [],
+            components: [],
         });
 
         if (filterCleared) filterCleared();
@@ -77,7 +82,7 @@ export default function SpellListFilter({
             <Paper elevation={3}>
                 <div className="filter-grid">
                     {/* Name */}
-                    <FormControl className="filter-item">
+                    <FormControl>
                         <TextField
                             id="filter-name"
                             label="Name"
@@ -93,7 +98,7 @@ export default function SpellListFilter({
                     </FormControl>
 
                     {/* Level */}
-                    <FormControl className="filter-item">
+                    <FormControl>
                         <EnumMultiselect
                             label="Level"
                             options={GetSpellLevelKeys()}
@@ -109,7 +114,7 @@ export default function SpellListFilter({
                     </FormControl>
 
                     {/* School */}
-                    <FormControl className="filter-item">
+                    <FormControl>
                         <EnumMultiselect
                             label="School"
                             options={GetSpellSchoolKeys()}
@@ -125,7 +130,7 @@ export default function SpellListFilter({
                     </FormControl>
 
                     {/* Casting time */}
-                    <FormControl className="filter-item">
+                    <FormControl>
                         <EnumMultiselect
                             label="Casting time"
                             options={GetSpellCastingTimeKeys()}
@@ -141,7 +146,7 @@ export default function SpellListFilter({
                     </FormControl>
 
                     {/* Duration */}
-                    <FormControl className="filter-item">
+                    <FormControl>
                         <EnumMultiselect
                             label="Duration"
                             options={GetSpellDurationKeys()}
@@ -157,7 +162,7 @@ export default function SpellListFilter({
                     </FormControl>
 
                     {/* Range */}
-                    <FormControl className="filter-item">
+                    <FormControl>
                         <TextField
                             type="number"
                             id="filter-range-value"
@@ -173,7 +178,7 @@ export default function SpellListFilter({
                         />
                     </FormControl>
 
-                    <FormControl className="filter-item">
+                    <FormControl>
                         <EnumMultiselect
                             label="Range type"
                             options={GetSpellRangeTypeKeys()}
@@ -186,6 +191,29 @@ export default function SpellListFilter({
                             }
                             getOptionLabel={(value) => SpellRangeType[value]}
                         />
+                    </FormControl>
+
+                    <FormControl>
+                        <ToggleButtonGroup
+                            value={spellFilter.components}
+                            onChange={(_event, values) =>
+                                setSpellFilter({
+                                    ...spellFilter,
+                                    components: values,
+                                })
+                            }
+                            aria-label="text formatting"
+                        >
+                            <ToggleButton value={SpellComponents.Verbal}>
+                                V
+                            </ToggleButton>
+                            <ToggleButton value={SpellComponents.Somatic}>
+                                S
+                            </ToggleButton>
+                            <ToggleButton value={SpellComponents.Material}>
+                                M
+                            </ToggleButton>
+                        </ToggleButtonGroup>
                     </FormControl>
                 </div>
 
@@ -210,6 +238,7 @@ export function SpellFilterIsNotEmpty(spellFilter: SpellFilter | undefined) {
             spellFilter.castingTime.length > 0 ||
             spellFilter.duration.length > 0 ||
             spellFilter.rangeValue ||
-            spellFilter.rangeType.length > 0)
+            spellFilter.rangeType.length > 0 ||
+            spellFilter.components)
     );
 }
