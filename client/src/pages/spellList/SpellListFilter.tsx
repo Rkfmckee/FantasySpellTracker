@@ -29,7 +29,6 @@ import {
     GetSpellSchoolKeys,
     SpellSchool,
 } from "../../schemas/spell/SpellSchoolSchema";
-import { SpellConcentrationOrRitual } from "../../schemas/spell/SpellConcentrationOrRitualSchema";
 
 interface SpellListFilterProps {
     showFilters: boolean;
@@ -42,7 +41,7 @@ export default function SpellListFilter({
     onSpellFilterChange,
     filterCleared,
 }: SpellListFilterProps) {
-    const [spellFilter, setSpellFilter] = useState<SpellFilter>({
+    const defaultSpellFilter = {
         name: "",
         levels: [],
         schools: [],
@@ -51,8 +50,11 @@ export default function SpellListFilter({
         rangeValue: "",
         rangeType: [],
         components: [],
-        concentrationOrRitual: [],
-    });
+        flags: null,
+    };
+
+    const [spellFilter, setSpellFilter] =
+        useState<SpellFilter>(defaultSpellFilter);
 
     useEffect(() => {
         const delay = setTimeout(() => onSpellFilterChange(spellFilter), 500);
@@ -60,17 +62,7 @@ export default function SpellListFilter({
     }, [spellFilter]);
 
     function clearFilter() {
-        setSpellFilter({
-            name: "",
-            levels: [],
-            schools: [],
-            castingTime: [],
-            duration: [],
-            rangeValue: "",
-            rangeType: [],
-            components: [],
-            concentrationOrRitual: [],
-        });
+        setSpellFilter(defaultSpellFilter);
 
         if (filterCleared) filterCleared();
     }
@@ -207,38 +199,61 @@ export default function SpellListFilter({
                                 })
                             }
                         >
-                            <ToggleButton value={SpellComponents.Verbal}>
+                            <ToggleButton
+                                value={SpellComponents.Verbal}
+                                className="filter-grid-item__components"
+                            >
                                 V
                             </ToggleButton>
-                            <ToggleButton value={SpellComponents.Somatic}>
+                            <ToggleButton
+                                value={SpellComponents.Somatic}
+                                className="filter-grid-item__components"
+                            >
                                 S
                             </ToggleButton>
-                            <ToggleButton value={SpellComponents.Material}>
+                            <ToggleButton
+                                value={SpellComponents.Material}
+                                className="filter-grid-item__components"
+                            >
                                 M
                             </ToggleButton>
                         </ToggleButtonGroup>
                     </FormControl>
 
-                    {/* Concentration or Ritual */}
-                    <FormControl>
+                    {/* Flags */}
+                    <FormControl className="filter-grid-item__flag-group">
                         <ToggleButtonGroup
-                            value={spellFilter.concentrationOrRitual}
+                            value={spellFilter.flags}
                             onChange={(_event, values) =>
                                 setSpellFilter({
                                     ...spellFilter,
-                                    concentrationOrRitual: values,
+                                    flags: values,
                                 })
                             }
                         >
                             <ToggleButton
-                                value={SpellConcentrationOrRitual.Concentration}
+                                value={"concentration"}
+                                className="filter-grid-item__flag-concentration"
                             >
                                 Is Concentration
                             </ToggleButton>
                             <ToggleButton
-                                value={SpellConcentrationOrRitual.Ritual}
+                                value={"ritual"}
+                                className="filter-grid-item__flag-ritual"
                             >
                                 Is Ritual
+                            </ToggleButton>
+                            <ToggleButton
+                                value={"upcast"}
+                                className="filter-grid-item__flag-upcast"
+                            >
+                                Can Upcast
+                            </ToggleButton>
+                            <ToggleButton
+                                value={"materialCost"}
+                                className="filter-grid-item__flag-materialCost"
+                            >
+                                Has Material Cost
                             </ToggleButton>
                         </ToggleButtonGroup>
                     </FormControl>
@@ -267,6 +282,6 @@ export function SpellFilterIsNotEmpty(spellFilter: SpellFilter | undefined) {
             spellFilter.rangeValue ||
             spellFilter.rangeType.length > 0 ||
             spellFilter.components.length > 0 ||
-            spellFilter.concentrationOrRitual.length > 0)
+            spellFilter.flags)
     );
 }

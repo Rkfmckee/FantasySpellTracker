@@ -1,7 +1,6 @@
 import { z } from "zod";
 import { SpellCastingTimeSchema } from "../spell/SpellCastingTimeSchema";
 import { SpellComponentsSchema } from "../spell/SpellComponentSchema";
-import { SpellConcentrationOrRitualSchema } from "../spell/SpellConcentrationOrRitualSchema";
 import { SpellDurationSchema } from "../spell/SpellDurationSchema";
 import { SpellLevelSchema } from "../spell/SpellLevelSchema";
 import { SpellRangeTypeSchema } from "../spell/SpellRangeTypeSchema";
@@ -16,7 +15,14 @@ export const SpellFilterSchema = z.object({
     rangeValue: z.string(),
     rangeType: z.array(SpellRangeTypeSchema),
     components: z.array(SpellComponentsSchema),
-    concentrationOrRitual: z.array(SpellConcentrationOrRitualSchema),
+    flags: z.nullable(
+        z.union([
+            z.literal("concentration"),
+            z.literal("ritual"),
+            z.literal("upcast"),
+            z.literal("materialCost"),
+        ])
+    ),
 });
 
 export type SpellFilter = z.infer<typeof SpellFilterSchema>;

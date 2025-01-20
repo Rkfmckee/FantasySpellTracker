@@ -1,11 +1,9 @@
-import { SpellConcentrationOrRitual } from "../schemas/spell/SpellConcentrationOrRitualSchema";
-
 export function SortNameDescending(sortName: string) {
     const commaRegex = /,/g;
     return `-${sortName.replace(commaRegex, ",-")}`;
 }
 
-export function TextToFilter(
+export function TextToFilterUrl(
     value: string | null | undefined,
     propName: string,
     operator: string = "@="
@@ -14,7 +12,7 @@ export function TextToFilter(
     return "";
 }
 
-export function EnumListToFilter(
+export function EnumListToFilterUrl(
     values: number[] | undefined,
     propName: string
 ) {
@@ -24,7 +22,7 @@ export function EnumListToFilter(
     return "";
 }
 
-export function EnumFlagsToFilter(
+export function EnumFlagsToFilterUrl(
     values: number[] | undefined,
     propName: string
 ) {
@@ -36,18 +34,32 @@ export function EnumFlagsToFilter(
     return "";
 }
 
-export function SpellConcentrationOrRitualToFilter(
-    values: SpellConcentrationOrRitual[] | undefined
+export function SpellConcentrationOrRitualToFilterUrl(
+    values:
+        | "concentration"
+        | "ritual"
+        | "upcast"
+        | "materialCost"
+        | null
+        | undefined
 ) {
     let url = "";
 
     if (values && values.length > 0) {
-        if (values.includes(SpellConcentrationOrRitual.Concentration)) {
+        if (values.includes("concentration")) {
             url += "isConcentration==true,";
         }
 
-        if (values.includes(SpellConcentrationOrRitual.Ritual)) {
+        if (values.includes("ritual")) {
             url += "isRitual==true,";
+        }
+
+        if (values.includes("upcast")) {
+            url += "canUpcast==true,";
+        }
+
+        if (values.includes("materialCost")) {
+            url += "hasMaterialCost==true,";
         }
     }
 

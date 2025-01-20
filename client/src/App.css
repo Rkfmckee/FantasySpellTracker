@@ -63,6 +63,30 @@ span:has(> .fa-sort-down) {
     padding: 1em;
 }
 
+.filter-grid-item__components {
+    width: 20%;
+}
+
+.filter-grid-item__flag-group {
+    grid-column: 4 / 6;
+}
+
+.filter-grid-item__flag-concentration {
+    width: 30%;
+}
+
+.filter-grid-item__flag-ritual {
+    width: 20%;
+}
+
+.filter-grid-item__flag-upcast {
+    width: 20%;
+}
+
+.filter-grid-item__flag-materialCost {
+    width: 30%;
+}
+
 /* Spell list styles */
 .spell-view-icon {
     margin-right: 1rem;

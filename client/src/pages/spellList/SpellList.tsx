@@ -6,13 +6,7 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Typography from "@mui/material/Typography";
 import axios from "axios";
 import { MouseEvent, useEffect, useState } from "react";
-import {
-    EnumFlagsToFilter,
-    EnumListToFilter,
-    SortNameDescending,
-    SpellConcentrationOrRitualToFilter,
-    TextToFilter,
-} from "../../helpers/FilterHelpers";
+
 import { IsMobile } from "../../helpers/MuiHelpers";
 import { SpellFilter } from "../../schemas/filter/SpellFilterSchema";
 import { ReadResponse } from "../../schemas/ReadResponseSchema";
@@ -20,6 +14,13 @@ import { Spell } from "../../schemas/spell/SpellSchema";
 import SpellCards from "./cards/SpellCards";
 import SpellListFilter, { SpellFilterIsNotEmpty } from "./SpellListFilter";
 import SpellTable from "./table/SpellTable";
+import {
+    EnumFlagsToFilterUrl,
+    EnumListToFilterUrl,
+    SortNameDescending,
+    SpellConcentrationOrRitualToFilterUrl,
+    TextToFilterUrl,
+} from "../../helpers/FilterHelpers";
 
 export default function SpellList() {
     // Filter properties
@@ -51,19 +52,17 @@ export default function SpellList() {
         if (SpellFilterIsNotEmpty(spellFilter)) {
             url += "&filters=";
 
-            url += TextToFilter(spellFilter?.name, "name");
-            url += EnumListToFilter(spellFilter?.levels, "level");
-            url += EnumListToFilter(spellFilter?.schools, "school");
-            url += EnumListToFilter(spellFilter?.castingTime, "castingTime");
-            url += EnumListToFilter(spellFilter?.duration, "duration");
+            url += TextToFilterUrl(spellFilter?.name, "name");
+            url += EnumListToFilterUrl(spellFilter?.levels, "level");
+            url += EnumListToFilterUrl(spellFilter?.schools, "school");
+            url += EnumListToFilterUrl(spellFilter?.castingTime, "castingTime");
+            url += EnumListToFilterUrl(spellFilter?.duration, "duration");
 
-            url += TextToFilter(spellFilter?.rangeValue, "rangeValue", "==");
-            url += EnumListToFilter(spellFilter?.rangeType, "rangeType");
+            url += TextToFilterUrl(spellFilter?.rangeValue, "rangeValue", "==");
+            url += EnumListToFilterUrl(spellFilter?.rangeType, "rangeType");
 
-            url += EnumFlagsToFilter(spellFilter?.components, "components");
-            url += SpellConcentrationOrRitualToFilter(
-                spellFilter?.concentrationOrRitual
-            );
+            url += EnumFlagsToFilterUrl(spellFilter?.components, "components");
+            url += SpellConcentrationOrRitualToFilterUrl(spellFilter?.flags);
         }
 
         console.log(url);
