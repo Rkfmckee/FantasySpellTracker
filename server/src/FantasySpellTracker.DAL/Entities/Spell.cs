@@ -39,5 +39,7 @@ public class Spell : Entity
     public int? SourceId { get; set; }
     public Source? Source { get; set; }
 
+    public IEnumerable<ClassSpell>? ClassSpells { get; set; }
+
     #endregion
 }

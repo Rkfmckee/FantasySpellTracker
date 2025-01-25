@@ -22,6 +22,44 @@ namespace FantasySpellTracker.DAL.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("FantasySpellTracker.DAL.Entities.Class", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Classes");
+                });
+
+            modelBuilder.Entity("FantasySpellTracker.DAL.Entities.ClassSpell", b =>
+                {
+                    b.Property<int>("ClassId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SpellId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Optional")
+                        .HasColumnType("bit");
+
+                    b.HasKey("ClassId", "SpellId");
+
+                    b.HasIndex("SpellId");
+
+                    b.ToTable("ClassSpells");
+                });
+
             modelBuilder.Entity("FantasySpellTracker.DAL.Entities.Source", b =>
                 {
                     b.Property<int>("Id")
@@ -70,6 +108,9 @@ namespace FantasySpellTracker.DAL.Migrations
 
                     b.Property<int?>("Components")
                         .HasColumnType("int");
+
+                    b.Property<string>("ComponentsCost")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ComponentsDescription")
                         .HasColumnType("nvarchar(max)");
@@ -130,6 +171,25 @@ namespace FantasySpellTracker.DAL.Migrations
                     b.ToTable("Spells");
                 });
 
+            modelBuilder.Entity("FantasySpellTracker.DAL.Entities.ClassSpell", b =>
+                {
+                    b.HasOne("FantasySpellTracker.DAL.Entities.Class", "Class")
+                        .WithMany("ClassSpells")
+                        .HasForeignKey("ClassId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FantasySpellTracker.DAL.Entities.Spell", "Spell")
+                        .WithMany("ClassSpells")
+                        .HasForeignKey("SpellId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Class");
+
+                    b.Navigation("Spell");
+                });
+
             modelBuilder.Entity("FantasySpellTracker.DAL.Entities.Spell", b =>
                 {
                     b.HasOne("FantasySpellTracker.DAL.Entities.Source", "Source")
@@ -139,9 +199,19 @@ namespace FantasySpellTracker.DAL.Migrations
                     b.Navigation("Source");
                 });
 
+            modelBuilder.Entity("FantasySpellTracker.DAL.Entities.Class", b =>
+                {
+                    b.Navigation("ClassSpells");
+                });
+
             modelBuilder.Entity("FantasySpellTracker.DAL.Entities.Source", b =>
                 {
                     b.Navigation("Spells");
+                });
+
+            modelBuilder.Entity("FantasySpellTracker.DAL.Entities.Spell", b =>
+                {
+                    b.Navigation("ClassSpells");
                 });
 #pragma warning restore 612, 618
         }

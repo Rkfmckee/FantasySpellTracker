@@ -6,12 +6,8 @@ namespace FantasySpellTracker.API;
 public static class Seed
 {
     private static IServiceScope? serviceScope;
-    private static IFstDataDbContext? dataDbContext;
-    private static IFstAppDbContext? appDbContext;
 
-    private const string defaultPassword = "Pa$$w0rd";
-
-    public static WebApplication SeedData(this WebApplication app)
+    public static async Task<WebApplication> SeedDataAsync(this WebApplication app)
     {
         using (serviceScope = app.Services.CreateScope())
         {
@@ -21,6 +17,8 @@ public static class Seed
             dataDbContext.Database.EnsureCreated();
             appDbContext.Database.EnsureCreated();
 
+            await dataDbContext.SeedClasses();
+
             dataDbContext.SaveChanges();
             appDbContext.SaveChanges();
         }
@@ -28,10 +26,30 @@ public static class Seed
         return app;
     }
 
-    private static bool EntityHasValues<T>() where T : Entity
+    private static async Task SeedClasses(this IFstDbContext dbContext)
     {
-        var existingItems = dataDbContext!.Get<T>().FirstOrDefault();
+        if (dbContext == null || dbContext.EntityHasValues<Class>()) return;
 
-        return existingItems is not null;
+        var classes = new Class[]
+        {
+            new Class { Name = "Artificer" },
+            new Class { Name = "Bard" },
+            new Class { Name = "Cleric" },
+            new Class { Name = "Druid" },
+            new Class { Name = "Fighter" },
+            new Class { Name = "Paladin" },
+            new Class { Name = "Ranger" },
+            new Class { Name = "Rogue" },
+            new Class { Name = "Sorcerer" },
+            new Class { Name = "Warlock" },
+            new Class { Name = "Wizard" },
+        };
+
+        await dbContext.AddAsync(classes);
+    }
+
+    private static bool EntityHasValues<T>(this IFstDbContext dbContext) where T : Entity
+    {
+        return dbContext!.Get<T>().FirstOrDefault() != null;
     }
 }

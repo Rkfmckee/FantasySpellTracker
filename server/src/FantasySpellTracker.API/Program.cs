@@ -43,7 +43,7 @@ if (app.Environment.IsDevelopment())
 {
     app.MapScalarApiReference();
     app.MapOpenApi();
-    app.SeedData();
+    await app.SeedDataAsync();
 }
 
 app.UseExceptionHandler();
