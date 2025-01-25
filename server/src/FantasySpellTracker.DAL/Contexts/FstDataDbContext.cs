@@ -10,4 +10,5 @@ public class FstDataDbContext(DbContextOptions<FstDataDbContext> options) : Base
     public DbSet<ClassSpell> ClassSpells { get; set; }
     public DbSet<Source> Sources { get; set; }
     public DbSet<Spell> Spells { get; set; }
+    public DbSet<SubClass> SubClasses { get; set; }
 }

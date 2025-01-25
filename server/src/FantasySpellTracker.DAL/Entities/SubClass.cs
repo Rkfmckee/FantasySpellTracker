@@ -1,12 +1,14 @@
 ﻿namespace FantasySpellTracker.DAL.Entities;
 
-public class Class : Entity
+public class SubClass : Entity
 {
     public required string Name { get; set; }
 
     #region Relationships
 
-    public IEnumerable<SubClass>? SubClasses { get; set; }
+    public int ClassId { get; set; }
+    public Class Class { get; set; } = null!;
+
     public IEnumerable<ClassSpell>? ClassSpells { get; set; }
 
     #endregion

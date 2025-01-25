@@ -53,9 +53,14 @@ namespace FantasySpellTracker.DAL.Migrations
                     b.Property<bool>("Optional")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("SubClassId")
+                        .HasColumnType("int");
+
                     b.HasKey("ClassId", "SpellId");
 
                     b.HasIndex("SpellId");
+
+                    b.HasIndex("SubClassId");
 
                     b.ToTable("ClassSpells");
                 });
@@ -171,6 +176,31 @@ namespace FantasySpellTracker.DAL.Migrations
                     b.ToTable("Spells");
                 });
 
+            modelBuilder.Entity("FantasySpellTracker.DAL.Entities.SubClass", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ClassId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClassId");
+
+                    b.ToTable("SubClasses");
+                });
+
             modelBuilder.Entity("FantasySpellTracker.DAL.Entities.ClassSpell", b =>
                 {
                     b.HasOne("FantasySpellTracker.DAL.Entities.Class", "Class")
@@ -185,9 +215,15 @@ namespace FantasySpellTracker.DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("FantasySpellTracker.DAL.Entities.SubClass", "SubClass")
+                        .WithMany()
+                        .HasForeignKey("SubClassId");
+
                     b.Navigation("Class");
 
                     b.Navigation("Spell");
+
+                    b.Navigation("SubClass");
                 });
 
             modelBuilder.Entity("FantasySpellTracker.DAL.Entities.Spell", b =>
@@ -199,9 +235,22 @@ namespace FantasySpellTracker.DAL.Migrations
                     b.Navigation("Source");
                 });
 
+            modelBuilder.Entity("FantasySpellTracker.DAL.Entities.SubClass", b =>
+                {
+                    b.HasOne("FantasySpellTracker.DAL.Entities.Class", "Class")
+                        .WithMany("SubClasses")
+                        .HasForeignKey("ClassId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Class");
+                });
+
             modelBuilder.Entity("FantasySpellTracker.DAL.Entities.Class", b =>
                 {
                     b.Navigation("ClassSpells");
+
+                    b.Navigation("SubClasses");
                 });
 
             modelBuilder.Entity("FantasySpellTracker.DAL.Entities.Source", b =>

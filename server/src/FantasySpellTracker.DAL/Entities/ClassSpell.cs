@@ -12,4 +12,11 @@ public class ClassSpell
     public Spell Spell { get; set; } = null!;
 
     public bool Optional { get; set; }
+
+    #region Other Relationships
+
+    public int? SubClassId { get; set; }
+    public SubClass? SubClass { get; set; }
+
+    #endregion
 }
