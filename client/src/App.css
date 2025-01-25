@@ -96,6 +96,10 @@ span:has(> .fa-sort-down) {
     margin-left: 0.5rem;
 }
 
+.spell-description li {
+    margin-top: 0.5em;
+}
+
 .has-description:after {
     content: " *";
     color: var(--mui-palette-text-primary);

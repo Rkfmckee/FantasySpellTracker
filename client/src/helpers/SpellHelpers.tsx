@@ -8,9 +8,14 @@ import { Spell } from "../schemas/spell/SpellSchema";
 import { SpellSchool } from "../schemas/spell/SpellSchoolSchema";
 import { NewlineToLinebreak } from "./StringHelpers";
 import { Tooltip } from "@mui/material";
+import { Class } from "../schemas/class/ClassSchema";
 
 export function GetDescription(spell: Spell) {
-    return parse(NewlineToLinebreak(spell.description));
+    return (
+        <span className="spell-description">
+            {parse(NewlineToLinebreak(spell.description))}
+        </span>
+    );
 }
 
 export function GetLevelAndSchoolDescription(spell: Spell) {
@@ -40,6 +45,13 @@ export function HasDescriptionClass(
 ) {
     if (description)
         return `has-description has-description__${descriptionType}`;
+}
+
+export function GetClassesBox(classes: Class[]) {
+    return GetDescriptionBox(
+        classes.map((spellClass) => spellClass.className).join(", "),
+        "Classes"
+    );
 }
 
 export function GetDescriptionBox(text: string | undefined, name: string = "") {

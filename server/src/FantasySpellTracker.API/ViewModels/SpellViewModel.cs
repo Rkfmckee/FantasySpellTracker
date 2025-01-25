@@ -26,6 +26,7 @@ public class SpellViewModel
     public bool IsConcentration { get; set; }
     public bool IsRitual { get; set; }
     public bool CanUpcast { get; set; }
+    public bool HasMaterialCost { get; set; }
 
     public SourceViewModel? Source { get; set; }
     public SpellClassViewModel[]? Classes { get; set; }

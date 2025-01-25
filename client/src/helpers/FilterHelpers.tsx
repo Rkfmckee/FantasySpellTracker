@@ -34,7 +34,7 @@ export function EnumFlagsToFilterUrl(
     return "";
 }
 
-export function SpellConcentrationOrRitualToFilterUrl(
+export function SpellFlagsToFilterUrl(
     values:
         | "concentration"
         | "ritual"
@@ -55,11 +55,11 @@ export function SpellConcentrationOrRitualToFilterUrl(
         }
 
         if (values.includes("upcast")) {
-            url += "canUpcast==true,";
+            url += "";
         }
 
         if (values.includes("materialCost")) {
-            url += "hasMaterialCost==true,";
+            url += "";
         }
     }
 

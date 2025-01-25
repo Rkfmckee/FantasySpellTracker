@@ -4,6 +4,7 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import {
+    GetClassesBox,
     GetConcentrationTag,
     GetCriticalRoleTag,
     GetDescription,
@@ -97,8 +98,11 @@ export default function SpellCard({ spell }: SpellCardProps) {
                             {GetCriticalRoleTag(spell, true)}
                             {GetUnearthedArcanaTag(spell, true)}
                         </div>
+
                         {GetDescription(spell)}
                         {GetDescriptionBox(spell.higherLevelDescription)}
+                        {GetClassesBox(spell.classes)}
+
                         {GetDescriptionBox(
                             spell.castingTimeDescription,
                             "Casting time"

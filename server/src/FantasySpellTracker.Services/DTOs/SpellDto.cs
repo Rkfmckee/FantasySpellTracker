@@ -26,7 +26,8 @@ public class SpellDto
 
     public bool IsConcentration { get; set; }
     public bool IsRitual { get; set; }
-    public bool CanUpcast => Level != SpellLevel.Cantrip && !string.IsNullOrWhiteSpace(HigherLevelDescription);
+    public bool CanUpcast => Level != SpellLevel.Cantrip && HigherLevelDescription != null;
+    public bool HasMaterialCost => ComponentsCost != null;
 
     public SourceDto? Source { get; set; }
     public SpellClassDto[]? Classes { get; set; }
@@ -47,5 +48,7 @@ public class SpellSieve : ISieveConfiguration
         mapper.Property<SpellDto>(s => s.Components).CanFilter();
         mapper.Property<SpellDto>(s => s.IsConcentration).CanFilter();
         mapper.Property<SpellDto>(s => s.IsRitual).CanFilter();
+        mapper.Property<SpellDto>(s => s.CanUpcast).CanFilter();
+        mapper.Property<SpellDto>(s => s.HasMaterialCost).CanFilter();
     }
 }

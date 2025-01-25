@@ -18,7 +18,7 @@ import {
     EnumFlagsToFilterUrl,
     EnumListToFilterUrl,
     SortNameDescending,
-    SpellConcentrationOrRitualToFilterUrl,
+    SpellFlagsToFilterUrl,
     TextToFilterUrl,
 } from "../../helpers/FilterHelpers";
 
@@ -62,7 +62,7 @@ export default function SpellList() {
             url += EnumListToFilterUrl(spellFilter?.rangeType, "rangeType");
 
             url += EnumFlagsToFilterUrl(spellFilter?.components, "components");
-            url += SpellConcentrationOrRitualToFilterUrl(spellFilter?.flags);
+            url += SpellFlagsToFilterUrl(spellFilter?.flags);
         }
 
         console.log(url);

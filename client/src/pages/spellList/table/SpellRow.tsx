@@ -5,6 +5,7 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import { useState } from "react";
 import {
+    GetClassesBox,
     GetConcentrationTag,
     GetCriticalRoleTag,
     GetDescription,
@@ -82,8 +83,8 @@ export default function SpellRow({ spell }: RowProps) {
                             </div>
 
                             {GetDescription(spell)}
-
                             {GetDescriptionBox(spell.higherLevelDescription)}
+                            {GetClassesBox(spell.classes)}
 
                             <div className="row">
                                 {GetDescriptionBox(
