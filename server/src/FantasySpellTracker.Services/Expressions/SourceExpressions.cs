@@ -6,13 +6,13 @@ namespace FantasySpellTracker.Services.Expressions;
 
 public static class SourceExpressions
 {
-    public static Expression<Func<Source?, SourceDto?>> ToSourceDto()
+    public static Expression<Func<Source, SourceDto>> ToSourceDto()
     {
-        return (source) => source != null ? new SourceDto
+        return (source) => new SourceDto
         {
             Id = source.Id,
             Title = source.Title,
             Type = source.Type
-        } : null;
+        };
     }
 }

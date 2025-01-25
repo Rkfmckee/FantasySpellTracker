@@ -1,8 +1,7 @@
 ﻿namespace FantasySpellTracker.Services.DTOs;
 
-public class SpellClassDto
+public class ClassDto
 {
-    public int ClassId { get; set; }
-    public string? ClassName { get; set; }
-    public bool Optional { get; set; }
+    public int Id { get; set; }
+    public string? Name { get; set; }
 }

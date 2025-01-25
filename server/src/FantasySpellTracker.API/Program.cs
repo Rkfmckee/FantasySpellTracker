@@ -35,6 +35,8 @@ builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
 builder.Services.AddScoped<ISieveProcessor, FsmSieveProcessor>();
 
+builder.Services.AddScoped<IClassService, ClassService>();
+builder.Services.AddScoped<ISourceService, SourceService>();
 builder.Services.AddScoped<ISpellService, SpellService>();
 
 var app = builder.Build();
