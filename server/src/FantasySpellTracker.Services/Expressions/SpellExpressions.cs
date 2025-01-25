@@ -24,6 +24,7 @@ public static class SpellExpressions
 
             Components = spell.Components,
             ComponentsDescription = spell.ComponentsDescription,
+            ComponentsCost = spell.ComponentsCost,
 
             IsConcentration = spell.IsConcentration,
             IsRitual = spell.IsRitual,
@@ -32,6 +33,7 @@ public static class SpellExpressions
             HigherLevelDescription = spell.HigherLevelDescription,
 
             Source = spell.Source != null ? new SourceDto(spell.Source) : null,
+            Classes = spell.ClassSpells != null ? spell.ClassSpells.AsQueryable().Select(ClassSpellExpressions.ToSpellClassDto()).ToArray() : null
         };
     }
 }

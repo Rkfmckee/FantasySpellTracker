@@ -19,16 +19,17 @@ public class SpellDto
 
     public SpellComponent? Components { get; set; }
     public string? ComponentsDescription { get; set; }
+    public string? ComponentsCost { get; set; }
 
     public string? Description { get; set; }
     public string? HigherLevelDescription { get; set; }
 
     public bool IsConcentration { get; set; }
     public bool IsRitual { get; set; }
-    public bool CanUpcast => !string.IsNullOrWhiteSpace(HigherLevelDescription);
-    public bool HasMaterialCost => ComponentsDescription?.Contains("") == true;
+    public bool CanUpcast => Level != SpellLevel.Cantrip && !string.IsNullOrWhiteSpace(HigherLevelDescription);
 
     public SourceDto? Source { get; set; }
+    public SpellClassDto[]? Classes { get; set; }
 }
 
 public class SpellSieve : ISieveConfiguration

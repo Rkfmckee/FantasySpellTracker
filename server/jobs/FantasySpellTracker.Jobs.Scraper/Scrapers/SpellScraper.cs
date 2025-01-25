@@ -66,10 +66,14 @@ public class SpellScraper(IFstDataDbContext dataDbContext) : Scraper
 
         var spell = new Spell { Name = RemoveUnwantedTagsFromName(name) };
 
-        var detailsSections = document.QuerySelector("#page-content")?.QuerySelectorAll("p");
-        if (detailsSections == null || detailsSections.Length < 5) return spell;
+        var paragraphSections = document.QuerySelector("#page-content")?.QuerySelectorAll("p") ?? Enumerable.Empty<IElement>();
+        var listSections = document.QuerySelector("#page-content")?.QuerySelectorAll("ul") ?? Enumerable.Empty<IElement>();
+
+        var detailsSections = paragraphSections?.Concat(listSections);
+        if (detailsSections == null) return spell;
 
         await GetSourceAsync(detailsSections, spell);
+        await GetClassesAsync(detailsSections, spell);
 
         GetSpellLevelAndSchool(detailsSections, spell);
         GetSpellLimits(detailsSections, spell);
@@ -89,7 +93,7 @@ public class SpellScraper(IFstDataDbContext dataDbContext) : Scraper
         return name.Trim();
     }
 
-    private async Task GetSourceAsync(IHtmlCollection<IElement> detailsSections, Spell spell)
+    private async Task GetSourceAsync(IEnumerable<IElement> detailsSections, Spell spell)
     {
         var sourceDescriptionSection = GetSection(detailsSections, source);
         if (sourceDescriptionSection == null) return;
@@ -127,7 +131,7 @@ public class SpellScraper(IFstDataDbContext dataDbContext) : Scraper
         return null;
     }
 
-    private void GetSpellLevelAndSchool(IHtmlCollection<IElement> detailsSections, Spell spell)
+    private void GetSpellLevelAndSchool(IEnumerable<IElement> detailsSections, Spell spell)
     {
         var levelAndSchool = GetSpellLevelAndSchoolSection(detailsSections)?.TextContent;
 
@@ -144,7 +148,7 @@ public class SpellScraper(IFstDataDbContext dataDbContext) : Scraper
         spell.IsRitual = parts.Contains("(ritual)");
     }
 
-    private void GetSpellLimits(IHtmlCollection<IElement> detailsSections, Spell spell)
+    private void GetSpellLimits(IEnumerable<IElement> detailsSections, Spell spell)
     {
         var limitsSection = GetSection(detailsSections, castingTime);
         if (limitsSection == null) return;
@@ -181,7 +185,7 @@ public class SpellScraper(IFstDataDbContext dataDbContext) : Scraper
         spell.IsConcentration = isConcentration;
     }
 
-    private void GetHigherLevelDescription(IHtmlCollection<IElement> detailsSections, Spell spell)
+    private void GetHigherLevelDescription(IEnumerable<IElement> detailsSections, Spell spell)
     {
         var higherLevelDescriptionSection = GetSection(detailsSections, atHigherLevels);
         if (higherLevelDescriptionSection == null) return;
@@ -189,7 +193,32 @@ public class SpellScraper(IFstDataDbContext dataDbContext) : Scraper
         spell.HigherLevelDescription = higherLevelDescriptionSection.TextContent.Replace(atHigherLevels, "").Trim();
     }
 
-    private void GetSpellDescription(IHtmlCollection<IElement> detailsSections, Spell spell)
+    private async Task GetClassesAsync(IEnumerable<IElement> detailsSections, Spell spell)
+    {
+        var spellListsSection = GetSection(detailsSections, spellLists);
+        if (spellListsSection == null) return;
+
+        var classes = await dataDbContext.Get<Class>().ToArrayAsync();
+        if (classes == null) return;
+
+        foreach (var spellClass in classes)
+        {
+            if (spellListsSection.TextContent.Contains(spellClass.Name))
+            {
+                var optional = false;
+                if (spellListsSection.TextContent.Contains($"{spellClass.Name} (Optional)")) optional = true;
+
+                await dataDbContext.AddAsync(new ClassSpell
+                {
+                    Class = spellClass,
+                    Spell = spell,
+                    Optional = optional
+                });
+            }
+        }
+    }
+
+    private void GetSpellDescription(IEnumerable<IElement> detailsSections, Spell spell)
     {
         var nonDescriptionSections = new IElement?[]
         {
@@ -203,15 +232,15 @@ public class SpellScraper(IFstDataDbContext dataDbContext) : Scraper
         var descriptionSections = detailsSections.Where(ds => !nonDescriptionSections.Any(nds => ds == nds)).ToArray();
         if (descriptionSections == null || descriptionSections.Length == 0) return;
 
-        spell.Description = string.Join("\n", descriptionSections.Select(ds => ds.TextContent?.Trim()));
+        spell.Description = string.Join("\n", descriptionSections.Select(ds => ds.InnerHtml?.Trim()));
     }
 
-    private IElement? GetSection(IHtmlCollection<IElement> detailsSections, string section)
+    private IElement? GetSection(IEnumerable<IElement> detailsSections, string section)
     {
         return detailsSections.FirstOrDefault(ds => ds.TextContent.Contains(section));
     }
 
-    private IElement? GetSpellLevelAndSchoolSection(IHtmlCollection<IElement> detailsSections)
+    private IElement? GetSpellLevelAndSchoolSection(IEnumerable<IElement> detailsSections)
     {
         var spellSchools = Enum.GetValues<SpellSchool>().Select(ss => ss.ToString());
         return detailsSections.FirstOrDefault(ds => spellSchools.Any(s => ds.TextContent.Contains(s, StringComparison.CurrentCultureIgnoreCase)));
