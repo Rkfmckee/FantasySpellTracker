@@ -26,6 +26,7 @@ public class Spell : Entity
     public Condition? Conditions { get; set; }
     public SpellComponent? Components { get; set; }
     public string? ComponentsDescription { get; set; }
+    public string? ComponentsCost { get; set; }
 
     public bool IsConcentration { get; set; }
     public bool IsRitual { get; set; }

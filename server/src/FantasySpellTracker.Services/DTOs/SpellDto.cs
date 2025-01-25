@@ -20,11 +20,13 @@ public class SpellDto
     public SpellComponent? Components { get; set; }
     public string? ComponentsDescription { get; set; }
 
-    public bool IsConcentration { get; set; }
-    public bool IsRitual { get; set; }
-
     public string? Description { get; set; }
     public string? HigherLevelDescription { get; set; }
+
+    public bool IsConcentration { get; set; }
+    public bool IsRitual { get; set; }
+    public bool CanUpcast => !string.IsNullOrWhiteSpace(HigherLevelDescription);
+    public bool HasMaterialCost => ComponentsDescription?.Contains("") == true;
 
     public SourceDto? Source { get; set; }
 }

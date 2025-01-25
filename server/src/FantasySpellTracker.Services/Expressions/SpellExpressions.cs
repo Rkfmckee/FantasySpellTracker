@@ -1,6 +1,5 @@
 ﻿using FantasySpellTracker.DAL.Entities;
 using FantasySpellTracker.Services.DTOs;
-using LinqKit;
 using System.Linq.Expressions;
 
 namespace FantasySpellTracker.Services.Expressions;
@@ -32,7 +31,7 @@ public static class SpellExpressions
             Description = spell.Description,
             HigherLevelDescription = spell.HigherLevelDescription,
 
-            Source = SourceExpressions.ToSourceDto().Invoke(spell.Source),
+            Source = spell.Source != null ? new SourceDto(spell.Source) : null,
         };
     }
 }

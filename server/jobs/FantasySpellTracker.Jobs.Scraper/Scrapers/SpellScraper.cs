@@ -1,10 +1,12 @@
 ﻿using AngleSharp.Dom;
 using FantasySpellTracker.DAL.Entities;
 using FantasySpellTracker.DAL.Interfaces;
+using FantasySpellTracker.Shared;
 using FantasySpellTracker.Shared.Enums.Spell;
 using FantasySpellTracker.Shared.Extensions;
 using FantasySpellTracker.Shared.Helpers;
 using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
 
 namespace FantasySpellTracker.Jobs.Scraper.Scrapers;
 
@@ -165,7 +167,13 @@ public class SpellScraper(IFstDataDbContext dataDbContext) : Scraper
         var componentsAndDescription = sections[2].WithoutBoldHtml().Split(" (");
         var componentsParts = componentsAndDescription[0].Split(", ");
         spell.Components = EnumHelpers.Merge(EnumHelpers.GetEnumsByDisplayNames<SpellComponent>(componentsParts));
-        spell.ComponentsDescription = componentsAndDescription.Length > 1 ? componentsAndDescription[1].Trim(')') : null;
+
+        if (componentsAndDescription.Length > 1) {
+            spell.ComponentsDescription = componentsAndDescription[1].Trim(')');
+
+            var componentsCost = Regex.Match(componentsAndDescription[1], RegexConstants.MoneyCost);
+            spell.ComponentsCost = componentsCost.Success && componentsCost.Captures.Count > 0 ? componentsCost.Captures[0].Value : null;
+        }
 
         var durationParts = sections[3].WithoutBoldHtml().Split(", ");
         var isConcentration = durationParts.Contains("Concentration");

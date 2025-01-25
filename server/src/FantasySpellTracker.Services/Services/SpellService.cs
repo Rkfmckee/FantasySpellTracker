@@ -3,7 +3,6 @@ using FantasySpellTracker.DAL.Interfaces;
 using FantasySpellTracker.Services.DTOs;
 using FantasySpellTracker.Services.Expressions;
 using FantasySpellTracker.Services.Interfaces;
-using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using Sieve.Models;
 using Sieve.Services;
@@ -16,8 +15,7 @@ public class SpellService(IFstDataDbContext dataContext, ISieveProcessor sievePr
     {
         var spellDataQuery = dataContext.Get<Spell>()
             .Include(s => s.Source)
-            .AsExpandableEFCore()
-            .Select(s => SpellExpressions.ToSpellDto().Invoke(s));
+            .Select(SpellExpressions.ToSpellDto());
 
         var records = await sieveProcessor.Apply(sieveModel, spellDataQuery).ToArrayAsync();
         var totalCount = await sieveProcessor.Apply(sieveModel, spellDataQuery, applyPagination: false).CountAsync();
