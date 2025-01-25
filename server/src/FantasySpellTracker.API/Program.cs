@@ -3,6 +3,7 @@ using FantasySpellTracker.API.Configuration;
 using FantasySpellTracker.API.Handlers;
 using FantasySpellTracker.DAL.Contexts;
 using FantasySpellTracker.DAL.Interfaces;
+using FantasySpellTracker.Services.Filters;
 using FantasySpellTracker.Services.Interfaces;
 using FantasySpellTracker.Services.MappingProfiles;
 using FantasySpellTracker.Services.Services;
@@ -33,6 +34,7 @@ builder.Services.AddAutoMapper(typeof(Program), typeof(SpellProfile));
 builder.Services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
+builder.Services.AddScoped<ISieveCustomFilterMethods, SieveCustomFilters>();
 builder.Services.AddScoped<ISieveProcessor, FsmSieveProcessor>();
 
 builder.Services.AddScoped<IClassService, ClassService>();

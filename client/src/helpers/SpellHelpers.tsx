@@ -6,14 +6,14 @@ import {
 import { SpellRangeType } from "../schemas/spell/SpellRangeTypeSchema";
 import { Spell } from "../schemas/spell/SpellSchema";
 import { SpellSchool } from "../schemas/spell/SpellSchoolSchema";
-import { NewlineToLinebreak } from "./StringHelpers";
+import { LinebreakBeforeBold, NewlineToLinebreak } from "./StringHelpers";
 import { Tooltip } from "@mui/material";
 import { SpellClass } from "../schemas/class/SpellClassSchema";
 
 export function GetDescription(spell: Spell) {
     return (
         <span className="spell-description">
-            {parse(NewlineToLinebreak(spell.description))}
+            {parse(LinebreakBeforeBold(NewlineToLinebreak(spell.description)))}
         </span>
     );
 }

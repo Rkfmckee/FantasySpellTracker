@@ -59,13 +59,21 @@ export default function SpellRow({ spell }: RowProps) {
                 >
                     {GetRangeDescription(spell)}
                 </TableCell>
-                <TableCell
-                    className={HasDescriptionClass(
-                        "components",
-                        spell.componentsDescription
+                <TableCell>
+                    <span
+                        className={HasDescriptionClass(
+                            "components",
+                            spell.componentsDescription
+                        )}
+                    >
+                        {GetSpellComponentsName(spell.components)}
+                    </span>
+                    {spell.componentsCost && (
+                        <i className="components-cost">
+                            {" "}
+                            {spell.componentsCost}
+                        </i>
                     )}
-                >
-                    {GetSpellComponentsName(spell.components)}
                 </TableCell>
             </TableRow>
             <TableRow>
@@ -84,7 +92,6 @@ export default function SpellRow({ spell }: RowProps) {
 
                             {GetDescription(spell)}
                             {GetDescriptionBox(spell.higherLevelDescription)}
-                            {GetClassesBox(spell.classes)}
 
                             <div className="row">
                                 {GetDescriptionBox(
@@ -101,6 +108,14 @@ export default function SpellRow({ spell }: RowProps) {
                                     spell.componentsDescription,
                                     "Components"
                                 )}
+                            </div>
+
+                            <div className="row">
+                                {GetDescriptionBox(
+                                    spell.source.title,
+                                    "Source"
+                                )}
+                                {GetClassesBox(spell.classes)}
                             </div>
                         </Box>
                     </Collapse>

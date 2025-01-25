@@ -31,6 +31,8 @@ public class SpellDto
 
     public int? SourceId { get; set; }
     public SourceDto? Source { get; set; }
+
+    public int[]? ClassIds { get; set; }
     public SpellClassDto[]? Classes { get; set; }
 }
 
@@ -53,5 +55,6 @@ public class SpellSieve : ISieveConfiguration
         mapper.Property<SpellDto>(s => s.HasMaterialCost).CanFilter();
 
         mapper.Property<SpellDto>(s => s.SourceId).CanFilter();
+        mapper.Property<SpellDto>(s => s.ClassIds).CanFilter();
     }
 }

@@ -144,6 +144,7 @@ span:has(> .fa-sort-down) {
     color: var(--clr-spell-description__range);
 }
 
-.description-box__components label {
+.description-box__components label,
+.components-cost {
     color: var(--clr-spell-description__components);
 }

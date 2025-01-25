@@ -68,9 +68,9 @@ export function SpellFlagsToFilterUrl(
     return url;
 }
 
-export function SourcesToFilterUrl(values: Source[] | undefined) {
-    if (values && values.length > 0) {
-        return `sourceId==${values.map((value) => value.id).join("|")},`;
+export function SourcesToFilterUrl(sources: Source[] | undefined) {
+    if (sources && sources.length > 0) {
+        return `sourceId==${sources.map((source) => source.id).join("|")},`;
     }
     return "";
 }

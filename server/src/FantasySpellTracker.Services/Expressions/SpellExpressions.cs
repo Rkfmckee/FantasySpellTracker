@@ -34,6 +34,8 @@ public static class SpellExpressions
 
             SourceId = spell.SourceId,
             Source = spell.Source != null ? new SourceDto(spell.Source) : null,
+
+            ClassIds = spell.ClassSpells.Select(cs => cs.ClassId).ToArray(),
             Classes = spell.ClassSpells != null ? spell.ClassSpells.AsQueryable().Select(ClassSpellExpressions.ToSpellClassDto()).ToArray() : null
         };
     }

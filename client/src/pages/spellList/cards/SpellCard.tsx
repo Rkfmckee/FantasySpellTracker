@@ -72,15 +72,22 @@ export default function SpellCard({ spell }: SpellCardProps) {
                     {GetRangeDescription(spell)}
                 </Typography>
 
-                <Typography
-                    variant="body2"
-                    className={HasDescriptionClass(
-                        "components",
-                        spell.componentsDescription
-                    )}
-                >
+                <Typography variant="body2">
                     <strong>Components: </strong>
-                    {GetSpellComponentsName(spell.components)}
+                    <span
+                        className={HasDescriptionClass(
+                            "components",
+                            spell.componentsDescription
+                        )}
+                    >
+                        {GetSpellComponentsName(spell.components)}
+                    </span>
+                    {spell.componentsCost && (
+                        <i className="components-cost">
+                            {" "}
+                            {spell.componentsCost}
+                        </i>
+                    )}
                 </Typography>
 
                 <Button
@@ -101,7 +108,6 @@ export default function SpellCard({ spell }: SpellCardProps) {
 
                         {GetDescription(spell)}
                         {GetDescriptionBox(spell.higherLevelDescription)}
-                        {GetClassesBox(spell.classes)}
 
                         {GetDescriptionBox(
                             spell.castingTimeDescription,
@@ -112,6 +118,9 @@ export default function SpellCard({ spell }: SpellCardProps) {
                             spell.componentsDescription,
                             "Components"
                         )}
+
+                        {GetDescriptionBox(spell.source.title, "Source")}
+                        {GetClassesBox(spell.classes)}
                     </Typography>
                 </Collapse>
             </CardContent>
