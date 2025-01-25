@@ -1,3 +1,5 @@
+import { Source } from "../schemas/source/SourceSchema";
+
 export function SortNameDescending(sortName: string) {
     const commaRegex = /,/g;
     return `-${sortName.replace(commaRegex, ",-")}`;
@@ -64,4 +66,11 @@ export function SpellFlagsToFilterUrl(
     }
 
     return url;
+}
+
+export function SourcesToFilterUrl(values: Source[] | undefined) {
+    if (values && values.length > 0) {
+        return `sourceId==${values.map((value) => value.id).join("|")},`;
+    }
+    return "";
 }

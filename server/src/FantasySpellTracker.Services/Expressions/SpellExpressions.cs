@@ -32,6 +32,7 @@ public static class SpellExpressions
             Description = spell.Description,
             HigherLevelDescription = spell.HigherLevelDescription,
 
+            SourceId = spell.SourceId,
             Source = spell.Source != null ? new SourceDto(spell.Source) : null,
             Classes = spell.ClassSpells != null ? spell.ClassSpells.AsQueryable().Select(ClassSpellExpressions.ToSpellClassDto()).ToArray() : null
         };

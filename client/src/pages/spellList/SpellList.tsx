@@ -7,6 +7,14 @@ import Typography from "@mui/material/Typography";
 import axios from "axios";
 import { MouseEvent, useEffect, useState } from "react";
 
+import {
+    EnumFlagsToFilterUrl,
+    EnumListToFilterUrl,
+    SortNameDescending,
+    SourcesToFilterUrl,
+    SpellFlagsToFilterUrl,
+    TextToFilterUrl,
+} from "../../helpers/FilterHelpers";
 import { IsMobile } from "../../helpers/MuiHelpers";
 import { SpellFilter } from "../../schemas/filter/SpellFilterSchema";
 import { ReadResponse } from "../../schemas/ReadResponseSchema";
@@ -14,13 +22,6 @@ import { Spell } from "../../schemas/spell/SpellSchema";
 import SpellCards from "./cards/SpellCards";
 import SpellListFilter, { SpellFilterIsNotEmpty } from "./SpellListFilter";
 import SpellTable from "./table/SpellTable";
-import {
-    EnumFlagsToFilterUrl,
-    EnumListToFilterUrl,
-    SortNameDescending,
-    SpellFlagsToFilterUrl,
-    TextToFilterUrl,
-} from "../../helpers/FilterHelpers";
 
 export default function SpellList() {
     // Filter properties
@@ -63,6 +64,8 @@ export default function SpellList() {
 
             url += EnumFlagsToFilterUrl(spellFilter?.components, "components");
             url += SpellFlagsToFilterUrl(spellFilter?.flags);
+
+            url += SourcesToFilterUrl(spellFilter?.sources);
         }
 
         console.log(url);

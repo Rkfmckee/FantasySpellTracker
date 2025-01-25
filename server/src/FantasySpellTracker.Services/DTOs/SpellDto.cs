@@ -29,6 +29,7 @@ public class SpellDto
     public bool CanUpcast => Level != SpellLevel.Cantrip && HigherLevelDescription != null;
     public bool HasMaterialCost => ComponentsCost != null;
 
+    public int? SourceId { get; set; }
     public SourceDto? Source { get; set; }
     public SpellClassDto[]? Classes { get; set; }
 }
@@ -50,5 +51,7 @@ public class SpellSieve : ISieveConfiguration
         mapper.Property<SpellDto>(s => s.IsRitual).CanFilter();
         mapper.Property<SpellDto>(s => s.CanUpcast).CanFilter();
         mapper.Property<SpellDto>(s => s.HasMaterialCost).CanFilter();
+
+        mapper.Property<SpellDto>(s => s.SourceId).CanFilter();
     }
 }

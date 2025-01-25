@@ -8,7 +8,7 @@ import { Spell } from "../schemas/spell/SpellSchema";
 import { SpellSchool } from "../schemas/spell/SpellSchoolSchema";
 import { NewlineToLinebreak } from "./StringHelpers";
 import { Tooltip } from "@mui/material";
-import { Class } from "../schemas/class/ClassSchema";
+import { SpellClass } from "../schemas/class/SpellClassSchema";
 
 export function GetDescription(spell: Spell) {
     return (
@@ -47,7 +47,7 @@ export function HasDescriptionClass(
         return `has-description has-description__${descriptionType}`;
 }
 
-export function GetClassesBox(classes: Class[]) {
+export function GetClassesBox(classes: SpellClass[]) {
     return GetDescriptionBox(
         classes.map((spellClass) => spellClass.className).join(", "),
         "Classes"

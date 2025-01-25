@@ -29,6 +29,8 @@ import {
     GetSpellSchoolKeys,
     SpellSchool,
 } from "../../schemas/spell/SpellSchoolSchema";
+import { Source } from "../../schemas/source/SourceSchema";
+import axios from "axios";
 
 interface SpellListFilterProps {
     showFilters: boolean;
@@ -51,10 +53,22 @@ export default function SpellListFilter({
         rangeType: [],
         components: [],
         flags: null,
+        sources: [],
     };
 
+    const [sources, setSources] = useState<Source[]>([]);
     const [spellFilter, setSpellFilter] =
         useState<SpellFilter>(defaultSpellFilter);
+
+    useEffect(() => {
+        getSources();
+    }, []);
+
+    async function getSources() {
+        await axios.get<Source[]>("Source/Spell").then((response) => {
+            setSources(response.data);
+        });
+    }
 
     useEffect(() => {
         const delay = setTimeout(() => onSpellFilterChange(spellFilter), 500);
@@ -257,6 +271,22 @@ export default function SpellListFilter({
                             </ToggleButton>
                         </ToggleButtonGroup>
                     </FormControl>
+
+                    {/* Source */}
+                    <FormControl>
+                        <EnumMultiselect
+                            label="Source"
+                            options={sources}
+                            values={spellFilter.sources}
+                            onValuesChanged={(values) =>
+                                setSpellFilter({
+                                    ...spellFilter,
+                                    sources: values,
+                                })
+                            }
+                            getOptionLabel={(value) => value.title}
+                        />
+                    </FormControl>
                 </div>
 
                 {SpellFilterIsNotEmpty(spellFilter) && (
@@ -282,6 +312,7 @@ export function SpellFilterIsNotEmpty(spellFilter: SpellFilter | undefined) {
             spellFilter.rangeValue ||
             spellFilter.rangeType.length > 0 ||
             spellFilter.components.length > 0 ||
-            spellFilter.flags)
+            spellFilter.flags ||
+            spellFilter.sources.length > 0)
     );
 }

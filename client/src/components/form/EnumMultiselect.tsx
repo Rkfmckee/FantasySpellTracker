@@ -9,7 +9,7 @@ interface EnumMultiselectProps<T> {
     getOptionLabel: (value: T) => string;
 }
 
-export default function EnumMultiselect<T extends number>({
+export default function EnumMultiselect<T>({
     label,
     options,
     values,

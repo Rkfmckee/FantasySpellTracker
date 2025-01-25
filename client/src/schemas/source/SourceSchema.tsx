@@ -6,3 +6,5 @@ export const SourceSchema = z.object({
     title: z.string(),
     type: SourceTypeSchema,
 });
+
+export type Source = z.infer<typeof SourceSchema>;

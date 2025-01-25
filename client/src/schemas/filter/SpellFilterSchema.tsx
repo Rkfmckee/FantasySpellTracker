@@ -5,6 +5,7 @@ import { SpellDurationSchema } from "../spell/SpellDurationSchema";
 import { SpellLevelSchema } from "../spell/SpellLevelSchema";
 import { SpellRangeTypeSchema } from "../spell/SpellRangeTypeSchema";
 import { SpellSchoolSchema } from "../spell/SpellSchoolSchema";
+import { SourceSchema } from "../source/SourceSchema";
 
 export const SpellFilterSchema = z.object({
     name: z.string(),
@@ -23,6 +24,7 @@ export const SpellFilterSchema = z.object({
             z.literal("materialCost"),
         ])
     ),
+    sources: z.array(SourceSchema),
 });
 
 export type SpellFilter = z.infer<typeof SpellFilterSchema>;
