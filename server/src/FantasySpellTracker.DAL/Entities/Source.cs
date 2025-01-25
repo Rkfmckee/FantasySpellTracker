@@ -9,7 +9,7 @@ public class Source : Entity
 
     #region Relationships
 
-    public IEnumerable<Spell> Spells { get; set; } = new List<Spell>();
+    public List<Spell> Spells { get; set; } = new List<Spell>();
 
     #endregion
 }

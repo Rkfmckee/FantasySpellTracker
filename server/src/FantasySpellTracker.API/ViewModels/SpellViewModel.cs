@@ -18,12 +18,15 @@ public class SpellViewModel
 
     public SpellComponent? Components { get; set; }
     public string? ComponentsDescription { get; set; }
-
-    public bool IsConcentration { get; set; }
-    public bool IsRitual { get; set; }
+    public string? ComponentsCost { get; set; }
 
     public string? Description { get; set; }
     public string? HigherLevelDescription { get; set; }
 
+    public bool IsConcentration { get; set; }
+    public bool IsRitual { get; set; }
+    public bool CanUpcast { get; set; }
+
     public SourceViewModel? Source { get; set; }
+    public SpellClassViewModel[]? Classes { get; set; }
 }

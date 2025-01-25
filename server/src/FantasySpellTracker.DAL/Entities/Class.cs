@@ -6,8 +6,8 @@ public class Class : Entity
 
     #region Relationships
 
-    public IEnumerable<SubClass>? SubClasses { get; set; }
-    public IEnumerable<ClassSpell>? ClassSpells { get; set; }
+    public List<SubClass> SubClasses { get; set; } = new List<SubClass>();
+    public List<ClassSpell> ClassSpells { get; set; } = new List<ClassSpell>();
 
     #endregion
 }

@@ -15,7 +15,7 @@ public class SpellService(IFstDataDbContext dataContext, ISieveProcessor sievePr
     {
         var spellDataQuery = dataContext.Get<Spell>()
             .Include(s => s.Source)
-            .Include(s => s.ClassSpells!)
+            .Include(s => s.ClassSpells)
             .ThenInclude(cs => cs.Class)
             .AsQueryable()
             .Select(SpellExpressions.ToSpellDto());

@@ -9,7 +9,7 @@ public class SubClass : Entity
     public int ClassId { get; set; }
     public Class Class { get; set; } = null!;
 
-    public IEnumerable<ClassSpell>? ClassSpells { get; set; }
+    public List<ClassSpell> ClassSpells { get; set; } = new List<ClassSpell>();
 
     #endregion
 }

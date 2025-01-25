@@ -13,7 +13,7 @@ public class ClassService(IFstDataDbContext dataDbContext) : IClassService
     {
         return dataDbContext.Get<Class>()
             .Include(c => c.ClassSpells)
-            .Where(c => c.ClassSpells != null && c.ClassSpells.Any())
+            .Where(c => c.ClassSpells.Any())
             .Select(ClassExpressions.ToClassDto())
             .ToArrayAsync();
     }
