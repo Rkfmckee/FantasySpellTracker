@@ -1,28 +1,24 @@
 ﻿using FantasySpellTracker.DAL.Entities;
 using FantasySpellTracker.DAL.Interfaces;
 using FantasySpellTracker.Services.DTOs;
+using FantasySpellTracker.Services.DTOs.Read;
 using FantasySpellTracker.Services.Expressions;
+using FantasySpellTracker.Services.Extensions;
 using FantasySpellTracker.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Sieve.Models;
-using Sieve.Services;
 
 namespace FantasySpellTracker.Services.Services;
 
-public class SpellService(IFstDataDbContext dataContext, ISieveProcessor sieveProcessor) :ISpellService
+public class SpellService(IFstDataDbContext dataContext) : ISpellService
 {
-    public async Task<ReadResponseDto<SpellDto>> GetSpellsAsync(SieveModel sieveModel)
+    public async Task<ReadResponseDto<SpellDto>> GetSpellsAsync(SpellReadRequestDto readRequest)
     {
-        var spellDataQuery = dataContext.Get<Spell>()
+        var (query, totalCount) = await dataContext.Get<Spell>()
+            .Include(s => s.ClassSpells).ThenInclude(cs => cs.Class)
             .Include(s => s.Source)
-            .Include(s => s.ClassSpells)
-            .ThenInclude(cs => cs.Class)
-            .AsQueryable()
-            .Select(SpellExpressions.ToSpellDto());
+            .ApplyReadRequestAsync(readRequest);
 
-        var records = await sieveProcessor.Apply(sieveModel, spellDataQuery).ToArrayAsync();
-        var totalCount = await sieveProcessor.Apply(sieveModel, spellDataQuery, applyPagination: false).CountAsync();
-
+        var records = await query.Select(SpellExpressions.ToSpellDto()).ToArrayAsync();
         return new ReadResponseDto<SpellDto>(records, totalCount);
     }
 }

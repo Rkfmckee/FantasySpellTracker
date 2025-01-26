@@ -1,4 +1,4 @@
-﻿namespace FantasySpellTracker.API.ViewModels;
+﻿namespace FantasySpellTracker.API.ViewModels.Read;
 
 public class ReadResponseViewModel<T>()
 {

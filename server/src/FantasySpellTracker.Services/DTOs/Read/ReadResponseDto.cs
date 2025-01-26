@@ -1,4 +1,4 @@
-﻿namespace FantasySpellTracker.Services.DTOs;
+﻿namespace FantasySpellTracker.Services.DTOs.Read;
 
 public class ReadResponseDto<T>(T[] currentPageData, int totalRecords)
 {

@@ -1,5 +1,4 @@
 ﻿using FantasySpellTracker.Shared.Enums.Spell;
-using Sieve.Services;
 
 namespace FantasySpellTracker.Services.DTOs;
 
@@ -29,32 +28,6 @@ public class SpellDto
     public bool CanUpcast => Level != SpellLevel.Cantrip && HigherLevelDescription != null;
     public bool HasMaterialCost => ComponentsCost != null;
 
-    public int? SourceId { get; set; }
     public SourceDto? Source { get; set; }
-
-    public int[]? ClassIds { get; set; }
     public SpellClassDto[]? Classes { get; set; }
-}
-
-public class SpellSieve : ISieveConfiguration
-{
-    public void Configure(SievePropertyMapper mapper)
-    {
-        mapper.Property<SpellDto>(s => s.Name).CanFilter().CanSort();
-        mapper.Property<SpellDto>(s => s.Level).CanFilter().CanSort();
-        mapper.Property<SpellDto>(s => s.CastingTime).CanFilter().CanSort();
-        mapper.Property<SpellDto>(s => s.Duration).CanFilter().CanSort();
-        mapper.Property<SpellDto>(s => s.RangeValue).CanFilter().CanSort();
-        mapper.Property<SpellDto>(s => s.RangeType).CanFilter().CanSort();
-
-        mapper.Property<SpellDto>(s => s.School).CanFilter();
-        mapper.Property<SpellDto>(s => s.Components).CanFilter();
-        mapper.Property<SpellDto>(s => s.IsConcentration).CanFilter();
-        mapper.Property<SpellDto>(s => s.IsRitual).CanFilter();
-        mapper.Property<SpellDto>(s => s.CanUpcast).CanFilter();
-        mapper.Property<SpellDto>(s => s.HasMaterialCost).CanFilter();
-
-        mapper.Property<SpellDto>(s => s.SourceId).CanFilter();
-        mapper.Property<SpellDto>(s => s.ClassIds).CanFilter();
-    }
 }
