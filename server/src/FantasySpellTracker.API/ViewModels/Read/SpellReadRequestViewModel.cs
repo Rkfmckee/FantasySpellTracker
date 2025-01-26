@@ -4,9 +4,9 @@ namespace FantasySpellTracker.API.ViewModels.Read;
 
 public class SpellReadRequestViewModel : ReadRequestViewModel
 {
-    [FromQuery]
+    [FromQuery(Name = "sid")]
     public int[]? SourceIds { get; set; }
 
-    [FromQuery]
+    [FromQuery(Name = "cid")]
     public int[]? ClassIds { get; set; }
 }
