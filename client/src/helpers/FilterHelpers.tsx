@@ -1,3 +1,4 @@
+import { Class } from "../schemas/class/ClassSchema";
 import { Source } from "../schemas/source/SourceSchema";
 
 export function SortNameDescending(sortName: string) {
@@ -59,4 +60,18 @@ export function SourcesToFilterUrl(sources: Source[] | undefined) {
         return `sourceId^^[${sources.map((source) => source.id).join(",")}]`;
     }
     return null;
+}
+
+export function OnlyOfficialToFilterUrl(onlyOfficial: boolean | undefined) {
+    if (onlyOfficial) {
+        return `sourceId!^^[1,81,83,85]`;
+    }
+    return null;
+}
+
+export function ClassesToFilterUrl(classes: Class[] | undefined) {
+    if (classes && classes.length > 0) {
+        return `&${classes.map((spellClass) => `cid=${spellClass.id}`).join("&")}`;
+    }
+    return "";
 }

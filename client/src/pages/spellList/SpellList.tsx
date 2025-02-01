@@ -8,8 +8,10 @@ import axios from "axios";
 import { MouseEvent, useEffect, useState } from "react";
 
 import {
+    ClassesToFilterUrl,
     EnumFlagsToFilterUrl,
     EnumListToFilterUrl,
+    OnlyOfficialToFilterUrl,
     SortNameDescending,
     SourcesToFilterUrl,
     SpellFlagsToFilterUrl,
@@ -64,11 +66,14 @@ export default function SpellList() {
                 EnumListToFilterUrl(spellFilter?.rangeType, "rangeType"),
 
                 EnumFlagsToFilterUrl(spellFilter?.components, "components"),
-                SpellFlagsToFilterUrl(spellFilter?.flags),
+                SpellFlagsToFilterUrl(spellFilter?.flags).join("|"),
 
                 SourcesToFilterUrl(spellFilter?.sources),
+                OnlyOfficialToFilterUrl(spellFilter?.onlyOfficial),
             ];
+
             url += filterUrlParts.filter((x) => x != null && x.length > 0).join("|");
+            url += ClassesToFilterUrl(spellFilter?.classes);
         }
 
         console.log(url);
@@ -128,13 +133,9 @@ export default function SpellList() {
                 <SpellTable spells={spells} sortBy={sortBy} handleSortBy={handleSortBy} />
             )}
 
-            <div className="d-flex justify-content-center">
-                <Pagination
-                    count={Math.ceil(totalRecords / pageSize)}
-                    page={page}
-                    onChange={(_event, value) => setPage(value)}
-                    className="mt-4 justify-content-center"
-                />
+            <div style={{ width: "fit-content", margin: "1em auto", textAlign: "center" }}>
+                <Pagination count={Math.ceil(totalRecords / pageSize)} page={page} onChange={(_event, value) => setPage(value)} />
+                <strong>Total:</strong> {totalRecords}
             </div>
         </>
     );

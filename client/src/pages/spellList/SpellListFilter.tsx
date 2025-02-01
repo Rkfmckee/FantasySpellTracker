@@ -8,29 +8,17 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { useEffect, useState } from "react";
 import EnumMultiselect from "../../components/form/EnumMultiselect";
 import { SpellFilter } from "../../schemas/filter/SpellFilterSchema";
-import {
-    GetSpellCastingTimeKeys,
-    GetSpellCastingTimeName,
-} from "../../schemas/spell/SpellCastingTimeSchema";
+import { GetSpellCastingTimeKeys, GetSpellCastingTimeName } from "../../schemas/spell/SpellCastingTimeSchema";
 import { SpellComponents } from "../../schemas/spell/SpellComponentSchema";
-import {
-    GetSpellDurationKeys,
-    GetSpellDurationName,
-} from "../../schemas/spell/SpellDurationSchema";
-import {
-    GetSpellLevelKeys,
-    GetSpellLevelName,
-} from "../../schemas/spell/SpellLevelSchema";
-import {
-    GetSpellRangeTypeKeys,
-    SpellRangeType,
-} from "../../schemas/spell/SpellRangeTypeSchema";
-import {
-    GetSpellSchoolKeys,
-    SpellSchool,
-} from "../../schemas/spell/SpellSchoolSchema";
+import { GetSpellDurationKeys, GetSpellDurationName } from "../../schemas/spell/SpellDurationSchema";
+import { GetSpellLevelKeys, GetSpellLevelName } from "../../schemas/spell/SpellLevelSchema";
+import { GetSpellRangeTypeKeys, SpellRangeType } from "../../schemas/spell/SpellRangeTypeSchema";
+import { GetSpellSchoolKeys, SpellSchool } from "../../schemas/spell/SpellSchoolSchema";
 import { Source } from "../../schemas/source/SourceSchema";
 import axios from "axios";
+import { Class } from "../../schemas/class/ClassSchema";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
 
 interface SpellListFilterProps {
     showFilters: boolean;
@@ -38,12 +26,26 @@ interface SpellListFilterProps {
     filterCleared?: () => void;
 }
 
-export default function SpellListFilter({
-    showFilters,
-    onSpellFilterChange,
-    filterCleared,
-}: SpellListFilterProps) {
-    const defaultSpellFilter = {
+export function SpellFilterIsNotEmpty(spellFilter: SpellFilter | undefined) {
+    return (
+        spellFilter &&
+        (spellFilter.name ||
+            spellFilter.levels.length > 0 ||
+            spellFilter.schools.length > 0 ||
+            spellFilter.castingTime.length > 0 ||
+            spellFilter.duration.length > 0 ||
+            spellFilter.rangeValue ||
+            spellFilter.rangeType.length > 0 ||
+            spellFilter.components.length > 0 ||
+            spellFilter.flags ||
+            spellFilter.sources.length > 0 ||
+            spellFilter.classes.length > 0 ||
+            spellFilter.onlyOfficial)
+    );
+}
+
+export default function SpellListFilter({ showFilters, onSpellFilterChange, filterCleared: filterReset }: SpellListFilterProps) {
+    const defaultSpellFilter: SpellFilter = {
         name: "",
         levels: [],
         schools: [],
@@ -54,14 +56,17 @@ export default function SpellListFilter({
         components: [],
         flags: null,
         sources: [],
+        classes: [],
+        onlyOfficial: false,
     };
 
     const [sources, setSources] = useState<Source[]>([]);
-    const [spellFilter, setSpellFilter] =
-        useState<SpellFilter>(defaultSpellFilter);
+    const [classes, setClasses] = useState<Class[]>([]);
+    const [spellFilter, setSpellFilter] = useState<SpellFilter>(defaultSpellFilter);
 
     useEffect(() => {
         getSources();
+        getClasses();
     }, []);
 
     async function getSources() {
@@ -70,24 +75,25 @@ export default function SpellListFilter({
         });
     }
 
+    async function getClasses() {
+        await axios.get<Class[]>("Class/Spell").then((response) => {
+            setClasses(response.data);
+        });
+    }
+
     useEffect(() => {
         const delay = setTimeout(() => onSpellFilterChange(spellFilter), 500);
         return () => clearTimeout(delay);
     }, [spellFilter]);
 
-    function clearFilter() {
+    function resetFilter() {
         setSpellFilter(defaultSpellFilter);
 
-        if (filterCleared) filterCleared();
+        if (filterReset) filterReset();
     }
 
     return (
-        <Collapse
-            in={showFilters}
-            timeout="auto"
-            unmountOnExit
-            className="filter-section"
-        >
+        <Collapse in={showFilters} timeout="auto" unmountOnExit className="filter-section">
             <Paper elevation={3}>
                 <div className="filter-grid">
                     {/* Name */}
@@ -211,24 +217,14 @@ export default function SpellListFilter({
                                     ...spellFilter,
                                     components: values,
                                 })
-                            }
-                        >
-                            <ToggleButton
-                                value={SpellComponents.Verbal}
-                                className="filter-grid-item__components"
-                            >
+                            }>
+                            <ToggleButton value={SpellComponents.Verbal} className="filter-grid-item__components">
                                 V
                             </ToggleButton>
-                            <ToggleButton
-                                value={SpellComponents.Somatic}
-                                className="filter-grid-item__components"
-                            >
+                            <ToggleButton value={SpellComponents.Somatic} className="filter-grid-item__components">
                                 S
                             </ToggleButton>
-                            <ToggleButton
-                                value={SpellComponents.Material}
-                                className="filter-grid-item__components"
-                            >
+                            <ToggleButton value={SpellComponents.Material} className="filter-grid-item__components">
                                 M
                             </ToggleButton>
                         </ToggleButtonGroup>
@@ -243,30 +239,17 @@ export default function SpellListFilter({
                                     ...spellFilter,
                                     flags: values,
                                 })
-                            }
-                        >
-                            <ToggleButton
-                                value={"concentration"}
-                                className="filter-grid-item__flag-concentration"
-                            >
+                            }>
+                            <ToggleButton value={"concentration"} className="filter-grid-item__flag-concentration">
                                 Is Concentration
                             </ToggleButton>
-                            <ToggleButton
-                                value={"ritual"}
-                                className="filter-grid-item__flag-ritual"
-                            >
+                            <ToggleButton value={"ritual"} className="filter-grid-item__flag-ritual">
                                 Is Ritual
                             </ToggleButton>
-                            <ToggleButton
-                                value={"upcast"}
-                                className="filter-grid-item__flag-upcast"
-                            >
+                            <ToggleButton value={"upcast"} className="filter-grid-item__flag-upcast">
                                 Can Upcast
                             </ToggleButton>
-                            <ToggleButton
-                                value={"materialCost"}
-                                className="filter-grid-item__flag-materialCost"
-                            >
+                            <ToggleButton value={"materialCost"} className="filter-grid-item__flag-materialCost">
                                 Has Material Cost
                             </ToggleButton>
                         </ToggleButtonGroup>
@@ -287,32 +270,48 @@ export default function SpellListFilter({
                             getOptionLabel={(value) => value.title}
                         />
                     </FormControl>
+
+                    {/* Class */}
+                    <FormControl>
+                        <EnumMultiselect
+                            label="Class"
+                            options={classes}
+                            values={spellFilter.classes}
+                            onValuesChanged={(values) =>
+                                setSpellFilter({
+                                    ...spellFilter,
+                                    classes: values,
+                                })
+                            }
+                            getOptionLabel={(value) => value.name}
+                        />
+                    </FormControl>
+
+                    {/* Only official */}
+                    <FormControlLabel
+                        label="Only show official content"
+                        control={
+                            <Checkbox
+                                checked={spellFilter.onlyOfficial}
+                                onChange={(event) =>
+                                    setSpellFilter({
+                                        ...spellFilter,
+                                        onlyOfficial: event.target.checked,
+                                    })
+                                }
+                            />
+                        }
+                    />
                 </div>
 
                 {SpellFilterIsNotEmpty(spellFilter) && (
                     <div>
-                        <Button onClick={() => clearFilter()} className="m-2">
-                            Clear filter
+                        <Button onClick={() => resetFilter()} className="m-2">
+                            Reset filter
                         </Button>
                     </div>
                 )}
             </Paper>
         </Collapse>
-    );
-}
-
-export function SpellFilterIsNotEmpty(spellFilter: SpellFilter | undefined) {
-    return (
-        spellFilter &&
-        (spellFilter.name ||
-            spellFilter.levels.length > 0 ||
-            spellFilter.schools.length > 0 ||
-            spellFilter.castingTime.length > 0 ||
-            spellFilter.duration.length > 0 ||
-            spellFilter.rangeValue ||
-            spellFilter.rangeType.length > 0 ||
-            spellFilter.components.length > 0 ||
-            spellFilter.flags ||
-            spellFilter.sources.length > 0)
     );
 }

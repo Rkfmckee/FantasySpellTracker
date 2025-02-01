@@ -6,6 +6,7 @@ import { SpellLevelSchema } from "../spell/SpellLevelSchema";
 import { SpellRangeTypeSchema } from "../spell/SpellRangeTypeSchema";
 import { SpellSchoolSchema } from "../spell/SpellSchoolSchema";
 import { SourceSchema } from "../source/SourceSchema";
+import { ClassSchema } from "../class/ClassSchema";
 
 export const SpellFilterSchema = z.object({
     name: z.string(),
@@ -16,15 +17,10 @@ export const SpellFilterSchema = z.object({
     rangeValue: z.string(),
     rangeType: z.array(SpellRangeTypeSchema),
     components: z.array(SpellComponentsSchema),
-    flags: z.nullable(
-        z.union([
-            z.literal("concentration"),
-            z.literal("ritual"),
-            z.literal("upcast"),
-            z.literal("materialCost"),
-        ])
-    ),
+    flags: z.nullable(z.union([z.literal("concentration"), z.literal("ritual"), z.literal("upcast"), z.literal("materialCost")])),
     sources: z.array(SourceSchema),
+    classes: z.array(ClassSchema),
+    onlyOfficial: z.boolean(),
 });
 
 export type SpellFilter = z.infer<typeof SpellFilterSchema>;
