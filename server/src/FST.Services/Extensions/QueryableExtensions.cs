@@ -32,11 +32,6 @@ public static class QueryableExtensions
 
     public static Task<Tuple<IQueryable<Spell>, int>> ApplyReadRequestAsync(this IQueryable<Spell> query, SpellReadRequestDto readRequest)
     {
-        if (readRequest.SourceIds?.Length > 0)
-        {
-            query = query.Where(s => s.Source != null && readRequest.SourceIds.Contains(s.Source.Id));
-        }
-
         if (readRequest.ClassIds?.Length > 0)
         {
             query = query.Where(s => s.ClassSpells != null && s.ClassSpells.Select(c => c.ClassId).Any(id => readRequest.ClassIds.Contains(id)));

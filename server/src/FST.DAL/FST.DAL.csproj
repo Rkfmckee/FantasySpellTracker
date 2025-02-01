@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
-    <RootNamespace>FantasySpellTracker.DAL</RootNamespace>
+    <RootNamespace>FST.DAL</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FantasySpellTracker.Shared\FantasySpellTracker.Shared.csproj" />
+    <ProjectReference Include="..\FST.Shared\FST.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>
