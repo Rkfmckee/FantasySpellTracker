@@ -5,72 +5,58 @@ export function SortNameDescending(sortName: string) {
     return `-${sortName.replace(commaRegex, ",-")}`;
 }
 
-export function TextToFilterUrl(
-    value: string | null | undefined,
-    propName: string,
-    operator: string = "@="
-) {
-    if (value) return `${propName}${operator}${value},`;
-    return "";
+export function TextToFilterUrl(value: string | null | undefined, propName: string, operator: string = "@=", hasQuotes: boolean = true) {
+    //E.g. rangeValue==60&&name@="frost"
+    const valueWithAppropriateQuotes = hasQuotes ? `"${value}"` : value;
+
+    if (value) return `${propName}${operator}${valueWithAppropriateQuotes}`;
+    return null;
 }
 
-export function EnumListToFilterUrl(
-    values: number[] | undefined,
-    propName: string
-) {
+export function EnumListToFilterUrl(values: number[] | undefined, propName: string) {
+    //E.g. level^^[3,4]
     if (values && values.length > 0) {
-        return `${propName}==${values.join("|")},`;
+        return `${propName}^^[${values.join(",")}]`;
     }
-    return "";
+    return null;
 }
 
-export function EnumFlagsToFilterUrl(
-    values: number[] | undefined,
-    propName: string
-) {
+export function EnumFlagsToFilterUrl(values: number[] | undefined, propName: string) {
     if (values && values.length > 0) {
         let flagValue = 0;
         values.forEach((value) => (flagValue = flagValue | value));
-        return `${propName}==${flagValue},`;
+        return `${propName}==${flagValue}`;
     }
-    return "";
+    return null;
 }
 
-export function SpellFlagsToFilterUrl(
-    values:
-        | "concentration"
-        | "ritual"
-        | "upcast"
-        | "materialCost"
-        | null
-        | undefined
-) {
-    let url = "";
+export function SpellFlagsToFilterUrl(values: "concentration" | "ritual" | "upcast" | "materialCost" | null | undefined): string[] {
+    const parts = [];
 
     if (values && values.length > 0) {
         if (values.includes("concentration")) {
-            url += "isConcentration==true,";
+            parts.push("isConcentration==true");
         }
 
         if (values.includes("ritual")) {
-            url += "isRitual==true,";
+            parts.push("isRitual==true");
         }
 
         if (values.includes("upcast")) {
-            url += "";
+            parts.push("higherLevelDescription!=null");
         }
 
         if (values.includes("materialCost")) {
-            url += "";
+            parts.push("componentsCost!=null");
         }
     }
 
-    return url;
+    return parts;
 }
 
 export function SourcesToFilterUrl(sources: Source[] | undefined) {
     if (sources && sources.length > 0) {
-        return `sourceId==${sources.map((source) => source.id).join("|")},`;
+        return `sourceId^^[${sources.map((source) => source.id).join(",")}]`;
     }
-    return "";
+    return null;
 }

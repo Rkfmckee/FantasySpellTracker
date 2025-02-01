@@ -48,24 +48,27 @@ export default function SpellList() {
 
     async function getSpellsFromApi() {
         let url = `Spell?page=${page}&pageSize=${pageSize}`;
-        if (sortBy) url += `&sorts=${sortBy}`;
+        if (sortBy) url += `&sort=${sortBy}`;
 
         if (SpellFilterIsNotEmpty(spellFilter)) {
-            url += "&filters=";
+            url += "&filter=";
 
-            url += TextToFilterUrl(spellFilter?.name, "name");
-            url += EnumListToFilterUrl(spellFilter?.levels, "level");
-            url += EnumListToFilterUrl(spellFilter?.schools, "school");
-            url += EnumListToFilterUrl(spellFilter?.castingTime, "castingTime");
-            url += EnumListToFilterUrl(spellFilter?.duration, "duration");
+            var filterUrlParts = [
+                TextToFilterUrl(spellFilter?.name, "name"),
+                EnumListToFilterUrl(spellFilter?.levels, "level"),
+                EnumListToFilterUrl(spellFilter?.schools, "school"),
+                EnumListToFilterUrl(spellFilter?.castingTime, "castingTime"),
+                EnumListToFilterUrl(spellFilter?.duration, "duration"),
 
-            url += TextToFilterUrl(spellFilter?.rangeValue, "rangeValue", "==");
-            url += EnumListToFilterUrl(spellFilter?.rangeType, "rangeType");
+                TextToFilterUrl(spellFilter?.rangeValue, "rangeValue", "==", false),
+                EnumListToFilterUrl(spellFilter?.rangeType, "rangeType"),
 
-            url += EnumFlagsToFilterUrl(spellFilter?.components, "components");
-            url += SpellFlagsToFilterUrl(spellFilter?.flags);
+                EnumFlagsToFilterUrl(spellFilter?.components, "components"),
+                SpellFlagsToFilterUrl(spellFilter?.flags),
 
-            url += SourcesToFilterUrl(spellFilter?.sources);
+                SourcesToFilterUrl(spellFilter?.sources),
+            ];
+            url += filterUrlParts.filter((x) => x != null && x.length > 0).join("|");
         }
 
         console.log(url);
@@ -76,10 +79,7 @@ export default function SpellList() {
         });
     }
 
-    function handleViewModeChange(
-        _event: MouseEvent<HTMLElement>,
-        value: string
-    ) {
+    function handleViewModeChange(_event: MouseEvent<HTMLElement>, value: string) {
         if (value !== null) {
             setViewMode(value as ViewMode);
         }
@@ -103,12 +103,7 @@ export default function SpellList() {
 
             <div className="mb-4 d-flex">
                 {!isMobile && (
-                    <ToggleButtonGroup
-                        value={viewMode}
-                        onChange={handleViewModeChange}
-                        aria-label="View mode"
-                        exclusive
-                    >
+                    <ToggleButtonGroup value={viewMode} onChange={handleViewModeChange} aria-label="View mode" exclusive>
                         <ToggleButton value="table" aria-label="left aligned">
                             <Laptop className="spell-view-icon" />
                             Table view
@@ -120,32 +115,17 @@ export default function SpellList() {
                     </ToggleButtonGroup>
                 )}
 
-                <Button
-                    onClick={() => setShowFilters(!showFilters)}
-                    className="my-auto mx-2"
-                >
+                <Button onClick={() => setShowFilters(!showFilters)} className="my-auto mx-2">
                     {showFilters ? "Hide" : "Show"} filters
                 </Button>
             </div>
 
-            <SpellListFilter
-                showFilters={showFilters}
-                onSpellFilterChange={setSpellFilter}
-                filterCleared={() => setShowFilters(false)}
-            />
+            <SpellListFilter showFilters={showFilters} onSpellFilterChange={setSpellFilter} filterCleared={() => setShowFilters(false)} />
 
             {viewMode == "card" || isMobile ? (
-                <SpellCards
-                    spells={spells}
-                    sortBy={sortBy}
-                    handleSortBy={handleSortBy}
-                />
+                <SpellCards spells={spells} sortBy={sortBy} handleSortBy={handleSortBy} />
             ) : (
-                <SpellTable
-                    spells={spells}
-                    sortBy={sortBy}
-                    handleSortBy={handleSortBy}
-                />
+                <SpellTable spells={spells} sortBy={sortBy} handleSortBy={handleSortBy} />
             )}
 
             <div className="d-flex justify-content-center">

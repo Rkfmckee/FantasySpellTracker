@@ -9,6 +9,8 @@ public static class QueryableExtensions
 {
     public static async Task<Tuple<IQueryable<T>, int>> ApplyReadRequestAsync<T>(this IQueryable<T> query, ReadRequestDto readRequest) where T : class
     {
+        readRequest.Filter = readRequest.Filter?.Replace("|", "&&");
+
         if (!string.IsNullOrWhiteSpace(readRequest.Filter))
         {
             query = query.ApplyQueryKitFilter(readRequest.Filter);
