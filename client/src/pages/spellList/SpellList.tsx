@@ -133,7 +133,7 @@ export default function SpellList() {
                 <SpellTable spells={spells} sortBy={sortBy} handleSortBy={handleSortBy} />
             )}
 
-            <div style={{ width: "fit-content", margin: "1em auto", textAlign: "center" }}>
+            <div className="center-children mt-3">
                 <Pagination count={Math.ceil(totalRecords / pageSize)} page={page} onChange={(_event, value) => setPage(value)} />
                 <strong>Total:</strong> {totalRecords}
             </div>

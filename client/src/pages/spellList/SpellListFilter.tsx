@@ -19,6 +19,7 @@ import axios from "axios";
 import { Class } from "../../schemas/class/ClassSchema";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
+import { IsMobile } from "../../helpers/MuiHelpers";
 
 interface SpellListFilterProps {
     showFilters: boolean;
@@ -92,10 +93,12 @@ export default function SpellListFilter({ showFilters, onSpellFilterChange, filt
         if (filterReset) filterReset();
     }
 
+    const isMobile = IsMobile();
+
     return (
         <Collapse in={showFilters} timeout="auto" unmountOnExit className="filter-section">
             <Paper elevation={3}>
-                <div className="filter-grid">
+                <div className={isMobile ? `filter-column` : `filter-grid`}>
                     {/* Name */}
                     <FormControl>
                         <TextField
@@ -211,6 +214,7 @@ export default function SpellListFilter({ showFilters, onSpellFilterChange, filt
                     {/* Components */}
                     <FormControl>
                         <ToggleButtonGroup
+                            className={isMobile ? "my-2" : ""}
                             value={spellFilter.components}
                             onChange={(_event, values) =>
                                 setSpellFilter({
@@ -241,7 +245,7 @@ export default function SpellListFilter({ showFilters, onSpellFilterChange, filt
                                 })
                             }>
                             <ToggleButton value={"concentration"} className="filter-grid-item__flag-concentration">
-                                Is Concentration
+                                Is {isMobile ? "Concen-tration" : "Concentration"}
                             </ToggleButton>
                             <ToggleButton value={"ritual"} className="filter-grid-item__flag-ritual">
                                 Is Ritual
