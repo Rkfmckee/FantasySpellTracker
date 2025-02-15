@@ -8,8 +8,10 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import InitializeAxios from "./config/AxiosConfig.tsx";
+import InitializeKeycloak from "./config/KeycloakConfig.tsx";
 
 InitializeAxios();
+InitializeKeycloak();
 
 createRoot(document.getElementById("root")!).render(
     <StrictMode>

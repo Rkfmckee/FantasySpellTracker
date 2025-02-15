@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "keycloak-js": "^26.1.2",
+    "react-error-boundary": "^5.0.0"
+  }
+}
