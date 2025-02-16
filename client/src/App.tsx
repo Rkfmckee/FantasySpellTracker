@@ -1,14 +1,11 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
-import useAuth from "./hooks/UseAuth";
 import Layout from "./layout/Layout";
 import SpellList from "./pages/spellList/SpellList";
 import NotFound from "./pages/status/NotFound";
 
 export default function App() {
-    const loggedIn = useAuth();
-
-    return loggedIn ? (
+    return (
         <BrowserRouter>
             <Routes>
                 <Route element={<Layout />}>
@@ -17,7 +14,5 @@ export default function App() {
                 </Route>
             </Routes>
         </BrowserRouter>
-    ) : (
-        <h1>Must log in</h1>
     );
 }
