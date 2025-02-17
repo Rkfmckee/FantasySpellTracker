@@ -10,11 +10,12 @@ import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import InitializeAxios from "./config/AxiosConfig.tsx";
 import keycloak from "./config/KeycloakConfig.tsx";
+import Loader from "./components/Loader.tsx";
 
 InitializeAxios();
 
 createRoot(document.getElementById("root")!).render(
-    <ReactKeycloakProvider authClient={keycloak} LoadingComponent={<h1>Authenticating...</h1>}>
+    <ReactKeycloakProvider authClient={keycloak} LoadingComponent={<Loader centered />}>
         <StrictMode>
             <App />
         </StrictMode>
