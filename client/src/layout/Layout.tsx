@@ -37,13 +37,13 @@ export default function Layout() {
             <ErrorBoundary fallback={<Error />}>
                 <ThemeProvider theme={theme}>
                     <CssBaseline />
-                    <Navbar mode={mode} setMode={setMode} />
-                    <main>
+                    <main className="d-flex flex-column min-vh-100">
+                        <Navbar mode={mode} setMode={setMode} />
                         <Container maxWidth="xl">
                             <Outlet />
                         </Container>
+                        <Footer />
                     </main>
-                    <Footer />
                 </ThemeProvider>
             </ErrorBoundary>
         </>

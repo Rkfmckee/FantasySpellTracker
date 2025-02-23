@@ -7,15 +7,31 @@ using FantasySpellTracker.Services.MappingProfiles;
 using FantasySpellTracker.Services.Services;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using FST.API.Extensions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Scalar.AspNetCore;
+using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
-builder.Services.AddOpenApi();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGenWithAuth(builder.Configuration);
 builder.Services.AddCors();
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.RequireHttpsMetadata = false;
+        options.Audience = builder.Configuration["Authentication:Audience"];
+        options.MetadataAddress = builder.Configuration["Authentication:MetadataAddress"]!;
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidIssuer = builder.Configuration["Authentication:ValidIssuer"]
+        };
+    });
+builder.Services.AddAuthorization();
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
@@ -39,8 +55,8 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.MapScalarApiReference();
-    app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
     await app.SeedDataAsync();
 }
 
@@ -54,7 +70,10 @@ app.UseCors(options =>
 });
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapControllers();
 
 app.Run();
