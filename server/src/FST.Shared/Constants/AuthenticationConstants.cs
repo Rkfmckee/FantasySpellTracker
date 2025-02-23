@@ -1,6 +1,6 @@
 ﻿namespace FST.Shared.Constants;
 
-public class AuthenticationConstants
+public static class AuthenticationConstants
 {
     public const string KeycloakHttpClient = nameof(KeycloakHttpClient);
 }

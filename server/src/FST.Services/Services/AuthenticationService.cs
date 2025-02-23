@@ -31,4 +31,9 @@ public class AuthenticationService(IConfiguration configuration, IHttpClientFact
 
         return httpClient.PostEncodedAsync<AuthTokensDto>(tokenUrl, body);
     }
+
+    public Task LogoutAsync()
+    {
+
+    }
 }

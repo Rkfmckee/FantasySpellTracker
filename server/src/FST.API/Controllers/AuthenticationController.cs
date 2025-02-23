@@ -17,4 +17,12 @@ public class AuthenticationController(IMapper mapper, IAuthenticationService aut
         var loginData = mapper.Map<LoginDto>(login);
         return Ok(mapper.Map<AuthTokensViewModel>(await authenticationService.LoginAsync(loginData)));
     }
+
+    [HttpPost("Logout")]
+    [ProducesResponseType(typeof(AuthTokensViewModel), StatusCodes.Status200OK)]
+    public async Task<ActionResult<AuthTokensViewModel>> Logout()
+    {
+        var loginData = mapper.Map<LoginDto>(login);
+        return Ok(mapper.Map<AuthTokensViewModel>(await authenticationService.LoginAsync(loginData)));
+    }
 }

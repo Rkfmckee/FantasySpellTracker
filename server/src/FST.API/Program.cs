@@ -8,6 +8,8 @@ using FantasySpellTracker.Services.Services;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using FST.API.Extensions;
+using FST.Services.Interfaces;
+using FST.Services.Services;
 using FST.Shared.Constants;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -51,10 +53,11 @@ builder.Services.AddAutoMapper(typeof(Program), typeof(SpellProfile));
 builder.Services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
-builder.Services.AddScoped<FST.Services.Interfaces.IAuthenticationService, FST.Services.Services.AuthenticationService>();
+builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IClassService, ClassService>();
 builder.Services.AddScoped<ISourceService, SourceService>();
 builder.Services.AddScoped<ISpellService, SpellService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 
