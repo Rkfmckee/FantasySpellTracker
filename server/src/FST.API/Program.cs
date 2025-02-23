@@ -8,6 +8,7 @@ using FantasySpellTracker.Services.Services;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using FST.API.Extensions;
+using FST.Shared.Constants;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -31,6 +32,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidIssuer = builder.Configuration["Authentication:ValidIssuer"]
         };
     });
+
+var authenticationBaseUrl = new Uri(builder.Configuration["Keycloak:BaseUrl"] ?? throw new InvalidDataException("Keycloak URL not set."));
+builder.Services.AddHttpClient(AuthenticationConstants.KeycloakHttpClient).ConfigureHttpClient(c => c.BaseAddress = authenticationBaseUrl);
 builder.Services.AddAuthorization();
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
@@ -47,6 +51,7 @@ builder.Services.AddAutoMapper(typeof(Program), typeof(SpellProfile));
 builder.Services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
+builder.Services.AddScoped<FST.Services.Interfaces.IAuthenticationService, FST.Services.Services.AuthenticationService>();
 builder.Services.AddScoped<IClassService, ClassService>();
 builder.Services.AddScoped<ISourceService, SourceService>();
 builder.Services.AddScoped<ISpellService, SpellService>();

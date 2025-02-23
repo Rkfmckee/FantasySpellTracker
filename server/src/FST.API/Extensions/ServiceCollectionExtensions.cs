@@ -8,22 +8,12 @@ internal static class ServiceCollectionExtensions
     {
         services.AddSwaggerGen(options =>
         {
-            options.CustomSchemaIds(id => id.FullName!.Replace('+', '-'));
-            options.AddSecurityDefinition("Keycloak", new OpenApiSecurityScheme
+            options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
-                Type = SecuritySchemeType.OAuth2,
-                Flows = new OpenApiOAuthFlows
-                {
-                    Implicit = new OpenApiOAuthFlow
-                    {
-                        AuthorizationUrl = new Uri(configuration["Keycloak:AuthorizationUrl"] ?? throw new Exception("Keycloak Auth Url not configured")),
-                        Scopes = new Dictionary<string, string>
-                        {
-                            { "openid", "openid" },
-                            { "profile", "profile" }
-                        }
-                    }
-                }
+                Description = "",
+                Name = "Authorization",
+                In = ParameterLocation.Header,
+                Type = SecuritySchemeType.ApiKey,
             });
 
             options.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -33,14 +23,14 @@ internal static class ServiceCollectionExtensions
                     {
                         Reference = new OpenApiReference
                         {
-                            Id = "Keycloak",
-                            Type = ReferenceType.SecurityScheme
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
                         },
-                        In = ParameterLocation.Header,
+                        Scheme = "oauth2",
                         Name = "Bearer",
-                        Scheme = "Bearer"
+                        In = ParameterLocation.Header,
                     },
-                    []
+                    new List<string>()
                 }
             });
         });

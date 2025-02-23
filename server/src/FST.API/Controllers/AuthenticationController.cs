@@ -1,17 +1,20 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using FST.API.ViewModels.Authentication;
+using FST.Services.DTOs.Authentication;
+using FST.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FST.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class AuthenticationController(IHttpContextAccessor httpContextAccessor) : ControllerBase
+public class AuthenticationController(IMapper mapper, IAuthenticationService authenticationService) : ControllerBase
 {
-    [HttpGet("Me")]
-    [Authorize]
-    public ActionResult GetClaims()
+    [HttpPost("Login")]
+    [ProducesResponseType(typeof(AuthTokensViewModel), StatusCodes.Status200OK)]
+    public async Task<ActionResult<AuthTokensViewModel>> Login(LoginViewModel login)
     {
-        var claimsPrincipal = httpContextAccessor.HttpContext?.User;
-        return Ok(claimsPrincipal?.Claims.ToDictionary(c => c.Type, c => c.Value));
+        var loginData = mapper.Map<LoginDto>(login);
+        return Ok(mapper.Map<AuthTokensViewModel>(await authenticationService.LoginAsync(loginData)));
     }
 }
