@@ -34,6 +34,17 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidIssuer = builder.Configuration["Authentication:ValidIssuer"]
         };
     });
+//.AddJwtBearer(options =>
+// {
+//     options.SaveToken = true;
+//     options.TokenValidationParameters = new TokenValidationParameters
+//     {
+//         ValidIssuer = builder.Configuration["Authentication:ValidIssuer"],
+//         ValidAudience = builder.Configuration["Authentication:Audience"],
+//         ValidateLifetime = true,
+//         ClockSkew = new TimeSpan(0, 0, 5)
+//     };
+// });
 
 var authenticationBaseUrl = new Uri(builder.Configuration["Keycloak:BaseUrl"] ?? throw new InvalidDataException("Keycloak URL not set."));
 builder.Services.AddHttpClient(AuthenticationConstants.KeycloakHttpClient).ConfigureHttpClient(c => c.BaseAddress = authenticationBaseUrl);

@@ -2,6 +2,7 @@
 using FST.API.ViewModels.Authentication;
 using FST.Services.DTOs.Authentication;
 using FST.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FST.API.Controllers;
@@ -18,11 +19,13 @@ public class AuthenticationController(IMapper mapper, IAuthenticationService aut
         return Ok(mapper.Map<AuthTokensViewModel>(await authenticationService.LoginAsync(loginData)));
     }
 
-    [HttpPost("Logout")]
-    [ProducesResponseType(typeof(AuthTokensViewModel), StatusCodes.Status200OK)]
-    public async Task<ActionResult<AuthTokensViewModel>> Logout()
+    [Authorize]
+    [HttpGet("Logout")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> Logout()
     {
-        var loginData = mapper.Map<LoginDto>(login);
-        return Ok(mapper.Map<AuthTokensViewModel>(await authenticationService.LoginAsync(loginData)));
+        var errorMessage = "There was a problem, please try again";
+        return Ok(await authenticationService.LogoutAsync());
     }
 }

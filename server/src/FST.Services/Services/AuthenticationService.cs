@@ -6,7 +6,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace FST.Services.Services;
 
-public class AuthenticationService(IConfiguration configuration, IHttpClientFactory httpClientFactory) : IAuthenticationService
+public class AuthenticationService(IConfiguration configuration, IHttpClientFactory httpClientFactory, IUserService userService) : IAuthenticationService
 {
     public readonly HttpClient httpClient = httpClientFactory.CreateClient(AuthenticationConstants.KeycloakHttpClient);
 
@@ -32,8 +32,15 @@ public class AuthenticationService(IConfiguration configuration, IHttpClientFact
         return httpClient.PostEncodedAsync<AuthTokensDto>(tokenUrl, body);
     }
 
-    public Task LogoutAsync()
+    public async Task<bool> LogoutAsync()
     {
+        var currentUserId = userService.GetCurrentUserId();
+        if (string.IsNullOrWhiteSpace(currentUserId)) return false;
 
+        var logoutUrl = configuration["Keycloak:LogoutUrl"]?.Replace("{userId}", currentUserId);
+        if (string.IsNullOrWhiteSpace(logoutUrl)) return false;
+
+        await httpClient.PostAsync(logoutUrl);
+        return true;
     }
 }

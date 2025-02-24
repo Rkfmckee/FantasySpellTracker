@@ -1,6 +1,7 @@
 ﻿using FST.Services.Interfaces;
 using FST.Shared.Constants;
-using System.Security.Claims;
+using FST.Shared.Extensions;
+using Microsoft.AspNetCore.Http;
 
 namespace FST.Services.Services;
 
@@ -8,6 +9,6 @@ public class UserService(IHttpContextAccessor httpContextAccessor) : IUserServic
 {
     public string? GetCurrentUserId()
     {
-        return httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimConstants.UserId);
+        return httpContextAccessor.HttpContext?.User.GetValue(ClaimConstants.UserId);
     }
 }

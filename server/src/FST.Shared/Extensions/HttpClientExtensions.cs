@@ -14,4 +14,21 @@ public static class HttpClientExtensions
 
         return content;
     }
+
+    public static async Task<T> PostAsync<T>(this HttpClient httpClient, string url, object? body = null)
+    {
+        var response = await httpClient.PostAsync(url, body?.ToHttpJson());
+        if (!response.IsSuccessStatusCode) throw new Exception(await response.Content.ReadAsStringAsync());
+
+        var content = await response.Content.ReadFromJsonAsync<T>();
+        if (content == null) throw new InvalidDataException();
+
+        return content;
+    }
+
+    public static async Task PostAsync(this HttpClient httpClient, string url, object? body = null)
+    {
+        var response = await httpClient.PostAsync(url, body?.ToHttpJson());
+        if (!response.IsSuccessStatusCode) throw new Exception(await response.Content.ReadAsStringAsync());
+    }
 }
