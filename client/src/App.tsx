@@ -3,6 +3,7 @@ import "./App.css";
 import Layout from "./layout/Layout";
 import SpellList from "./pages/spellList/SpellList";
 import NotFound from "./pages/status/NotFound";
+import Login from "./pages/auth/Login";
 
 export default function App() {
     return (
@@ -10,6 +11,7 @@ export default function App() {
             <Routes>
                 <Route element={<Layout />}>
                     <Route path="" element={<SpellList />} />
+                    <Route path="login" element={<Login />} />
                     <Route path="*" element={<NotFound />} />
                 </Route>
             </Routes>
