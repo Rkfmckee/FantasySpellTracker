@@ -14,11 +14,11 @@ import {
     GetRitualTag,
     GetUnearthedArcanaTag,
     HasDescriptionClass,
-} from "../../../helpers/SpellHelpers";
-import { GetSpellCastingTimeName } from "../../../schemas/spell/SpellCastingTimeSchema";
-import { GetSpellComponentsName } from "../../../schemas/spell/SpellComponentSchema";
-import { GetSpellDurationName } from "../../../schemas/spell/SpellDurationSchema";
-import { Spell } from "../../../schemas/spell/SpellSchema";
+} from "../../../../helpers/SpellHelpers";
+import { GetSpellCastingTimeName } from "../../../../schemas/spell/SpellCastingTimeSchema";
+import { GetSpellComponentsName } from "../../../../schemas/spell/SpellComponentSchema";
+import { GetSpellDurationName } from "../../../../schemas/spell/SpellDurationSchema";
+import { Spell } from "../../../../schemas/spell/SpellSchema";
 import Collapse from "@mui/material/Collapse";
 
 interface SpellCardProps {
@@ -45,13 +45,7 @@ export default function SpellCard({ spell }: SpellCardProps) {
 
                 <hr />
 
-                <Typography
-                    variant="body2"
-                    className={HasDescriptionClass(
-                        "casting-time",
-                        spell.castingTimeDescription
-                    )}
-                >
+                <Typography variant="body2" className={HasDescriptionClass("casting-time", spell.castingTimeDescription)}>
                     <strong>Casting time: </strong>
                     {GetSpellCastingTimeName(spell.castingTime)}
                 </Typography>
@@ -61,39 +55,18 @@ export default function SpellCard({ spell }: SpellCardProps) {
                     {GetSpellDurationName(spell.duration)}
                 </Typography>
 
-                <Typography
-                    variant="body2"
-                    className={HasDescriptionClass(
-                        "range",
-                        spell.rangeDescription
-                    )}
-                >
+                <Typography variant="body2" className={HasDescriptionClass("range", spell.rangeDescription)}>
                     <strong>Range: </strong>
                     {GetRangeDescription(spell)}
                 </Typography>
 
                 <Typography variant="body2">
                     <strong>Components: </strong>
-                    <span
-                        className={HasDescriptionClass(
-                            "components",
-                            spell.componentsDescription
-                        )}
-                    >
-                        {GetSpellComponentsName(spell.components)}
-                    </span>
-                    {spell.componentsCost && (
-                        <i className="components-cost">
-                            {" "}
-                            {spell.componentsCost}
-                        </i>
-                    )}
+                    <span className={HasDescriptionClass("components", spell.componentsDescription)}>{GetSpellComponentsName(spell.components)}</span>
+                    {spell.componentsCost && <i className="components-cost"> {spell.componentsCost}</i>}
                 </Typography>
 
-                <Button
-                    className="mt-3"
-                    onClick={() => setShowDescription(!showDescription)}
-                >
+                <Button className="mt-3" onClick={() => setShowDescription(!showDescription)}>
                     {showDescription ? "Hide" : "Show"} description
                 </Button>
 
@@ -109,15 +82,9 @@ export default function SpellCard({ spell }: SpellCardProps) {
                         {GetDescription(spell)}
                         {GetDescriptionBox(spell.higherLevelDescription)}
 
-                        {GetDescriptionBox(
-                            spell.castingTimeDescription,
-                            "Casting time"
-                        )}
+                        {GetDescriptionBox(spell.castingTimeDescription, "Casting time")}
                         {GetDescriptionBox(spell.rangeDescription, "Range")}
-                        {GetDescriptionBox(
-                            spell.componentsDescription,
-                            "Components"
-                        )}
+                        {GetDescriptionBox(spell.componentsDescription, "Components")}
 
                         {GetDescriptionBox(spell.source.title, "Source")}
                         {GetClassesBox(spell.classes)}

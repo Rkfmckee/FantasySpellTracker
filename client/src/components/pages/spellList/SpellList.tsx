@@ -16,11 +16,11 @@ import {
     SourcesToFilterUrl,
     SpellFlagsToFilterUrl,
     TextToFilterUrl,
-} from "../../helpers/FilterHelpers";
-import { IsMobile } from "../../helpers/MuiHelpers";
-import { SpellFilter } from "../../schemas/filter/SpellFilterSchema";
-import { ReadResponse } from "../../schemas/ReadResponseSchema";
-import { Spell } from "../../schemas/spell/SpellSchema";
+} from "../../../helpers/FilterHelpers";
+import { IsMobile } from "../../../helpers/MuiHelpers";
+import { SpellFilter } from "../../../schemas/filter/SpellFilterSchema";
+import { ReadResponse } from "../../../schemas/ReadResponseSchema";
+import { Spell } from "../../../schemas/spell/SpellSchema";
 import SpellCards from "./cards/SpellCards";
 import SpellListFilter, { SpellFilterIsNotEmpty } from "./SpellListFilter";
 import SpellTable from "./table/SpellTable";

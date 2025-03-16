@@ -15,11 +15,11 @@ import {
     GetRitualTag,
     GetUnearthedArcanaTag,
     HasDescriptionClass,
-} from "../../../helpers/SpellHelpers";
-import { GetSpellCastingTimeName } from "../../../schemas/spell/SpellCastingTimeSchema";
-import { GetSpellComponentsName } from "../../../schemas/spell/SpellComponentSchema";
-import { GetSpellDurationName } from "../../../schemas/spell/SpellDurationSchema";
-import { Spell } from "../../../schemas/spell/SpellSchema";
+} from "../../../../helpers/SpellHelpers";
+import { GetSpellCastingTimeName } from "../../../../schemas/spell/SpellCastingTimeSchema";
+import { GetSpellComponentsName } from "../../../../schemas/spell/SpellComponentSchema";
+import { GetSpellDurationName } from "../../../../schemas/spell/SpellDurationSchema";
+import { Spell } from "../../../../schemas/spell/SpellSchema";
 
 interface RowProps {
     spell: Spell;
@@ -41,46 +41,19 @@ export default function SpellRow({ spell }: RowProps) {
                     {GetUnearthedArcanaTag(spell)}
                 </TableCell>
 
-                <TableCell
-                    className={HasDescriptionClass(
-                        "casting-time",
-                        spell.castingTimeDescription
-                    )}
-                >
+                <TableCell className={HasDescriptionClass("casting-time", spell.castingTimeDescription)}>
                     {GetSpellCastingTimeName(spell.castingTime)}
                 </TableCell>
 
                 <TableCell>{GetSpellDurationName(spell.duration)}</TableCell>
-                <TableCell
-                    className={HasDescriptionClass(
-                        "range",
-                        spell.rangeDescription
-                    )}
-                >
-                    {GetRangeDescription(spell)}
-                </TableCell>
+                <TableCell className={HasDescriptionClass("range", spell.rangeDescription)}>{GetRangeDescription(spell)}</TableCell>
                 <TableCell>
-                    <span
-                        className={HasDescriptionClass(
-                            "components",
-                            spell.componentsDescription
-                        )}
-                    >
-                        {GetSpellComponentsName(spell.components)}
-                    </span>
-                    {spell.componentsCost && (
-                        <i className="components-cost">
-                            {" "}
-                            {spell.componentsCost}
-                        </i>
-                    )}
+                    <span className={HasDescriptionClass("components", spell.componentsDescription)}>{GetSpellComponentsName(spell.components)}</span>
+                    {spell.componentsCost && <i className="components-cost"> {spell.componentsCost}</i>}
                 </TableCell>
             </TableRow>
             <TableRow>
-                <TableCell
-                    style={{ paddingBottom: 0, paddingTop: 0 }}
-                    colSpan={6}
-                >
+                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
                     <Collapse in={open} timeout="auto" unmountOnExit>
                         <Box sx={{ margin: 1 }}>
                             <div className="mb-2">
@@ -94,27 +67,15 @@ export default function SpellRow({ spell }: RowProps) {
                             {GetDescriptionBox(spell.higherLevelDescription)}
 
                             <div className="row">
-                                {GetDescriptionBox(
-                                    spell.castingTimeDescription,
-                                    "Casting time"
-                                )}
+                                {GetDescriptionBox(spell.castingTimeDescription, "Casting time")}
 
-                                {GetDescriptionBox(
-                                    spell.rangeDescription,
-                                    "Range"
-                                )}
+                                {GetDescriptionBox(spell.rangeDescription, "Range")}
 
-                                {GetDescriptionBox(
-                                    spell.componentsDescription,
-                                    "Components"
-                                )}
+                                {GetDescriptionBox(spell.componentsDescription, "Components")}
                             </div>
 
                             <div className="row">
-                                {GetDescriptionBox(
-                                    spell.source.title,
-                                    "Source"
-                                )}
+                                {GetDescriptionBox(spell.source.title, "Source")}
                                 {GetClassesBox(spell.classes)}
                             </div>
                         </Box>

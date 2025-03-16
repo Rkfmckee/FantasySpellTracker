@@ -1,11 +1,11 @@
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import { Spell } from "../../../schemas/spell/SpellSchema";
+import { Spell } from "../../../../schemas/spell/SpellSchema";
 import SpellCard from "./SpellCard";
 import Masonry from "@mui/lab/Masonry";
-import { IsMobile } from "../../../helpers/MuiHelpers";
-import SortableLabel from "../../../components/filter/SortableLabel";
+import { IsMobile } from "../../../../helpers/MuiHelpers";
+import SortableLabel from "../../../../components/filter/SortableLabel";
 
 interface SpellCardsProps {
     spells: Spell[] | undefined;
@@ -13,11 +13,7 @@ interface SpellCardsProps {
     handleSortBy: (sortByName: string) => void;
 }
 
-export default function SpellCards({
-    spells,
-    sortBy,
-    handleSortBy,
-}: SpellCardsProps) {
+export default function SpellCards({ spells, sortBy, handleSortBy }: SpellCardsProps) {
     function CardsLayout() {
         const isMobile = IsMobile();
 
@@ -56,39 +52,19 @@ export default function SpellCards({
         <>
             <div className="mb-4">
                 Sort by:
-                <SortableLabel
-                    sortName="level"
-                    sortBy={sortBy}
-                    handleSortBy={handleSortBy}
-                >
+                <SortableLabel sortName="level" sortBy={sortBy} handleSortBy={handleSortBy}>
                     Level
                 </SortableLabel>
-                <SortableLabel
-                    sortName="name"
-                    sortBy={sortBy}
-                    handleSortBy={handleSortBy}
-                >
+                <SortableLabel sortName="name" sortBy={sortBy} handleSortBy={handleSortBy}>
                     Name
                 </SortableLabel>
-                <SortableLabel
-                    sortName="castingTime"
-                    sortBy={sortBy}
-                    handleSortBy={handleSortBy}
-                >
+                <SortableLabel sortName="castingTime" sortBy={sortBy} handleSortBy={handleSortBy}>
                     Casting time
                 </SortableLabel>
-                <SortableLabel
-                    sortName="duration"
-                    sortBy={sortBy}
-                    handleSortBy={handleSortBy}
-                >
+                <SortableLabel sortName="duration" sortBy={sortBy} handleSortBy={handleSortBy}>
                     Duration
                 </SortableLabel>
-                <SortableLabel
-                    sortName="rangeType,rangeValue"
-                    sortBy={sortBy}
-                    handleSortBy={handleSortBy}
-                >
+                <SortableLabel sortName="rangeType,rangeValue" sortBy={sortBy} handleSortBy={handleSortBy}>
                     Range
                 </SortableLabel>
             </div>
