@@ -15,11 +15,11 @@ import {
     GetRitualTag,
     GetUnearthedArcanaTag,
     HasDescriptionClass,
-} from "../../../../helpers/SpellHelpers";
-import { GetSpellCastingTimeName } from "../../../../schemas/spell/SpellCastingTimeSchema";
-import { GetSpellComponentsName } from "../../../../schemas/spell/SpellComponentSchema";
-import { GetSpellDurationName } from "../../../../schemas/spell/SpellDurationSchema";
-import { Spell } from "../../../../schemas/spell/SpellSchema";
+} from "../../../helpers/SpellHelpers";
+import { GetSpellCastingTimeName } from "../../../schemas/spell/SpellCastingTimeSchema";
+import { GetSpellComponentsName } from "../../../schemas/spell/SpellComponentSchema";
+import { GetSpellDurationName } from "../../../schemas/spell/SpellDurationSchema";
+import { Spell } from "../../../schemas/spell/SpellSchema";
 
 interface RowProps {
     spell: Spell;

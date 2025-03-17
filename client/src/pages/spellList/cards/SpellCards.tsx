@@ -1,11 +1,11 @@
+import Masonry from "@mui/lab/Masonry";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import { Spell } from "../../../../schemas/spell/SpellSchema";
+import SortableLabel from "../../../components/filter/SortableLabel";
+import { IsMobile } from "../../../helpers/MuiHelpers";
+import { Spell } from "../../../schemas/spell/SpellSchema";
 import SpellCard from "./SpellCard";
-import Masonry from "@mui/lab/Masonry";
-import { IsMobile } from "../../../../helpers/MuiHelpers";
-import SortableLabel from "../../../../components/filter/SortableLabel";
 
 interface SpellCardsProps {
     spells: Spell[] | undefined;

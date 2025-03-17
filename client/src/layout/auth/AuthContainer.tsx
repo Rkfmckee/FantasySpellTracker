@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
-import useAuth from "../../hooks/UseAuth";
-import Loader from "../Loader";
+import useAuth from "../../hooks/useAuth";
+import Loader from "../../components/Loader";
 
 const AuthContainer = () => {
     const { user, isLoading } = useAuth();

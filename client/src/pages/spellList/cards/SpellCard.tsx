@@ -1,6 +1,7 @@
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
+import Collapse from "@mui/material/Collapse";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import {
@@ -14,12 +15,11 @@ import {
     GetRitualTag,
     GetUnearthedArcanaTag,
     HasDescriptionClass,
-} from "../../../../helpers/SpellHelpers";
-import { GetSpellCastingTimeName } from "../../../../schemas/spell/SpellCastingTimeSchema";
-import { GetSpellComponentsName } from "../../../../schemas/spell/SpellComponentSchema";
-import { GetSpellDurationName } from "../../../../schemas/spell/SpellDurationSchema";
-import { Spell } from "../../../../schemas/spell/SpellSchema";
-import Collapse from "@mui/material/Collapse";
+} from "../../../helpers/SpellHelpers";
+import { GetSpellCastingTimeName } from "../../../schemas/spell/SpellCastingTimeSchema";
+import { GetSpellComponentsName } from "../../../schemas/spell/SpellComponentSchema";
+import { GetSpellDurationName } from "../../../schemas/spell/SpellDurationSchema";
+import { Spell } from "../../../schemas/spell/SpellSchema";
 
 interface SpellCardProps {
     spell: Spell;

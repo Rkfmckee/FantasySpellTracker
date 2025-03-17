@@ -9,17 +9,17 @@ import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import EnumMultiselect from "../../../components/form/EnumMultiselect";
-import { IsMobile } from "../../../helpers/MuiHelpers";
-import { Class } from "../../../schemas/class/ClassSchema";
-import { SpellFilter } from "../../../schemas/filter/SpellFilterSchema";
-import { Source } from "../../../schemas/source/SourceSchema";
-import { GetSpellCastingTimeKeys, GetSpellCastingTimeName } from "../../../schemas/spell/SpellCastingTimeSchema";
-import { SpellComponents } from "../../../schemas/spell/SpellComponentSchema";
-import { GetSpellDurationKeys, GetSpellDurationName } from "../../../schemas/spell/SpellDurationSchema";
-import { GetSpellLevelKeys, GetSpellLevelName } from "../../../schemas/spell/SpellLevelSchema";
-import { GetSpellRangeTypeKeys, SpellRangeType } from "../../../schemas/spell/SpellRangeTypeSchema";
-import { GetSpellSchoolKeys, SpellSchool } from "../../../schemas/spell/SpellSchoolSchema";
+import EnumMultiselect from "../../components/form/EnumMultiselect";
+import { IsMobile } from "../../helpers/MuiHelpers";
+import { Class } from "../../schemas/class/ClassSchema";
+import { SpellFilter } from "../../schemas/filter/SpellFilterSchema";
+import { Source } from "../../schemas/source/SourceSchema";
+import { GetSpellCastingTimeKeys, GetSpellCastingTimeName } from "../../schemas/spell/SpellCastingTimeSchema";
+import { SpellComponents } from "../../schemas/spell/SpellComponentSchema";
+import { GetSpellDurationKeys, GetSpellDurationName } from "../../schemas/spell/SpellDurationSchema";
+import { GetSpellLevelKeys, GetSpellLevelName } from "../../schemas/spell/SpellLevelSchema";
+import { GetSpellRangeTypeKeys, SpellRangeType } from "../../schemas/spell/SpellRangeTypeSchema";
+import { GetSpellSchoolKeys, SpellSchool } from "../../schemas/spell/SpellSchoolSchema";
 
 interface SpellListFilterProps {
     showFilters: boolean;
