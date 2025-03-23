@@ -3,19 +3,18 @@ import "./App.css";
 import AuthContainer from "./layout/auth/AuthContainer";
 import Layout from "./layout/Layout";
 import Login from "./pages/auth/Login";
-import SpellList from "./pages/spellList/SpellList";
+import Register from "./pages/auth/Register";
 import NotFound from "./pages/status/NotFound";
 import User from "./pages/User";
-import Register from "./pages/auth/Register";
 
 export default function App() {
     return (
         <Routes>
             <Route element={<Layout />}>
                 <Route path="/" element={<AuthContainer />}>
-                    <Route path="User" element={<User />} />
+                    <Route index element={<User />} />
                 </Route>
-                <Route path="" element={<SpellList />} />
+                {/* <Route index element={<SpellList />} /> */}
                 <Route path="login" element={<Login />} />
                 <Route path="register" element={<Register />} />
                 <Route path="*" element={<NotFound />} />

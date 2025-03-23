@@ -2,6 +2,8 @@
 using FST.API.ViewModels.Authentication;
 using FST.Services.DTOs.Authentication;
 using FST.Services.Interfaces;
+using FST.Shared.Constants;
+using FST.Shared.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,7 +11,7 @@ namespace FST.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class AuthenticationController(IMapper mapper, IAuthenticationService authenticationService) : ControllerBase
+public class AuthenticationController(IMapper mapper, IAuthenticationService authenticationService, IHttpContextAccessor httpContextAccessor) : BaseController
 {
     [HttpPost("Login")]
     [ProducesResponseType(typeof(AuthTokensViewModel), StatusCodes.Status200OK)]
@@ -27,5 +29,15 @@ public class AuthenticationController(IMapper mapper, IAuthenticationService aut
     {
         var errorMessage = "There was a problem, please try again";
         return Ok(await authenticationService.LogoutAsync());
+    }
+
+    [Authorize]
+    [HttpGet("UserName")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public ActionResult GetUserName()
+    {
+        var errorMessage = "Not logged in";
+        return OkOrProblem(httpContextAccessor.HttpContext?.User.GetValue(ClaimConstants.UserName), errorMessage);
     }
 }
