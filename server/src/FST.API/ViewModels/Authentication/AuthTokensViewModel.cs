@@ -2,6 +2,5 @@
 
 public class AuthTokensViewModel
 {
-    public string? AccessToken { get; set; }
-    public string? RefreshToken { get; set; }
+    public string? Access { get; set; }
 }

@@ -1,14 +1,22 @@
 import axios from "axios";
+import { getAccessToken } from "../services/AuthService";
 
 const options = {
-    baseUrl: import.meta.env.VITE_API_URL,
+    baseURL: import.meta.env.VITE_API_URL,
     withCredentials: true,
 };
 
 const apiClient = axios.create(options);
 
+apiClient.interceptors.request.use((request) => {
+    var accessToken = getAccessToken();
+    if (accessToken) request.headers.Authorization = `Bearer ${accessToken}`;
+
+    return request;
+});
+
+// Override the default axios response object, and only return the data part
 apiClient.interceptors.response.use(
-    // Override the default axios response object, and only return the data part
     (response) => response.data,
     (error) => {
         const { status, data } = error.response;
