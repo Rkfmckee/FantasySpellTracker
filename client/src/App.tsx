@@ -6,6 +6,7 @@ import Login from "./pages/auth/Login";
 import SpellList from "./pages/spellList/SpellList";
 import NotFound from "./pages/status/NotFound";
 import User from "./pages/User";
+import Register from "./pages/auth/Register";
 
 export default function App() {
     return (
@@ -16,6 +17,7 @@ export default function App() {
                 </Route>
                 <Route path="" element={<SpellList />} />
                 <Route path="login" element={<Login />} />
+                <Route path="register" element={<Register />} />
                 <Route path="*" element={<NotFound />} />
             </Route>
         </Routes>

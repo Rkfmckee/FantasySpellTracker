@@ -32,7 +32,7 @@ export default function Login() {
     return (
         <>
             <Paper className="login-container">
-                <Typography variant="h1" gutterBottom>
+                <Typography variant="h2" gutterBottom>
                     Login
                 </Typography>
 
@@ -64,7 +64,7 @@ export default function Login() {
                     <span>
                         Don't have an account?
                         <Button component={Link} to="/register">
-                            Create one!
+                            Create one
                         </Button>
                     </span>
                 </Stack>
