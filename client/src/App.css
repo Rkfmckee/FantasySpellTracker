@@ -45,10 +45,6 @@
     margin: 0 auto;
 }
 
-.login-button {
-    margin-top: 3em !important;
-}
-
 /* Table */
 :has(> .fa-sort),
 :has(> .fa-sort-up),

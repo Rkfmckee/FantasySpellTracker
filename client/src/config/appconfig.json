@@ -1,5 +1,4 @@
 {
-    "apiUrl": "http://localhost:5160",
     "keycloak": {
         "url": "http://localhost:18080/",
         "realm": "fst",
