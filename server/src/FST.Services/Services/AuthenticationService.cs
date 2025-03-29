@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace FST.Services.Services;
 
-public class AuthenticationService(IConfiguration configuration, IHttpClientFactory httpClientFactory, IUserService userService) : IAuthenticationService
+public class AuthenticationService(IConfiguration configuration, IHttpClientFactory httpClientFactory) : IAuthenticationService
 {
     public readonly HttpClient httpClient = httpClientFactory.CreateClient(AuthenticationConstants.KeycloakHttpClient);
 
@@ -30,6 +30,27 @@ public class AuthenticationService(IConfiguration configuration, IHttpClientFact
             { "password", login.Password }
         };
         
+        return httpClient.PostEncodedAsync<AuthTokensDto>(tokenUrl, body);
+    }
+
+    public Task<AuthTokensDto> RefreshAsync(string? refreshToken)
+    {
+        if (string.IsNullOrWhiteSpace(refreshToken)) throw new Exception("No refresh token");
+
+        var clientId = configuration["Keycloak:ClientId"];
+        var tokenUrl = configuration["Keycloak:TokenUrl"];
+
+        if (string.IsNullOrWhiteSpace(clientId) ||
+            string.IsNullOrWhiteSpace(tokenUrl))
+            throw new Exception("Missing Keycloak configuration");
+
+        var body = new Dictionary<string, string>
+        {
+            { "client_id", clientId },
+            { "grant_type", "refresh_token" },
+            { "refresh_token", refreshToken }
+        };
+
         return httpClient.PostEncodedAsync<AuthTokensDto>(tokenUrl, body);
     }
 

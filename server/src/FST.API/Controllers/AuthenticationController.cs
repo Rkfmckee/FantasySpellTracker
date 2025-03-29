@@ -23,16 +23,33 @@ public class AuthenticationController(IMapper mapper, IAuthenticationService aut
         try
         {
             var authTokens = await authenticationService.LoginAsync(loginData);
-            if (authTokens == null) return Problem("There was a problem, please try again");
-
             authenticationService.StoreTokens(authTokens, HttpContext);
         }
         catch (Exception ex)
         {
             var keycloakError = JsonConvert.DeserializeObject<KeycloakErrorDto>(ex.Message);
-            if (keycloakError == null || string.IsNullOrWhiteSpace(keycloakError.ErrorDescription)) throw;
+            if (string.IsNullOrWhiteSpace(keycloakError?.ErrorDescription)) throw;
 
             return Problem(keycloakError.ErrorDescription);
+        }
+
+        return Ok();
+    }
+
+    [HttpPost("Refresh")]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult> Refresh()
+    {
+        try
+        {
+            Request.Cookies.TryGetValue(AuthenticationConstants.RefreshCookie, out var refreshToken);
+            var authTokens = await authenticationService.RefreshAsync(refreshToken);
+            authenticationService.StoreTokens(authTokens, HttpContext);
+        }
+        catch (Exception ex)
+        {
+            return Unauthorized();
         }
 
         return Ok();
