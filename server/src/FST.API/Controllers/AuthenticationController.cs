@@ -14,11 +14,24 @@ namespace FST.API.Controllers;
 public class AuthenticationController(IMapper mapper, IAuthenticationService authenticationService, IHttpContextAccessor httpContextAccessor) : BaseController
 {
     [HttpPost("Login")]
-    [ProducesResponseType(typeof(AuthTokensViewModel), StatusCodes.Status200OK)]
-    public async Task<ActionResult<AuthTokensViewModel>> Login(LoginViewModel login)
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult> Login(LoginViewModel login)
     {
         var loginData = mapper.Map<LoginDto>(login);
-        return Ok(mapper.Map<AuthTokensViewModel>(await authenticationService.LoginAsync(loginData)));
+
+        try
+        {
+            var authTokens = await authenticationService.LoginAsync(loginData);
+            if (authTokens == null) return Problem("There was a problem, please try again");
+
+            authenticationService.StoreTokens(authTokens, HttpContext);
+        }
+        catch (Exception ex)
+        {
+            return Problem(ex.Message);
+        }
+
+        return Ok();
     }
 
     [Authorize]

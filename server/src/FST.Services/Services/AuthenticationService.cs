@@ -2,6 +2,7 @@
 using FST.Services.Interfaces;
 using FST.Shared.Constants;
 using FST.Shared.Extensions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 
 namespace FST.Services.Services;
@@ -32,6 +33,12 @@ public class AuthenticationService(IConfiguration configuration, IHttpClientFact
         return httpClient.PostEncodedAsync<AuthTokensDto>(tokenUrl, body);
     }
 
+    public void StoreTokens(AuthTokensDto authTokens, HttpContext httpContext)
+    {
+        httpContext.Response.Cookies.Append(AuthenticationConstants.AccessCookie, authTokens.Access, GetCookieOptions(true));
+        httpContext.Response.Cookies.Append(AuthenticationConstants.RefreshCookie, authTokens.Access, GetCookieOptions(false));
+    }
+
     public async Task<bool> LogoutAsync()
     {
         var currentUserId = userService.GetCurrentUserId();
@@ -42,5 +49,17 @@ public class AuthenticationService(IConfiguration configuration, IHttpClientFact
 
         await httpClient.PostAsync(logoutUrl);
         return true;
+    }
+
+    private CookieOptions GetCookieOptions(bool isAccess)
+    {
+        return new CookieOptions
+        {
+            Expires = isAccess ? DateTime.UtcNow.AddMinutes(5) : DateTime.UtcNow.AddDays(7),
+            HttpOnly = true,
+            IsEssential = true,
+            Secure = true,
+            SameSite = SameSiteMode.None,
+        };
     }
 }
