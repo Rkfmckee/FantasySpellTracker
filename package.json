@@ -1,9 +1,0 @@
-{
-  "dependencies": {
-    "@react-keycloak/web": "^3.4.0",
-    "@tanstack/react-query": "^5.68.0",
-    "@tanstack/react-query-devtools": "^5.68.0",
-    "keycloak-js": "^26.1.2",
-    "react-error-boundary": "^5.0.0"
-  }
-}

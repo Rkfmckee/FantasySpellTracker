@@ -1,32 +1,13 @@
-import { Navigate } from "react-router-dom";
-import { getUserName } from "../services/AuthService";
-import { useEffect, useState } from "react";
-import { z } from "zod";
+import { useState } from "react";
 
 const User = () => {
-    const [userName, setUserName] = useState("");
-    const [loggedIn, setLoggedIn] = useState(false);
+    const [users, setUsers] = useState([]);
 
-    useEffect(() => {
-        getUser();
-    }, []);
-
-    async function getUser() {
-        var response = await getUserName();
-        if (response.status == 200) {
-            setLoggedIn(true);
-
-            try {
-                var userName = z.string().parse(response.data);
-                setUserName(userName);
-            } catch {
-                setLoggedIn(false);
-                setUserName("");
-            }
-        }
-    }
-
-    return loggedIn ? userName : <Navigate to="/login" />;
+    // return (
+    //     // <article>
+    //     //     <h2>{users.length ? (<ul>{users.map((user, i) => <li key={i}>{user}</li>)}</ul>)}</h2>
+    //     // </article>
+    // );
 };
 
 export default User;
