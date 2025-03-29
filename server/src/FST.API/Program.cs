@@ -7,20 +7,19 @@ using FantasySpellTracker.Services.MappingProfiles;
 using FantasySpellTracker.Services.Services;
 using FluentValidation;
 using FluentValidation.AspNetCore;
-using FST.API.Extensions;
 using FST.Services.Interfaces;
 using FST.Services.Services;
 using FST.Shared.Constants;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Scalar.AspNetCore;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGenWithAuth(builder.Configuration);
+builder.Services.AddOpenApi();
 
 builder.Services.AddCors(options =>
 {
@@ -85,9 +84,12 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
     await app.SeedDataAsync();
+    app.MapOpenApi();
+    app.MapScalarApiReference(options =>
+    {
+        options.Theme = ScalarTheme.BluePlanet;
+    });
 }
 
 app.UseExceptionHandler();

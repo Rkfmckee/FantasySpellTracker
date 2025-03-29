@@ -29,7 +29,7 @@ public class AuthenticationService(IConfiguration configuration, IHttpClientFact
             { "username", login.Username },
             { "password", login.Password }
         };
-
+        
         return httpClient.PostEncodedAsync<AuthTokensDto>(tokenUrl, body);
     }
 
@@ -39,16 +39,10 @@ public class AuthenticationService(IConfiguration configuration, IHttpClientFact
         httpContext.Response.Cookies.Append(AuthenticationConstants.RefreshCookie, authTokens.Access, GetCookieOptions(false));
     }
 
-    public async Task<bool> LogoutAsync()
+    public void DeleteTokens(HttpContext httpContext)
     {
-        var currentUserId = userService.GetCurrentUserId();
-        if (string.IsNullOrWhiteSpace(currentUserId)) return false;
-
-        var logoutUrl = configuration["Keycloak:LogoutUrl"]?.Replace("{userId}", currentUserId);
-        if (string.IsNullOrWhiteSpace(logoutUrl)) return false;
-
-        await httpClient.PostAsync(logoutUrl);
-        return true;
+        httpContext.Response.Cookies.Delete(AuthenticationConstants.AccessCookie);
+        httpContext.Response.Cookies.Delete(AuthenticationConstants.RefreshCookie);
     }
 
     private CookieOptions GetCookieOptions(bool isAccess)

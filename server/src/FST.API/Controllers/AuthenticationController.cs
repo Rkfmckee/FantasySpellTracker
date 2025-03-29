@@ -6,6 +6,7 @@ using FST.Shared.Constants;
 using FST.Shared.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace FST.API.Controllers;
 
@@ -28,20 +29,22 @@ public class AuthenticationController(IMapper mapper, IAuthenticationService aut
         }
         catch (Exception ex)
         {
-            return Problem(ex.Message);
+            var keycloakError = JsonConvert.DeserializeObject<KeycloakErrorDto>(ex.Message);
+            if (keycloakError == null || string.IsNullOrWhiteSpace(keycloakError.ErrorDescription)) throw;
+
+            return Problem(keycloakError.ErrorDescription);
         }
 
         return Ok();
     }
 
-    [Authorize]
     [HttpGet("Logout")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult> Logout()
+    public ActionResult Logout()
     {
-        var errorMessage = "There was a problem, please try again";
-        return Ok(await authenticationService.LogoutAsync());
+        authenticationService.DeleteTokens(HttpContext);
+        return Ok();
     }
 
     [Authorize]
