@@ -19,6 +19,11 @@ public abstract class BaseController : ControllerBase
         return HasNoValueOrItems(value) ? Problem(errorMessage) : Ok(value);
     }
 
+    protected ActionResult OkOrUnauthorized(object? value)
+    {
+        return HasNoValueOrItems(value) ? Unauthorized() : Ok(value);
+    }
+
     private bool HasNoValueOrItems(object? value)
     {
         return value == null || (value is ICollection<object> && ((ICollection<object>)value).Count == 0);

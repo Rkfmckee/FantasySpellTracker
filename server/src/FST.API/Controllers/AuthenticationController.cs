@@ -47,7 +47,7 @@ public class AuthenticationController(IMapper mapper, IAuthenticationService aut
             var authTokens = await authenticationService.RefreshAsync(refreshToken);
             authenticationService.StoreTokens(authTokens, HttpContext);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return Unauthorized();
         }
@@ -65,12 +65,14 @@ public class AuthenticationController(IMapper mapper, IAuthenticationService aut
     }
 
     [Authorize]
-    [HttpGet("UserName")]
+    [HttpGet("User")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public ActionResult GetUserName()
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public ActionResult GetUser()
     {
-        var errorMessage = "Not logged in";
-        return OkOrProblem(httpContextAccessor.HttpContext?.User.GetValue(ClaimConstants.UserName), errorMessage);
+        var userName = httpContextAccessor.HttpContext?.User.GetValue(ClaimConstants.UserName);
+        if (string.IsNullOrWhiteSpace(userName)) return Unauthorized();
+
+        return Ok(new UserViewModel(userName));
     }
 }

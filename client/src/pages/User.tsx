@@ -1,13 +1,9 @@
-import { useState } from "react";
+import useAuth from "../hooks/useAuth";
 
 const User = () => {
-    const [users, setUsers] = useState([]);
+    const { user } = useAuth();
 
-    // return (
-    //     // <article>
-    //     //     <h2>{users.length ? (<ul>{users.map((user, i) => <li key={i}>{user}</li>)}</ul>)}</h2>
-    //     // </article>
-    // );
+    return <h1>{user?.data.userName}</h1>;
 };
 
 export default User;

@@ -12,10 +12,10 @@ export default function App() {
         <Routes>
             <Route element={<Layout />}>
                 <Route path="/" element={<AuthContainer />}>
-                    {/* <Route index element={<User />} /> */}
+                    <Route index element={<User />} />
                 </Route>
                 {/* <Route index element={<SpellList />} /> */}
-                <Route index element={<User />} />
+                {/* <Route index element={<User />} /> */}
                 <Route path="login" element={<Login />} />
                 <Route path="register" element={<Register />} />
                 <Route path="*" element={<NotFound />} />
