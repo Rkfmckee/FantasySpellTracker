@@ -8,6 +8,7 @@ import NotFound from "./pages/status/NotFound";
 import User from "./pages/User";
 import Logout from "./pages/auth/Logout";
 import { setNavigate } from "./services/NavigationService";
+import SpellList from "./pages/spellList/SpellList";
 
 export default function App() {
     setNavigate(useNavigate());
@@ -16,9 +17,9 @@ export default function App() {
         <Routes>
             <Route element={<Layout />}>
                 <Route path="/" element={<AuthContainer />}>
-                    <Route index element={<User />} />
+                    <Route path="user" element={<User />} />
                 </Route>
-                {/* <Route index element={<SpellList />} /> */}
+                <Route index element={<SpellList />} />
                 <Route path="login" element={<Login />} />
                 <Route path="logout" element={<Logout />} />
                 <Route path="register" element={<Register />} />

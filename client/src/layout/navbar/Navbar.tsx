@@ -24,7 +24,7 @@ export default function Navbar({ mode, setMode }: ThemeProps) {
                             display: "flex",
                             marginTop: "0.25em",
                         }}>
-                        <Navlink to="about" />
+                        <Navlink to="user" />
                         <Navlink to="logout" />
                     </Box>
 
