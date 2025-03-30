@@ -4,16 +4,18 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { login } from "../../services/AuthService";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import LoadingButton from "../../components/form/LoadingButton";
 
 export default function Login() {
+    const location = useLocation();
     const navigate = useNavigate();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const redirectUrl = location.state?.redirectUrl || "/";
 
     const {
         mutate: logIn,
@@ -22,7 +24,7 @@ export default function Login() {
     } = useMutation({
         mutationFn: login,
         onSuccess: () => {
-            navigate("/", {
+            navigate(redirectUrl, {
                 // If they click the 'back' button, don't return to the login page
                 replace: true,
             });

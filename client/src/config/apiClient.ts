@@ -1,4 +1,6 @@
 import axios from "axios";
+import { navigate } from "../services/NavigationService";
+import queryClient from "./queryClient";
 
 const options = {
     baseURL: import.meta.env.VITE_API_URL,
@@ -6,19 +8,28 @@ const options = {
 };
 
 const apiClient = axios.create(options);
+const refreshClient = axios.create(options);
 
-// apiClient.interceptors.request.use((request) => {
-//     var accessToken = getAccessToken();
-//     if (accessToken) request.headers.Authorization = `Bearer ${accessToken}`;
-
-//     return request;
-// });
-
-// Override the default axios response object, and only return the data part
 apiClient.interceptors.response.use(
     (response) => response,
-    (error) => {
-        const { status, data } = error.response;
+    async (error) => {
+        const { config, response } = error;
+        const { status, data } = response || {};
+
+        if (status === 401) {
+            try {
+                await refreshClient.get("Authentication/Refresh");
+                return refreshClient(config);
+            } catch (error) {
+                queryClient.clear();
+                navigate("/login", {
+                    state: {
+                        redirectUrl: window.location.pathname,
+                    },
+                });
+            }
+        }
+
         return Promise.reject({ status, ...data });
     }
 );

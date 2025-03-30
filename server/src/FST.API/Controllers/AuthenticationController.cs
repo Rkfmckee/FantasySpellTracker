@@ -36,7 +36,7 @@ public class AuthenticationController(IMapper mapper, IAuthenticationService aut
         return Ok();
     }
 
-    [HttpPost("Refresh")]
+    [HttpGet("Refresh")]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult> Refresh()
